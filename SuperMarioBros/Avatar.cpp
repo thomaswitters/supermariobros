@@ -15,6 +15,7 @@
 //
 //	virtual ~TextureImage() {
 //		if (m_spriteTexture) {
+// 
 //			delete m_spriteTexture;
 //			m_spriteTexture = NULL;
 //		}

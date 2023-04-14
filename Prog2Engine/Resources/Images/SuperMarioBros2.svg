@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg582"
+   width="3376"
+   height="480"
+   viewBox="0 0 3376 480"
+   sodipodi:docname="SuperMarioBros2.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs586" />
+  <sodipodi:namedview
+     id="namedview584"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="4.0549725"
+     inkscape:cx="1257.4685"
+     inkscape:cy="221.94972"
+     inkscape:window-width="2560"
+     inkscape:window-height="1334"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g588" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Image"
+     id="g588">
+    <image
+       width="3376"
+       height="480"
+       preserveAspectRatio="none"
+       xlink:href="../../../../1DAE23_WittersThomasEndGame/Prog2Engine/Resources/Images/Super%20Mario%20bros.png"
+       id="image590" />
+    <path
+       style="fill:#000000"
+       d="m 1135.8893,207.64629 0.2466,33.53907 240.4456,-0.24661 v -33.53907 z"
+       id="path600"
+       sodipodi:nodetypes="ccccc" />
+  </g>
+</svg>

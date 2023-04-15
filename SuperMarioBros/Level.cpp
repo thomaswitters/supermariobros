@@ -58,14 +58,17 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 
 	utils::HitInfo
 		hitInfo{};
-	for (size_t i = 0; i < m_Vertices.size(); i++) {
-		
-		if (utils::Raycast(m_Vertices.at(i).front(), AvatarOrigin1, AvatarOrigin2, hitInfo))
-		{
-			avatarState->SetVelocityYAvatar(0.f);
-			avatarState->SetPositionYAvatar(hitInfo.intersectPoint.y);
+	if (avatarState->GetActionState() != AvatarState::ActionState::dead)
+	{
+		for (size_t i = 0; i < m_Vertices.size(); i++) {
+
+			if (utils::Raycast(m_Vertices.at(i).front(), AvatarOrigin1, AvatarOrigin2, hitInfo))
+			{
+				avatarState->SetVelocityYAvatar(0.f);
+				avatarState->SetPositionYAvatar(hitInfo.intersectPoint.y);
+			}
+
 		}
-		
 	}
 	for (GameItem* GameItem : m_GameItems)
 	{

@@ -66,7 +66,7 @@ CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineC
 			return CollisionLocation::avatorBumpsOnTheLeft;
 		}
 	}
-	//// |RECT| <- |AVATAR|
+	// |RECT| <- |AVATAR|
 	if (RichtingAvatar.x <= 0.f)// && beweegt ook(naar links)
 	{
 		if (

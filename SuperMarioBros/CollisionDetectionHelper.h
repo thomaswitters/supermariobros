@@ -14,5 +14,5 @@ public:
 		noCollision
 	};
 
-	static CollisionLocation determineCollisionDir(Rectf avatarRect, Vector2f RichtingAvatar, Rectf itemRect);
+	static CollisionLocation determineCollisionDir(Rectf avatarRect, Vector2f RichtingAvatar, Rectf itemRect, Vector2f RichtingItem = Vector2f(0.f, 0.f));
 };

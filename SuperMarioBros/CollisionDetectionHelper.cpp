@@ -2,7 +2,7 @@
 #include "CollisionDetectionHelper.h"
 #include <iostream>
 
-CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineCollisionDir(Rectf avatarRect, Vector2f RichtingAvatar, Rectf itemRect)
+CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineCollisionDir(Rectf avatarRect, Vector2f RichtingAvatar, Rectf itemRect, Vector2f RichtingItem)
 {
 	//if (RichtingAvatar.x >= 0.f)
 	//{
@@ -49,7 +49,7 @@ CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineC
 
 	
 	// |AVATAR| -> |RECT|
-	if (RichtingAvatar.x >= 0.f)// && beweegt ook (naar rechts)
+	if ((RichtingAvatar.x >= 0.f) || (RichtingItem.x < 0.f))// && beweegt ook (naar rechts)
 	{
 		if (
 				(aRight >= iLeft - 0.f) &&
@@ -67,7 +67,7 @@ CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineC
 		}
 	}
 	// |RECT| <- |AVATAR|
-	if (RichtingAvatar.x <= 0.f)// && beweegt ook(naar links)
+	if ((RichtingAvatar.x <= 0.f) || (RichtingItem.x > 0.f)) // && beweegt ook(naar links)
 	{
 		if (
 				(aLeft <= iRight + 0.f) &&
@@ -88,7 +88,7 @@ CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineC
 	//    ^
 	//    |
 	// |AVATAR|
-	if (RichtingAvatar.y > 0.f)// && beweegt ook(naar boven)
+	if ((RichtingAvatar.y > 0.f) || (RichtingItem.y < 0.f))// && beweegt ook(naar boven)
 	{
 		if (
 				(aTop >= iBottom - 5.f) &&
@@ -108,7 +108,7 @@ CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineC
 	////     |
 	////    \/
 	//// |RECT|		
-	if (RichtingAvatar.y < 0.f)// && beweegt ook(naar onder)
+	if ((RichtingAvatar.y < 0.f) || (RichtingItem.y > 0.f)) // && beweegt ook(naar onder)
 	{
 		if 	(
 				(aBottom <= iTop + 10.f) &&
@@ -124,6 +124,7 @@ CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineC
 		}
 	}
 
+	return CollisionLocation::noCollision;
 
 
 	//if (utils::IsOverlapping(avatarRect, itemRect))

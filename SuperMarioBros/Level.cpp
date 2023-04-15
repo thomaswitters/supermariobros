@@ -23,13 +23,17 @@ Level::~Level()
 		delete m_pBackgroundTexture;
 		m_pBackgroundTexture = NULL;
 	}
-	for (GameItem* GameItem : m_GameItems)
+
+	for (size_t i = 0; i < m_GameItems.size(); i++)
 	{
+		GameItem* GameItem = m_GameItems[i];
 		delete GameItem;
 	}
-	for (LiveItem* LiveItem : m_LiveItems)
+
+	for (size_t i = 0; i < m_LiveItems.size(); i++)
 	{
-		delete LiveItem;
+		LiveItem* ALiveItem = m_LiveItems[i];
+		delete ALiveItem;
 	}
 }
 
@@ -70,28 +74,36 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 
 		}
 	}
-	for (GameItem* GameItem : m_GameItems)
+
+	for (size_t i = 0; i < m_GameItems.size(); i++)
 	{
+		GameItem* GameItem = m_GameItems[i];
 		if (GameItem->IsActive()) 
 		{ 
 #
 			GameItem->CollisionDetect(gameState);
 		}
 	}
-	for (LiveItem* ALiveItem : m_LiveItems)
-	{ 
+
+	for (size_t i = 0; i < m_LiveItems.size(); i++)
+	{
+		LiveItem* ALiveItem = m_LiveItems[i];
 		if (ALiveItem->IsActive())
 		{
 			ALiveItem->CollisionDetect(gameState);
-			for (GameItem* GameItem : m_GameItems)
+
+			for (size_t i = 0; i < m_GameItems.size(); i++)
 			{
+				GameItem* GameItem = m_GameItems[i];
 				if (GameItem->IsActive())
 				{
 					ALiveItem->CollisionWithGameItemDetect(GameItem);
 				}
 			}
-			for (LiveItem* OtherLiveItem: m_LiveItems)
+
+			for (size_t i = 0; i < m_LiveItems.size(); i++)
 			{
+				LiveItem* OtherLiveItem = m_LiveItems[i];
 				if (OtherLiveItem->IsActive())
 				{
 					ALiveItem->CollisionWithLiveItemDetect(OtherLiveItem);
@@ -125,8 +137,10 @@ bool Level::IsOnGround(AvatarState* avatarState) const
 		{
 			return true;
 		}
-		for (GameItem* GameItem : m_GameItems)
+
+		for (size_t i = 0; i < m_GameItems.size(); i++)
 		{
+			GameItem* GameItem = m_GameItems[i];
 			if (GameItem->IsActive())
 			{
 				if (GameItem->CollisionDetectOnGround(avatarState))
@@ -158,19 +172,21 @@ std::vector<GameItem*> Level::GetGameItems() const
 
 void Level::DrawForeground(AvatarState* avatarState) const
 {
-	for (GameItem* GameItem : m_GameItems)
+	for (size_t i = 0; i < m_GameItems.size(); i++)
 	{
+		GameItem* GameItem = m_GameItems[i];
 		if (GameItem->IsActive())
 		{
 			GameItem->Draw(avatarState);
 		}
-
 	}
-	for (LiveItem* LiveItem : m_LiveItems)
+
+	for (size_t i = 0; i < m_LiveItems.size(); i++)
 	{
-		if (LiveItem->IsActive())
+		LiveItem* ALiveItem = m_LiveItems[i];
+		if (ALiveItem->IsActive())
 		{
-			LiveItem->Draw(avatarState);
+			ALiveItem->Draw(avatarState);
 		}
 
 	}
@@ -178,19 +194,22 @@ void Level::DrawForeground(AvatarState* avatarState) const
 
 void Level::UpdateItems(float elapsedSec, Level* level)
 {
-	for (GameItem* GameItem : m_GameItems)
+	for (size_t i = 0; i < m_GameItems.size(); i++) 
 	{
+		GameItem* GameItem = m_GameItems[i];
 		if (GameItem->IsActive())
 		{
 			GameItem->UpdateGameItem(elapsedSec, level);
 		}
-
 	}
-	for (LiveItem* LiveItem : m_LiveItems)
+
+	for (size_t i = 0; i < m_LiveItems.size(); i++)
 	{
-		if (LiveItem->IsActive())
+		LiveItem* ALiveItem = m_LiveItems[i];
+
+		if (ALiveItem->IsActive())
 		{
-			LiveItem->UpdateGameItem(elapsedSec, level);
+			ALiveItem->UpdateGameItem(elapsedSec, level);
 		}
 
 	}

@@ -1,25 +1,10 @@
 # TODO:
 
 NU:
-1. Vlag op einde plaatsen
 
-2. Eerste Q -> ALTIJD een coin
-
-3. Tweede Q -> mushroom bij klein mannetje, flower bij groot mannetje
-
-4. Mushroom -> Switch naar groot mannetje
-
-5. Flower -> Switch naar flower mannetje
-
-6. Derde en 4de Q -> coins
-
-7. 5de Q -> mushroom bij klein mannetje, flower bij groot mannetje
-
-8. Kunnen sterven!
-
-9. Kunnen winnen (vlag nemen)!
-
-EN TESTEN
+1. Goomba pas lopen als camera erop komt
+2. Goomba's toevoegen nadat we een schietmannetje zijn
+3. Kunnen winnen (vlag nemen)!
 
 DAN:
 
@@ -29,13 +14,9 @@ DAN:
 
 2. LiveItem protected member variables moeten protected member functions worden (getters and setters)
 
-3. Delete LiveItems in Level (crasht) -> DONE, blijkt te werken zonder iets te doen (maar er zijn minder kogels)
+3. virtuele methodes in GameItem die geen implementatie hebben mogen weg
 
-4. Bibber
-
-5. virtuele methodes in GameItem die geen implementatie hebben mogen weg
-
-6. Hernoem CollisionLocation items, moet zijn 
+4. Hernoem CollisionLocation items, moet zijn 
 
 	enum class CollisionLocation {
 		liveItemBumpsOnTheRight,
@@ -48,7 +29,7 @@ DAN:
 
 	static CollisionLocation determineCollisionDir(Rectf liveItemRect, Vector2f RichtingLiveItem, Rectf itemRect);
 
-7. Als LivceItem positie x < 0 dan setActive(false)
+5. Als LivceItem positie x < 0 dan setActive(false)
 
 LATER:
 1. 
@@ -64,6 +45,12 @@ LATER:
 5. Parallax background effect: ?
 
 6. Camera transition
+
+7. QuestonBlock zou de verassing als parameter kunnen meekrijgen en die dan bij activatie toevoegen aan de level ipv bij de start
+
+	AddGameItem(new QuestionBlock(Point2f(336.f, 320.f)));
+	AddGameItem(new Coin(Point2f(368.f, 320.f)));
+
 
 7. In Pipe gaan
 
@@ -115,5 +102,4 @@ Schieten van enemie
 Complicated gameplay
 
 5. Quality of code
-
 

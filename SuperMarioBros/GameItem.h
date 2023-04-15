@@ -237,7 +237,7 @@ public:
 
 	LiveItem(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState, 
 		Vector2f velocity, Vector2f acceleration, 
-		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY );
+		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames);
 
 	virtual ~LiveItem();
 
@@ -249,6 +249,8 @@ public:
 	virtual void UpdateGameItem(float elapsedSec, Level* level) = 0;
 	virtual void CollisionDetect(AvatarState* avatarState) = 0;
 	virtual void CollisionWithGameItemDetect(GameItem* gameItem) = 0;
+	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem) = 0;
+	virtual void BounceFloor() {}
 
 	void SetVelocityY(float y)
 	{
@@ -296,12 +298,13 @@ protected:
 	int m_AnimStartDyingFrameX;
 	int m_AnimStartDyingFrameY;
 
+	int m_ImageAmountHoriFrames; 
+	int m_ImageAmountVertiFrames;
+
 	Vector2f m_Velocity;
 	Vector2f m_Acceleration;
 
 	float m_DyingCounter;
-	
-
 };
 
 class Enemy : public LiveItem
@@ -309,13 +312,14 @@ class Enemy : public LiveItem
 public:
 	Enemy(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
 		Vector2f velocity, Vector2f acceleration,
-		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY);
+		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames);
 
 	virtual ~Enemy();
 
 	virtual void UpdateGameItem(float elapsedSec, Level* level);
 	virtual void CollisionDetect(AvatarState* avatarState);
 	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
+	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem);
 };
 
 class Goomba : public Enemy
@@ -334,4 +338,7 @@ public:
 	virtual void UpdateGameItem(float elapsedSec, Level* level);
 	virtual void CollisionDetect(AvatarState* avatarState);
 	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
+	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem);
+
+	virtual void BounceFloor();
 };

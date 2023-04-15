@@ -47,7 +47,7 @@ public:
 
 	void Update(float elapsedSec, AvatarState* avatarState, Level* level, Point2f cameraPos);
 	void UpdatePosition(float elapsedSec, Point2f cameraPos);
-	void HandleKeys(float elapsedSec);
+	void HandleKeys(float elapsedSec, Level* level);
 	bool CheckKeys();
 	bool CheckKeyDown();
 
@@ -69,4 +69,6 @@ private:
 	float m_CountStartJump;
 	float m_JumpTime;
 	bool m_IsJumping;
+	int m_AmmoCounterAmound;
+	float m_RealoadingCounter;
 };

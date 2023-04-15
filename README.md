@@ -101,3 +101,6 @@ Complicated gameplay
 -> mannetje beeft
 
 -> LiveItem protected member variables moeten protected member functions worden (getters and setters)
+
+-> Delete LiveItems in Level (crasht)
+

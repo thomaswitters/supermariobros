@@ -27,10 +27,11 @@ Level::~Level()
 	{
 		delete GameItem;
 	}
+	/*
 	for (LiveItem* LiveItem : m_LiveItems)
 	{
 		delete LiveItem;
-	}
+	}*/
 }
 
 void Level::DestroyGameItem(GameItem* gameItem) {
@@ -74,27 +75,35 @@ void Level::HandleCollision(float elapsedSec, AvatarState* avatarState) const
 			GameItem->CollisionDetect(avatarState);
 		}
 	}
-	for (LiveItem* LiveItem : m_LiveItems)
+	for (LiveItem* ALiveItem : m_LiveItems)
 	{ 
-		if (LiveItem->IsActive())
+		if (ALiveItem->IsActive())
 		{
-			LiveItem->CollisionDetect(avatarState);
+			ALiveItem->CollisionDetect(avatarState);
 			for (GameItem* GameItem : m_GameItems)
 			{
 				if (GameItem->IsActive())
 				{
-					LiveItem->CollisionWithGameItemDetect(GameItem);
+					ALiveItem->CollisionWithGameItemDetect(GameItem);
+				}
+			}
+			for (LiveItem* OtherLiveItem: m_LiveItems)
+			{
+				if (OtherLiveItem->IsActive())
+				{
+					ALiveItem->CollisionWithLiveItemDetect(OtherLiveItem);
 				}
 			}
 
-			Point2f liveItemOrigin1 = Point2f{ LiveItem->GetGameItemPos().x + LiveItem->GetGameItemWidth() / 2, LiveItem->GetGameItemPos().y };
-			Point2f liveItemOrigin2 = Point2f{ LiveItem->GetGameItemPos().x + LiveItem->GetGameItemWidth() / 2, LiveItem->GetGameItemPos().y + LiveItem->GetGameItemHeight() };
+			Point2f liveItemOrigin1 = Point2f{ ALiveItem->GetGameItemPos().x + ALiveItem->GetGameItemWidth() / 2, ALiveItem->GetGameItemPos().y };
+			Point2f liveItemOrigin2 = Point2f{ ALiveItem->GetGameItemPos().x + ALiveItem->GetGameItemWidth() / 2, ALiveItem->GetGameItemPos().y + ALiveItem->GetGameItemHeight() *5};
 			for (size_t i = 0; i < m_Vertices.size(); i++) {
 
 				if (utils::Raycast(m_Vertices.at(i).front(), liveItemOrigin1, liveItemOrigin2, hitInfo))
 				{
-					LiveItem->SetVelocityY(0.f);
-					LiveItem->SetGameItemPosY(hitInfo.intersectPoint.y);
+					ALiveItem->SetVelocityY(0.f);
+					ALiveItem->SetGameItemPosY(hitInfo.intersectPoint.y);
+					ALiveItem->BounceFloor();
 				}
 			}
 		}

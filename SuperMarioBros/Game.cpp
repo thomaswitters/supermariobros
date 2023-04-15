@@ -22,8 +22,14 @@ void Game::Initialize( )
 
 void Game::Cleanup( )
 {
-	delete m_Level;
-	delete m_Camera;
+	if (m_Level) {
+		delete m_Level;
+		m_Level = NULL;
+	}
+	if (m_Camera) {
+		delete m_Camera;
+		m_Camera = NULL;
+	}
 }
 
 void Game::Update( float elapsedSec )
@@ -34,7 +40,7 @@ void Game::Update( float elapsedSec )
 		
 		//m_GameState.ResetAvatar();
 		//m_GameState.SetAvatar(m_GameState.GetNormalMan());
-		m_GameState.SetAvatar(m_GameState.GetNormalMan());
+		m_GameState.SetAvatar(m_GameState.GetFlowerMan());
 	}
 	else if (Teller >= 4.f && Teller <= 6.f)
 	{
@@ -44,7 +50,8 @@ void Game::Update( float elapsedSec )
 	}
 	else if (Teller >= 6.f)
 	{
-		//m_GameState.SetAvatar(m_GameState.GetFlowerMan());
+		m_GameState.SetAvatar(m_GameState.GetFlowerMan());
+		m_GameState.SetAvatar(m_GameState.GetFlowerMan());
 		//m_GameState.ResetAvatar();
 		//m_GameState.SetAvatar(m_GameState.GetBiggerMan());
 	}

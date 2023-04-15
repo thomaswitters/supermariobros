@@ -10,6 +10,8 @@ AvatarState::AvatarState(Avatar *initialAvatar)
 	, m_CountStartJump{0.40f}
 	, m_JumpTime{}
 	, m_IsJumping{false}
+	, m_AmmoCounterAmound{2}
+	, m_RealoadingCounter{1.f}
 {
 
 }
@@ -140,7 +142,7 @@ void AvatarState::SetActionState(ActionState actionState)
 
 void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* level, Point2f cameraPos)
 {
-	HandleKeys(elapsedSec);
+	HandleKeys(elapsedSec, level);
 
 	SetVelocityAvatar(m_Acceleration, elapsedSec);
 	SetPositionVelosityAvatar(m_Velocity, elapsedSec);
@@ -210,6 +212,24 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 		}
 	}
 	UpdatePosition(elapsedSec, cameraPos);
+	if (m_AmmoCounterAmound >= 2)
+	{
+		m_AmmoCounterAmound = 2;
+	}
+	
+	if (m_RealoadingCounter < 0.f)
+	{
+		m_RealoadingCounter = 1.0;
+		m_AmmoCounterAmound++;
+		
+	}
+	else
+	{
+		if (m_AmmoCounterAmound < 2)
+		{
+			m_RealoadingCounter = m_RealoadingCounter - elapsedSec;
+		}		
+	}
 }
 void AvatarState::UpdatePosition(float elapsedSec, Point2f cameraPos)
 {
@@ -231,7 +251,7 @@ void AvatarState::UpdatePosition(float elapsedSec, Point2f cameraPos)
 	
 }
 
-void AvatarState::HandleKeys(float elapsedSec)
+void AvatarState::HandleKeys(float elapsedSec, Level* level)
 {
 	const Uint8* pStates = SDL_GetKeyboardState(nullptr);
 	if (m_ActionState != ActionState::ducking)
@@ -318,7 +338,15 @@ void AvatarState::HandleKeys(float elapsedSec)
 		{
 			if (m_ActionState != ActionState::ducking)
 			{
-				std::cout << "shoot";
+				
+				
+				if (m_AmmoCounterAmound >= 1)
+				{
+					level->AddLiveItem(new Projectile(Point2f(m_AvatarX, m_AvatarY + 10.f)));
+					std::cout << "shoot";
+					m_AmmoCounterAmound--;
+				}
+				
 			}
 			
 		}

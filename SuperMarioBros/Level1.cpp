@@ -51,7 +51,7 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 
 	AddGameItem(new FlagPole(Point2f(140.f, 270.f)));
 	AddLiveItem(new Goomba(Point2f(200.f, 320.f)));
-
+	AddLiveItem(new Goomba(Point2f(300.f, 320.f)));
 }
 
 Level1::~Level1()

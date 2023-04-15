@@ -27,11 +27,10 @@ Level::~Level()
 	{
 		delete GameItem;
 	}
-	/*
 	for (LiveItem* LiveItem : m_LiveItems)
 	{
 		delete LiveItem;
-	}*/
+	}
 }
 
 void Level::DestroyGameItem(GameItem* gameItem) {
@@ -103,7 +102,7 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 				if (utils::Raycast(m_Vertices.at(i).front(), liveItemOrigin1, liveItemOrigin2, hitInfo))
 				{
 					ALiveItem->SetVelocityY(0.f);
-					ALiveItem->SetGameItemPosY(hitInfo.intersectPoint.y);
+					ALiveItem->SetGameItemPosY(hitInfo.intersectPoint.y );
 					ALiveItem->BounceFloor();
 				}
 			}

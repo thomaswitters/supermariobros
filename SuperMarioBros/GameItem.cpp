@@ -501,6 +501,11 @@ void PowerUp::CollisionDetect(GameState* gameState)
 			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
 		}
+		if (m_CanPickUpMushRoom)
+		{
+			gameState->SetAvatar(gameState->GetBiggerMan());
+			SetActivefalse();
+		}
 		break;
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheRight:
@@ -508,6 +513,11 @@ void PowerUp::CollisionDetect(GameState* gameState)
 		if (m_CanPickUpFlower)
 		{
 			gameState->SetAvatar(gameState->GetFlowerMan());
+			SetActivefalse();
+		}
+		if (m_CanPickUpMushRoom)
+		{
+			gameState->SetAvatar(gameState->GetBiggerMan());
 			SetActivefalse();
 		}
 
@@ -538,6 +548,11 @@ void PowerUp::CollisionDetect(GameState* gameState)
 			SetActivefalse();
 
 		}
+		if (m_CanPickUpMushRoom)
+		{
+			gameState->SetAvatar(gameState->GetBiggerMan());
+			SetActivefalse();
+		}
 		break;
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop:
@@ -548,6 +563,11 @@ void PowerUp::CollisionDetect(GameState* gameState)
 			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
 			
+		}
+		if (m_CanPickUpMushRoom)
+		{
+			gameState->SetAvatar(gameState->GetBiggerMan());
+			SetActivefalse();
 		}
 		break;
 	}
@@ -698,10 +718,10 @@ void DecorBlock::UpdateGameItem(float elapsedSec, Level* level)
 }
 
 
-FlagPole::FlagPole(Point2f GameItemPos) : GameItem("Images/tiles.png", 16.f, 16.f, GameItemPos, 4, 135, true)
+FlagPole::FlagPole(Point2f GameItemPos) : GameItem("Images/tiles.png", 16.f, 16.f, GameItemPos, 4, 145, true)
 , m_pTexture{new Texture("Images/flag.png")}
 , m_IsHit{ false }
-, m_FlagPoleYPos{ GetGameItemPos().y + (16 * 6.6f) }
+, m_FlagPoleYPos{ GetGameItemPos().y + (16 * 7.8f) }
 {
 
 }
@@ -715,11 +735,18 @@ FlagPole::~FlagPole()
 }
 void FlagPole::Draw(AvatarState* avatarState) const
 {
+	
+
 	float sourceWidth{ GetSpriteTexture()->GetWidth() / 21.f };
 	float sourceHeight{ GetSpriteTexture()->GetHeight() / 28 };
 
 	Rectf src1{ (GetSpriteClipWidth()) * 16, (GetSpriteClipHeight()) * 10,sourceWidth,sourceHeight};
-	Rectf dst1{ GetGameItemPos().x - GetGameItemWidth()/2 * 3, GetGameItemPos().y, sourceWidth, sourceHeight * 8 };
+	Rectf dst1{ GetGameItemPos().x - GetGameItemWidth()/2 * 3, GetGameItemPos().y, sourceWidth, sourceHeight * 9 };
+
+	//background
+	utils::SetColor(Color4f(0.36f, 0.58f, 0.99f, 1.f));
+	utils::FillRect(GetGameItemPos().x - GetGameItemWidth() * 4 - 2.f, GetGameItemPos().y + (16 * 7.8f), sourceWidth * 2, sourceHeight * 2);
+	//end background
 
 	GetSpriteTexture()->Draw(dst1, src1);
 
@@ -727,7 +754,7 @@ void FlagPole::Draw(AvatarState* avatarState) const
 	float sourceHeight3{ GetSpriteTexture()->GetHeight() / 28 };
 
 	Rectf src3{ GetSpriteClipWidth() * 16, GetSpriteClipHeight() * 9,sourceWidth3,sourceHeight3 };
-	Rectf dst3{ GetGameItemPos().x - GetGameItemWidth()/2 * 3, GetGameItemPos().y + (16 * 8), sourceWidth3, sourceHeight3};
+	Rectf dst3{ GetGameItemPos().x - GetGameItemWidth()/2 * 3, GetGameItemPos().y + (16 * 9), sourceWidth3, sourceHeight3};
 
 	GetSpriteTexture()->Draw(dst3, src3);
 
@@ -823,7 +850,6 @@ void Coin::CollisionDetect(GameState* gameState)
 		m_IsHit = true;
 	}
 }
-
 void Coin::UpdateGameItem(float elapsedSec, Level* level)
 {
 	m_AnimTime += elapsedSec;
@@ -870,20 +896,14 @@ LiveItem::LiveItem(const std::string& imagePath, float spriteClipHeight, float s
 	, m_ImageAmountVertiFrames{ imageAmountVertiFrames }
 	, m_LiveItemType{ liveItemType }
 {}
-
-
 LiveItem::~LiveItem() {
 }
-
 LiveItem::LiveItemState LiveItem::GetLiveItemState() const {
 	return m_LiveItemState;
 }
-
 void LiveItem::SetLiveItemState(LiveItemState liveItemState) {
 	m_LiveItemState = liveItemState;
 }
-
-
 void LiveItem::Draw(AvatarState* avatarState) const {
 
 	float sourceWidth{ GetSpriteTexture()->GetWidth() / m_ImageAmountHoriFrames };
@@ -894,15 +914,15 @@ void LiveItem::Draw(AvatarState* avatarState) const {
 
 	if (m_LiveItemState == LiveItemState::Alive)
 	{
-		src = Rectf{ GetSpriteClipWidth() * (m_AnimStartFrameX + m_AnimFrame), GetSpriteClipHeight() * (m_AnimStartFrameY + 1),sourceWidth,sourceHeight };
-		dst = Rectf{ GetGameItemPos().x , GetGameItemPos().y, GetGameItemWidth(),  GetGameItemHeight() };
+		src = Rectf{ GetSpriteClipWidth() * (m_AnimStartFrameX + m_AnimFrame) , GetSpriteClipHeight() * (m_AnimStartFrameY + 1),sourceWidth,sourceHeight };
+		dst = Rectf{ GetGameItemPos().x - GetGameItemWidth()/2, GetGameItemPos().y, sourceWidth,sourceHeight };
 
 	}
 	else if (m_LiveItemState == LiveItemState::Dying)
 	{
 
 		src = Rectf{ GetSpriteClipWidth() * (m_AnimStartDyingFrameX), GetSpriteClipHeight() * (m_AnimStartDyingFrameY + 1),sourceWidth,sourceHeight };
-		dst = Rectf{ GetGameItemPos().x , GetGameItemPos().y, GetGameItemWidth(),  GetGameItemHeight() };
+		dst = Rectf{ GetGameItemPos().x - GetGameItemWidth() / 2, GetGameItemPos().y, sourceWidth,sourceHeight };
 
 	}
 	if (m_Velocity.x < 0.f) {
@@ -917,7 +937,11 @@ void LiveItem::Draw(AvatarState* avatarState) const {
 	else {
 		GetSpriteTexture()->Draw(dst, src);
 	}
+	//utils::SetColor(Color4f(1.0f, 0.0f, 0.0f, 1.0f));
+	//utils::DrawRect(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight());
 }
+
+
 Enemy::Enemy(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
 	Vector2f velocity, Vector2f acceleration,
 	int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames, int liveItemType) :
@@ -932,8 +956,6 @@ Enemy::~Enemy()
 {
 
 }
-
-
 void Enemy::UpdateGameItem(float elapsedSec, Level* level) {
 	switch (m_LiveItemState) {
 	case LiveItemState::Alive:
@@ -942,14 +964,15 @@ void Enemy::UpdateGameItem(float elapsedSec, Level* level) {
 		int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) }; 
 		m_AnimFrame = totalFramesElapsed % m_NrOfFrames;
 
-		m_Velocity += m_Acceleration * elapsedSec;  
+		SetVelocityEnemy(m_Acceleration, elapsedSec);
+		/*m_Velocity += m_Acceleration * elapsedSec;  */
 		SetPositionVelocity(m_Velocity, elapsedSec);
 		break;
 	}
 	case LiveItemState::Dying:
 	{
 		m_DyingCounter = m_DyingCounter + elapsedSec;
-		if (m_DyingCounter > 2.f)
+		if (m_DyingCounter > 1.f)
 		{
 			m_LiveItemState = LiveItemState::Dead;
 			SetActivefalse();
@@ -958,7 +981,6 @@ void Enemy::UpdateGameItem(float elapsedSec, Level* level) {
 	}
 	}
 }
-
 void Enemy::CollisionDetect(GameState* gameState) {
 	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
@@ -970,7 +992,15 @@ void Enemy::CollisionDetect(GameState* gameState) {
 		if (m_LiveItemState == LiveItemState::Alive)
 		{
 			// todo: should become gameState->die()
-			avatarState->SetActionState(AvatarState::ActionState::dead);
+			if (gameState->GetAvatarState()->GetCurrentAvatar()->getAvatarType() != NormalManType)
+			{
+				gameState->SetAvatar(gameState->GetNormalMan());
+			}
+			else
+			{
+				avatarState->SetActionState(AvatarState::ActionState::dead);
+			}
+			
 		}
 		break;
 	}
@@ -978,7 +1008,14 @@ void Enemy::CollisionDetect(GameState* gameState) {
 	{
 		if (m_LiveItemState == LiveItemState::Alive)
 		{
-			avatarState->SetActionState(AvatarState::ActionState::dead);
+			if (gameState->GetAvatarState()->GetCurrentAvatar()->getAvatarType() != NormalManType)
+			{
+				gameState->SetAvatar(gameState->GetNormalMan());
+			}
+			else
+			{
+				avatarState->SetActionState(AvatarState::ActionState::dead);
+			}
 		}
 		break;
 
@@ -987,7 +1024,14 @@ void Enemy::CollisionDetect(GameState* gameState) {
 	{
 		if (m_LiveItemState == LiveItemState::Alive)
 		{
-			avatarState->SetActionState(AvatarState::ActionState::dead);
+			if (gameState->GetAvatarState()->GetCurrentAvatar()->getAvatarType() != NormalManType)
+			{
+				gameState->SetAvatar(gameState->GetNormalMan());
+			}
+			else
+			{
+				avatarState->SetActionState(AvatarState::ActionState::dead);
+			}
 		}
 		break;
 	}
@@ -1002,7 +1046,6 @@ void Enemy::CollisionDetect(GameState* gameState) {
 	}
 
 }
-
 void Enemy::CollisionWithGameItemDetect(GameItem* gameItem)
 {
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
@@ -1032,7 +1075,7 @@ void Enemy::CollisionWithGameItemDetect(GameItem* gameItem)
 	{
 
 		m_Velocity.x *= (-1);
-		SetGameItemPosX(gameItem->GetGameItemPos().x);
+		SetGameItemPosX(gameItem->GetGameItemPos().x + GetGameItemWidth()*2);
 		break;
 
 	}
@@ -1043,12 +1086,11 @@ void Enemy::CollisionWithLiveItemDetect(LiveItem* liveItem)
 
 }
 
-Goomba::Goomba(Point2f GameItemPos) : Enemy("Images/smb_enemies_sheet.png", 30, 30, GameItemPos, 30, 30, true, LiveItemState::Alive, 
+Goomba::Goomba(Point2f GameItemPos) : Enemy("Images/smb_enemies_sheet.png", 30, 30, GameItemPos, 16, 20, true, LiveItemState::Alive,
 	Vector2f{-50.0f, -140.f}, Vector2f{0.0f, -981.0f},
 	0, 0, 2, 0.2f, 2, 0, 15, 7, GOOMBA_TYPE)
 {
 }
-
 Goomba::~Goomba() {
 }
 
@@ -1057,10 +1099,8 @@ Projectile::Projectile(Point2f GameItemPos) : LiveItem("Images/fireball.png", 12
 	0, 0, 2, 0.2f, 2, 0, 3, 1, PROJECTILE_TYPE)
 {
 }
-
 Projectile::~Projectile() {
 }
-
 void Projectile::UpdateGameItem(float elapsedSec, Level* level)
 {
 	
@@ -1089,16 +1129,14 @@ void Projectile::UpdateGameItem(float elapsedSec, Level* level)
 	}
 	}
 }
-
 void Projectile::CollisionDetect(GameState* gameState)
 {
 
 }
-
 void Projectile::CollisionWithGameItemDetect(GameItem* gameItem)
 {
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
-		Rectf(GetGameItemPos().x,
+		Rectf(GetGameItemPos().x - GetGameItemWidth() / 2,
 			GetGameItemPos().y,
 			GetGameItemWidth(),
 			GetGameItemHeight()),
@@ -1106,7 +1144,7 @@ void Projectile::CollisionWithGameItemDetect(GameItem* gameItem)
 		Rectf(gameItem->GetGameItemPos().x,
 			gameItem->GetGameItemPos().y,
 			gameItem->GetGameItemWidth(),
-			gameItem->GetGameItemHeight()
+			gameItem->GetGameItemHeight()/2
 		)
 	);
 	
@@ -1145,7 +1183,7 @@ void Projectile::CollisionWithLiveItemDetect(LiveItem* liveItem)
 	if (this == liveItem) return;
 	if (IsEnemyOf(liveItem)) {
 		CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
-			Rectf(GetGameItemPos().x,
+			Rectf(GetGameItemPos().x - GetGameItemWidth() / 2,
 				GetGameItemPos().y,
 				GetGameItemWidth(),
 				GetGameItemHeight()),
@@ -1180,7 +1218,6 @@ void Projectile::BounceFloor()
 {
 	m_Velocity.y = float(sqrt(2.0f * 400.f * 10));
 }
-
 bool Projectile::IsEnemyOf(LiveItem* otherLiveItem) 
 {
 	return otherLiveItem->GetLiveItemType() != GetLiveItemType();

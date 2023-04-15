@@ -56,6 +56,7 @@ protected:
 		m_GameItemPos.x += velocity.x * elapsedSec;
 		m_GameItemPos.y += velocity.y * elapsedSec;
 	}
+	
 	void SetActivefalse()
 	{
 		m_Active = false;
@@ -257,6 +258,11 @@ public:
 		m_Velocity.y = y;
 
 	}
+	void SetVelocityEnemy(Vector2f acceleration, float elapsedSec)
+	{
+		m_Velocity += m_Acceleration * elapsedSec;
+	}
+
 	Vector2f GetVelocity()
 	{
 		return m_Velocity;

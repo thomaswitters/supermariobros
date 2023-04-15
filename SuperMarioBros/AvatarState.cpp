@@ -142,7 +142,11 @@ void AvatarState::SetActionState(ActionState actionState)
 
 void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* level, Point2f cameraPos)
 {
-	HandleKeys(elapsedSec, level);
+	if (m_ActionState != AvatarState::ActionState::dead)
+	{
+		HandleKeys(elapsedSec, level);
+	}
+	
 
 	SetVelocityAvatar(m_Acceleration, elapsedSec);
 	SetPositionVelosityAvatar(m_Velocity, elapsedSec);
@@ -210,6 +214,10 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 		{
 			SetActionState(AvatarState::ActionState::ducking);
 		}
+	}
+	if (m_ActionState == AvatarState::ActionState::dead)
+	{
+		
 	}
 	UpdatePosition(elapsedSec, cameraPos);
 	if (m_AmmoCounterAmound >= 2)

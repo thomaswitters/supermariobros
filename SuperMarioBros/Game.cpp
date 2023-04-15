@@ -40,7 +40,7 @@ void Game::Update( float elapsedSec )
 		
 		//m_GameState.ResetAvatar();
 		//m_GameState.SetAvatar(m_GameState.GetNormalMan());
-		m_GameState.SetAvatar(m_GameState.GetBiggerMan());
+		//m_GameState.SetAvatar(m_GameState.GetBiggerMan());
 	}
 	else if (Teller >= 4.f && Teller <= 6.f)
 	{
@@ -59,10 +59,11 @@ void Game::Update( float elapsedSec )
 	m_GameState.UpdateDrawAvatar(elapsedSec);
 	
 	m_GameState.UpdateAvatar(elapsedSec, m_Level, m_CameraFollow);
+	m_Level->UpdateItems(elapsedSec, m_Level);
 	m_Level->HandleCollision(elapsedSec, &m_GameState);
 	
 
-	m_Level->UpdateItems(elapsedSec, m_Level);
+	
 
 	m_Camera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
 

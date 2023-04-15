@@ -29,7 +29,7 @@ DAN:
 
 2. LiveItem protected member variables moeten protected member functions worden (getters and setters)
 
-3. Delete LiveItems in Level (crasht)
+3. Delete LiveItems in Level (crasht) -> DONE, blijkt te werken zonder iets te doen (maar er zijn minder kogels)
 
 4. Bibber
 

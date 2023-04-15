@@ -112,6 +112,11 @@ void NormalMan::Draw(const AvatarState* avatarState) const
 		src = Rectf{ GetSpriteClipWidth() * 4,GetSpriteClipHeight(),sourceWidth,sourceHeight };
 
 	}
+	else if (avatarState->GetActionState() == AvatarState::ActionState::dead)
+	{
+		src = Rectf{ GetSpriteClipWidth() * 6,GetSpriteClipHeight(),sourceWidth,sourceHeight };
+
+	}
 	if (avatarState->GetVelocityAvatar().x < 0.f && avatarState->GetActionState() != AvatarState::ActionState::stopping) {
 		glPushMatrix();
 		glTranslatef(avatarState->GetPositionAvatar().x + GetAvatarWidth()/2, avatarState->GetPositionAvatar().y + GetAvatarHeight()/2, 0);

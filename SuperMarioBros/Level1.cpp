@@ -5,11 +5,14 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 {
 	
 	
-	AddGameItem(new MushRoom(Point2f(256.f, 320.f)));
+	AddGameItem(new Coin(Point2f(256.f, 320.f)));
 	AddGameItem(new QuestionBlock(Point2f(256.f, 320.f)));
+	AddGameItem(new PowerUp(Point2f(336.f, 320.f)));
 	AddGameItem(new QuestionBlock(Point2f(336.f, 320.f)));
+	AddGameItem(new Coin(Point2f(368.f, 320.f)));
 	AddGameItem(new QuestionBlock(Point2f(368.f, 320.f)));
 
+	AddGameItem(new Coin(Point2f(352.f, 384.f)));
 	AddGameItem(new QuestionBlock(Point2f(352.f, 384.f)));
 
 	AddGameItem(new DecorBlock(Point2f(320.f, 320.f)));

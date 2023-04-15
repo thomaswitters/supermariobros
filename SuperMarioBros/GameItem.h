@@ -135,17 +135,17 @@ private:
 };
 
 
-class MushRoom : public GameItem
+class PowerUp : public GameItem
 {
 public:
-	MushRoom(Point2f GameItemPos);
-	virtual ~MushRoom();
+	PowerUp(Point2f GameItemPos);
+	virtual ~PowerUp();
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(AvatarState* avatarState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
 	void UpdateGameItem(float elapsedSec, Level* level);
 private:
-	Point2f PosPowerUp;
+	Point2f m_PosPowerUp;
 	float m_Teller;
 
 	bool m_IsHitFlower;
@@ -199,5 +199,26 @@ private:
 	Texture* m_pTexture;
 	bool m_IsHit;
 	float m_FlagPoleYPos;
+};
+
+class Coin : public GameItem
+{
+public:
+	Coin(Point2f GameItemPos);
+	virtual ~Coin();
+	void Draw(AvatarState* avatarState) const;
+	void CollisionDetect(AvatarState* avatarState);
+	void UpdateGameItem(float elapsedSec, Level* level);
+private:
+	Point2f m_PosCoin;
+
+	int m_NrOfFrames;
+	float m_NrFramesPerSec;
+	float m_AnimTime;
+	int m_AnimFrame;
+
+	bool m_IsHit;
+	float m_Teller;
+
 };
 

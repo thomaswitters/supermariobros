@@ -429,8 +429,8 @@ bool Pipe::CollisionDetectOnGround(AvatarState* avatarState) {
 }
 
 
-MushRoom::MushRoom(Point2f GameItemPos) : GameItem("Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true)
-, PosPowerUp{ GetGameItemPos().x, GetGameItemPos().y }
+PowerUp::PowerUp(Point2f GameItemPos) : GameItem("Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true)
+, m_PosPowerUp{ GetGameItemPos().x, GetGameItemPos().y }
 , m_Teller{}
 , m_IsHitFlower{false}
 , m_IsHitMushRoom{false}
@@ -443,11 +443,11 @@ MushRoom::MushRoom(Point2f GameItemPos) : GameItem("Images/items-objects.png", 1
 {
 
 }
-MushRoom::~MushRoom()
+PowerUp::~PowerUp()
 {
 
 }
-void MushRoom::Draw(AvatarState* avatarState) const
+void PowerUp::Draw(AvatarState* avatarState) const
 {
 	if (/*avatarState->GetCurrentAvatar()->getAvatarType() == NormalManType*/m_IsHitMushRoom)
 	{
@@ -455,7 +455,7 @@ void MushRoom::Draw(AvatarState* avatarState) const
 		float sourceHeight{ GetSpriteTexture()->GetHeight()/13};
 
 		Rectf src{ GetSpriteClipWidth()*0, GetSpriteClipHeight(),sourceWidth,sourceHeight };
-		Rectf dst{ PosPowerUp.x,PosPowerUp.y,sourceWidth, sourceHeight };
+		Rectf dst{ m_PosPowerUp.x,m_PosPowerUp.y,sourceWidth, sourceHeight };
 
 		GetSpriteTexture()->Draw(dst, src);
 		//utils::SetColor(Color4f(1.f, 0.f, 0.f, 1.f));
@@ -467,7 +467,7 @@ void MushRoom::Draw(AvatarState* avatarState) const
 		float sourceHeight{ GetSpriteTexture()->GetHeight() / 14 };
 
 		Rectf src{ GetSpriteClipWidth() * (0 + m_AnimFrame), GetSpriteClipHeight() * 3,sourceWidth,sourceHeight };
-		Rectf dst{ PosPowerUp.x, PosPowerUp.y,sourceWidth, sourceHeight };
+		Rectf dst{ m_PosPowerUp.x, m_PosPowerUp.y,sourceWidth, sourceHeight };
 
 		GetSpriteTexture()->Draw(dst, src);
 		//utils::SetColor(Color4f(1.f, 0.f, 0.f, 1.f));
@@ -475,9 +475,9 @@ void MushRoom::Draw(AvatarState* avatarState) const
 	}
 
 }
-void MushRoom::CollisionDetect(AvatarState* avatarState)
+void PowerUp::CollisionDetect(AvatarState* avatarState)
 {
-	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf (PosPowerUp.x, PosPowerUp.y, GetGameItemWidth(), GetGameItemHeight()));
+	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf (m_PosPowerUp.x, m_PosPowerUp.y, GetGameItemWidth(), GetGameItemHeight()));
 
 	
 	switch (location)
@@ -539,11 +539,11 @@ void MushRoom::CollisionDetect(AvatarState* avatarState)
 	}
 
 }
-bool MushRoom::CollisionDetectOnGround(AvatarState* avatarState)
+bool PowerUp::CollisionDetectOnGround(AvatarState* avatarState)
 {
 	return false;
 }
-void MushRoom::UpdateGameItem(float elapsedSec, Level* level)
+void PowerUp::UpdateGameItem(float elapsedSec, Level* level)
 {
 	m_AnimTime += elapsedSec;
 	int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) };
@@ -553,7 +553,7 @@ void MushRoom::UpdateGameItem(float elapsedSec, Level* level)
 	{
 		if (m_Teller < 16)
 		{
-			PosPowerUp.y = PosPowerUp.y + 0.5f;
+			m_PosPowerUp.y = m_PosPowerUp.y + 0.5f;
 			m_Teller = m_Teller + 0.5f;
 		}
 		if (m_Teller >= 2)
@@ -566,7 +566,7 @@ void MushRoom::UpdateGameItem(float elapsedSec, Level* level)
 	{
 		if (m_Teller < 16)
 		{
-			PosPowerUp.y = PosPowerUp.y + 0.5f;
+			m_PosPowerUp.y = m_PosPowerUp.y + 0.5f;
 			m_Teller = m_Teller + 0.5f;
 		}
 		if(m_Teller >= 2)
@@ -764,5 +764,67 @@ void FlagPole::UpdateGameItem(float elapsedSec, Level* level)
 		}
 	}
 
+}
+
+
+Coin::Coin(Point2f GameItemPos) : GameItem("Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true)
+, m_PosCoin{ GetGameItemPos().x, GetGameItemPos().y }
+, m_NrOfFrames{4}
+, m_NrFramesPerSec{0.2f}
+, m_AnimTime{}
+, m_AnimFrame{}
+, m_IsHit{false}
+, m_Teller{}
+{
+
+}
+Coin::~Coin()
+{
+
+}
+void Coin::Draw(AvatarState* avatarState) const
+{
+	float sourceWidth{ GetSpriteTexture()->GetWidth() / 36 };
+	float sourceHeight{ GetSpriteTexture()->GetHeight() / 14 };
+
+	Rectf src{ GetSpriteClipWidth() * (0 + m_AnimFrame), GetSpriteClipHeight() * 7,sourceWidth,sourceHeight };
+	Rectf dst{ m_PosCoin.x , m_PosCoin.y,sourceWidth, sourceHeight };
+
+	GetSpriteTexture()->Draw(dst, src);
+}
+void Coin::CollisionDetect(AvatarState* avatarState)
+{
+	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
+
+	if (location == CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom)
+	{
+		m_IsHit = true;
+	}
+}
+
+void Coin::UpdateGameItem(float elapsedSec, Level* level)
+{
+	m_AnimTime += elapsedSec;
+	int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) };
+	m_AnimFrame = totalFramesElapsed % m_NrOfFrames;
+
+	if (m_IsHit)
+	{
+		if (m_Teller < 11)
+		{
+			m_PosCoin.y = m_PosCoin.y + 2.5f;
+			m_Teller = m_Teller + 0.5f;
+		}
+		else if (m_Teller >= 11 && m_Teller < 22)
+		{
+			m_PosCoin.y = m_PosCoin.y - 2.5f;
+			m_Teller = m_Teller + 0.5f;
+		}
+		else if (m_Teller >= 22)
+		{
+			SetActivefalse();
+		}
+
+	}
 }
 

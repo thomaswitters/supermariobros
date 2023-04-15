@@ -16,7 +16,7 @@ public:
 	GameItem(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive);
 	virtual ~GameItem();
 	virtual void Draw(AvatarState* avatarState) const;
-	virtual void CollisionDetect(AvatarState* avatarState);
+	virtual void CollisionDetect(GameState* gameState);
 	virtual bool CollisionDetectOnGround(AvatarState* avatarState);
 	virtual void UpdateGameItem(float elapsedSec, Level* level);
 	bool IsActive();
@@ -77,7 +77,7 @@ public:
 	NormalBlock(Point2f GameItemPos);
 	virtual ~NormalBlock();
 	void Draw(AvatarState* avatarState) const;
-	void CollisionDetect(AvatarState* avatarState);
+	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
 	void UpdateGameItem(float elapsedSec, Level* level);
 private:
@@ -92,7 +92,7 @@ public:
 	QuestionBlock(Point2f GameItemPos);
 	virtual ~QuestionBlock();
 	void Draw(AvatarState* avatarState) const;
-	void CollisionDetect(AvatarState* avatarState);
+	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
 	void UpdateGameItem(float elapsedSec, Level* level);
 protected:
@@ -125,7 +125,7 @@ public:
 	ConcreteBlock(Point2f GameItemPos);
 	virtual ~ConcreteBlock();
 	void Draw(AvatarState* avatarState) const;
-	void CollisionDetect(AvatarState* avatarState);
+	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
 	//void UpdateGameItem(float elapsedSec);
 };
@@ -136,7 +136,7 @@ public:
 	Pipe(Point2f GameItemPos, float height);
 	virtual ~Pipe();
 	void Draw(AvatarState* avatarState) const;
-	void CollisionDetect(AvatarState* avatarState);
+	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
 private:
 	Texture* m_SpriteTextureBottom;
@@ -149,7 +149,7 @@ public:
 	PowerUp(Point2f GameItemPos);
 	virtual ~PowerUp();
 	void Draw(AvatarState* avatarState) const;
-	void CollisionDetect(AvatarState* avatarState);
+	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
 	void UpdateGameItem(float elapsedSec, Level* level);
 private:
@@ -175,7 +175,7 @@ public:
 	DecorBlock(Point2f GameItemPos);
 	virtual ~DecorBlock();
 	void Draw(AvatarState* avatarState) const;
-	void CollisionDetect(AvatarState* avatarState);
+	void CollisionDetect(GameState* gameState);
 	void UpdateGameItem(float elapsedSec, Level* level);
 private:
 	bool m_IsHit;
@@ -201,7 +201,7 @@ public:
 	FlagPole(Point2f GameItemPos);
 	virtual ~FlagPole();
 	void Draw(AvatarState* avatarState) const;
-	void CollisionDetect(AvatarState* avatarState);
+	void CollisionDetect(GameState* gameState);
 	void UpdateGameItem(float elapsedSec, Level* level);
 private:
 	Texture* m_pTexture;
@@ -215,7 +215,7 @@ public:
 	Coin(Point2f GameItemPos);
 	virtual ~Coin();
 	void Draw(AvatarState* avatarState) const;
-	void CollisionDetect(AvatarState* avatarState);
+	void CollisionDetect(GameState* gameState);
 	void UpdateGameItem(float elapsedSec, Level* level);
 private:
 	Point2f m_PosCoin;
@@ -247,7 +247,7 @@ public:
 	void Draw(AvatarState* avatarState) const;
 
 	virtual void UpdateGameItem(float elapsedSec, Level* level) = 0;
-	virtual void CollisionDetect(AvatarState* avatarState) = 0;
+	virtual void CollisionDetect(GameState* gameState) = 0;
 	virtual void CollisionWithGameItemDetect(GameItem* gameItem) = 0;
 	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem) = 0;
 	virtual void BounceFloor() {}
@@ -331,7 +331,7 @@ public:
 	virtual ~Enemy();
 
 	virtual void UpdateGameItem(float elapsedSec, Level* level);
-	virtual void CollisionDetect(AvatarState* avatarState);
+	virtual void CollisionDetect(GameState* gameState);
 	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
 	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem);
 };
@@ -352,7 +352,7 @@ public:
 	virtual ~Projectile();
 
 	virtual void UpdateGameItem(float elapsedSec, Level* level); 
-	virtual void CollisionDetect(AvatarState* avatarState);
+	virtual void CollisionDetect(GameState* gameState);
 	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
 	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem);
 

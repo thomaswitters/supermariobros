@@ -48,8 +48,9 @@ void Level::DrawBackground() const
 	m_pBackgroundTexture->Draw();
 }
 
-void Level::HandleCollision(float elapsedSec, AvatarState* avatarState) const
+void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 {
+	AvatarState* avatarState = gameState->GetAvatarState();
 	Point2f AvatarOrigin1{ avatarState->GetPositionAvatar().x + 5.f, avatarState->GetPositionAvatar().y };
 	Point2f AvatarOrigin2{ avatarState->GetPositionAvatar().x + 5.f, avatarState->GetPositionAvatar().y + 30.f };
 
@@ -72,14 +73,14 @@ void Level::HandleCollision(float elapsedSec, AvatarState* avatarState) const
 		if (GameItem->IsActive()) 
 		{ 
 #
-			GameItem->CollisionDetect(avatarState);
+			GameItem->CollisionDetect(gameState);
 		}
 	}
 	for (LiveItem* ALiveItem : m_LiveItems)
 	{ 
 		if (ALiveItem->IsActive())
 		{
-			ALiveItem->CollisionDetect(avatarState);
+			ALiveItem->CollisionDetect(gameState);
 			for (GameItem* GameItem : m_GameItems)
 			{
 				if (GameItem->IsActive())

@@ -59,7 +59,7 @@ void Game::Update( float elapsedSec )
 	m_GameState.UpdateDrawAvatar(elapsedSec);
 	
 	m_GameState.UpdateAvatar(elapsedSec, m_Level, m_CameraFollow);
-	m_Level->HandleCollision(elapsedSec, m_GameState.GetAvatarState());
+	m_Level->HandleCollision(elapsedSec, &m_GameState);
 	
 
 	m_Level->UpdateItems(elapsedSec, m_Level);

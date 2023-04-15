@@ -23,7 +23,7 @@ void GameItem::Draw(AvatarState* avatarState) const
 {
 
 }
-void GameItem::CollisionDetect(AvatarState* avatarState)
+void GameItem::CollisionDetect(GameState* gameState)
 {
 
 }
@@ -70,7 +70,8 @@ void NormalBlock::Draw(AvatarState* avatarState) const
 	GetSpriteTexture()->Draw(dst, src);
 	//utils::DrawRect(GetGameItemPos().x, GetGameItemPos().y, 16.f, 16.f);
 }
-void NormalBlock::CollisionDetect(AvatarState* avatarState) {
+void NormalBlock::CollisionDetect(GameState* gameState) {
+	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
 		Rectf(		avatarState->GetPositionAvatar().x, 
 					avatarState->GetPositionAvatar().y, 
@@ -188,7 +189,8 @@ void QuestionBlock::Draw(AvatarState* avatarState) const
 	GetSpriteTexture()->Draw(dst, src);
 	//utils::DrawRect(GetGameItemPos().x, GetGameItemPos().y, 16.f, 16.f);
 }
-void QuestionBlock::CollisionDetect(AvatarState* avatarState) {
+void QuestionBlock::CollisionDetect(GameState* gameState) {
+	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
 
 	switch (location)
@@ -300,7 +302,8 @@ void ConcreteBlock::Draw(AvatarState* avatarState) const
 
 	GetSpriteTexture()->Draw(dst, src);
 }
-void ConcreteBlock::CollisionDetect(AvatarState* avatarState) {
+void ConcreteBlock::CollisionDetect(GameState* gameState) {
+	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
 
 	switch (location)
@@ -386,7 +389,8 @@ void Pipe::Draw(AvatarState* avatarState) const
 	m_SpriteTextureBottom->Draw(dst2, src2);
 	//utils::DrawRect(GetGameItemPos().x, GetGameItemPos().y, 16.f, 16.f);
 }
-void Pipe::CollisionDetect(AvatarState* avatarState) {
+void Pipe::CollisionDetect(GameState* gameState) {
+	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
 
 	switch (location)
@@ -482,8 +486,9 @@ void PowerUp::Draw(AvatarState* avatarState) const
 	}
 
 }
-void PowerUp::CollisionDetect(AvatarState* avatarState)
+void PowerUp::CollisionDetect(GameState* gameState)
 {
+	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf (m_PosPowerUp.x, m_PosPowerUp.y, GetGameItemWidth(), GetGameItemHeight()));
 
 	
@@ -640,8 +645,9 @@ void DecorBlock::Draw(AvatarState* avatarState) const
 	}
 	
 }
-void DecorBlock::CollisionDetect(AvatarState* avatarState)
+void DecorBlock::CollisionDetect(GameState* gameState)
 {
+	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
 
 	if (location == CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom)
@@ -735,8 +741,9 @@ void FlagPole::Draw(AvatarState* avatarState) const
 	//utils::DrawRect(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), 135);
 
 }
-void FlagPole::CollisionDetect(AvatarState* avatarState)
+void FlagPole::CollisionDetect(GameState* gameState)
 {
+	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
 
 	if (location == CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheLeft)
@@ -803,8 +810,9 @@ void Coin::Draw(AvatarState* avatarState) const
 
 	GetSpriteTexture()->Draw(dst, src);
 }
-void Coin::CollisionDetect(AvatarState* avatarState)
+void Coin::CollisionDetect(GameState* gameState)
 {
+	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
 
 	if (location == CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom)
@@ -948,7 +956,8 @@ void Enemy::UpdateGameItem(float elapsedSec, Level* level) {
 	}
 }
 
-void Enemy::CollisionDetect(AvatarState* avatarState) {
+void Enemy::CollisionDetect(GameState* gameState) {
+	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
 
 	switch (location)
@@ -1078,7 +1087,7 @@ void Projectile::UpdateGameItem(float elapsedSec, Level* level)
 	}
 }
 
-void Projectile::CollisionDetect(AvatarState* avatarState)
+void Projectile::CollisionDetect(GameState* gameState)
 {
 
 }

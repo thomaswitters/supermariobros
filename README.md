@@ -99,3 +99,5 @@ Complicated gameplay
 -> Als LivceItem positie x < 0 dan setActive(false)
 
 -> mannetje beeft
+
+-> LiveItem protected member variables moeten protected member functions worden (getters and setters)

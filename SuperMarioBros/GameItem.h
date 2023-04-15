@@ -245,9 +245,10 @@ public:
 	void SetLiveItemState(LiveItemState liveItemState);
 
 	void Draw(AvatarState* avatarState) const;
-	void UpdateGameItem(float elapsedSec, Level* level);
-	void CollisionDetect(AvatarState* avatarState);
-	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
+
+	virtual void UpdateGameItem(float elapsedSec, Level* level) = 0;
+	virtual void CollisionDetect(AvatarState* avatarState) = 0;
+	virtual void CollisionWithGameItemDetect(GameItem* gameItem) = 0;
 
 	void SetVelocityY(float y)
 	{
@@ -281,7 +282,7 @@ protected:
 	}
 
 
-private:
+protected:
 	LiveItemState m_LiveItemState { LiveItemState::Alive };
 
 	int m_NrOfFrames;
@@ -298,18 +299,39 @@ private:
 	Vector2f m_Velocity;
 	Vector2f m_Acceleration;
 
+	float m_DyingCounter;
 	
 
 };
 
-class Goomba : public LiveItem
+class Enemy : public LiveItem
+{
+public:
+	Enemy(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
+		Vector2f velocity, Vector2f acceleration,
+		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY);
+
+	virtual ~Enemy();
+
+	virtual void UpdateGameItem(float elapsedSec, Level* level);
+	virtual void CollisionDetect(AvatarState* avatarState);
+	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
+};
+
+class Goomba : public Enemy
 {
 public:
 	Goomba(Point2f GameItemPos);
 	virtual ~Goomba();
-
-	//void Draw(AvatarState* avatarState) const;
-	//void UpdateGameItem(float elapsedSec, Level* level);
-	//void CollisionDetect(AvatarState* avatarState);
 };
 
+class Projectile : public LiveItem
+{
+public:
+	Projectile(Point2f GameItemPos);
+	virtual ~Projectile();
+
+	virtual void UpdateGameItem(float elapsedSec, Level* level);
+	virtual void CollisionDetect(AvatarState* avatarState);
+	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
+};

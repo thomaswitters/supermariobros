@@ -274,7 +274,7 @@ void QuestionBlock::UpdateGameItem(float elapsedSec, Level* level)
 		{
 			SetActivefalse();
 			//gameState.GetLevel()->AddGameItem(new ConcreteBlock(Point2f(GetGameItemPos().x, m_BeginPosY)));
-			level->AddGameItem(new ConcreteBlock(Point2f(this->GetGameItemPos().x, this->m_BeginPosY)));
+			level->AddGameItem(new ConcreteBlock(Point2f(GetGameItemPos().x, m_BeginPosY)));
 		}
 
 		//std::cout << m_Counter << std::endl;
@@ -842,7 +842,7 @@ void Coin::UpdateGameItem(float elapsedSec, Level* level)
 
 LiveItem::LiveItem(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState, 
 	Vector2f velocity, Vector2f acceleration,
-	int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames) :
+	int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames, int liveItemType) :
 	GameItem(imagePath, spriteClipHeight, spriteClipWidth, GameItemPos, GameItemWidth, GameItemHeight, IsActive)
 	, m_NrOfFrames{nrOfFrames}
 	, m_NrFramesPerSec{ nrFramesPerSec }
@@ -857,6 +857,7 @@ LiveItem::LiveItem(const std::string& imagePath, float spriteClipHeight, float s
 	, m_DyingCounter{0.f}
 	, m_ImageAmountHoriFrames{ imageAmountHoriFrames }
 	, m_ImageAmountVertiFrames{ imageAmountVertiFrames }
+	, m_LiveItemType{ liveItemType }
 {}
 
 
@@ -908,11 +909,11 @@ void LiveItem::Draw(AvatarState* avatarState) const {
 }
 Enemy::Enemy(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
 	Vector2f velocity, Vector2f acceleration,
-	int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames) :
+	int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames, int liveItemType) :
 	LiveItem(imagePath, spriteClipHeight, spriteClipWidth, GameItemPos, GameItemWidth, GameItemHeight,
 		IsActive, liveItemState,
 		velocity, acceleration,
-		animStartFrameX, animStartFrameY, nrOfFrames, nrFramesPerSec, animStartDyingFrameX, animStartDyingFrameY, imageAmountHoriFrames, imageAmountVertiFrames)
+		animStartFrameX, animStartFrameY, nrOfFrames, nrFramesPerSec, animStartDyingFrameX, animStartDyingFrameY, imageAmountHoriFrames, imageAmountVertiFrames, liveItemType)
 {
 }
 
@@ -1027,40 +1028,12 @@ void Enemy::CollisionWithGameItemDetect(GameItem* gameItem)
 }
 void Enemy::CollisionWithLiveItemDetect(LiveItem* liveItem)
 {
-	if (this == liveItem) return;
-	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
-		Rectf(GetGameItemPos().x,
-			GetGameItemPos().y,
-			GetGameItemWidth(),
-			GetGameItemHeight()),
-		GetVelocity(),
-		Rectf(liveItem->GetGameItemPos().x,
-			liveItem->GetGameItemPos().y,
-			liveItem->GetGameItemWidth(),
-			liveItem->GetGameItemHeight()
-		)
-	);
 
-	switch (location)
-	{
-	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheRight:
-	{
-		m_LiveItemState = LiveItemState::Dying;
-		break;
-
-	}
-	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheLeft:
-	{
-		m_LiveItemState = LiveItemState::Dying;
-		break;
-
-	}
-	}
 }
 
 Goomba::Goomba(Point2f GameItemPos) : Enemy("Images/smb_enemies_sheet.png", 30, 30, GameItemPos, 30, 30, true, LiveItemState::Alive, 
 	Vector2f{-50.0f, -140.f}, Vector2f{0.0f, -981.0f},
-	0, 0, 2, 0.2f, 2, 0, 15, 7)
+	0, 0, 2, 0.2f, 2, 0, 15, 7, GOOMBA_TYPE)
 {
 }
 
@@ -1069,7 +1042,7 @@ Goomba::~Goomba() {
 
 Projectile::Projectile(Point2f GameItemPos) : LiveItem("Images/fireball.png", 12, 12, GameItemPos, 12, 12, true, LiveItemState::Dying,
 	Vector2f{ 140.0f, 0.f }, Vector2f{ 0.0f, -400.f},
-	0, 0, 2, 0.2f, 2, 0, 3, 1)
+	0, 0, 2, 0.2f, 2, 0, 3, 1, PROJECTILE_TYPE)
 {
 }
 
@@ -1157,10 +1130,46 @@ void Projectile::CollisionWithGameItemDetect(GameItem* gameItem)
 }
 void Projectile::CollisionWithLiveItemDetect(LiveItem* liveItem)
 {
-	
+	if (this == liveItem) return;
+	if (IsEnemyOf(liveItem)) {
+		CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
+			Rectf(GetGameItemPos().x,
+				GetGameItemPos().y,
+				GetGameItemWidth(),
+				GetGameItemHeight()),
+			GetVelocity(),
+			Rectf(liveItem->GetGameItemPos().x,
+				liveItem->GetGameItemPos().y,
+				liveItem->GetGameItemWidth(),
+				liveItem->GetGameItemHeight()
+			)
+		);
+
+		switch (location)
+		{
+		case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheRight:
+		{
+			liveItem->SetLiveItemState(LiveItemState::Dying);
+			m_LiveItemState = LiveItemState::Dying;
+			break;
+
+		}
+		case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheLeft:
+		{
+			liveItem->SetLiveItemState(LiveItemState::Dying);
+			m_LiveItemState = LiveItemState::Dying;
+			break;
+
+		}
+		}
+	}
 }
 void Projectile::BounceFloor()
 {
 	m_Velocity.y = float(sqrt(2.0f * 400.f * 10));
 }
 
+bool Projectile::IsEnemyOf(LiveItem* otherLiveItem) 
+{
+	return otherLiveItem->GetLiveItemType() != GetLiveItemType();
+}

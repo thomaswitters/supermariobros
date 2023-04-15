@@ -237,7 +237,7 @@ public:
 
 	LiveItem(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState, 
 		Vector2f velocity, Vector2f acceleration, 
-		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames);
+		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames, int liveItemType);
 
 	virtual ~LiveItem();
 
@@ -260,6 +260,18 @@ public:
 	Vector2f GetVelocity()
 	{
 		return m_Velocity;
+	}
+
+	/*
+	 * Is this LiveItem an enemy of other (enemies). E.g. a fireball shot by the avatar is an enemy
+	 */
+	virtual bool IsEnemyOf(LiveItem* otherLiveItem) {
+		return false;
+	}
+
+	int GetLiveItemType()
+	{
+		return m_LiveItemType;
 	}
 
 protected:
@@ -305,6 +317,8 @@ protected:
 	Vector2f m_Acceleration;
 
 	float m_DyingCounter;
+
+	int m_LiveItemType;	// int to allow pluggable live items
 };
 
 class Enemy : public LiveItem
@@ -312,7 +326,7 @@ class Enemy : public LiveItem
 public:
 	Enemy(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
 		Vector2f velocity, Vector2f acceleration,
-		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames);
+		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames, int liveItemType);
 
 	virtual ~Enemy();
 
@@ -322,6 +336,7 @@ public:
 	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem);
 };
 
+#define GOOMBA_TYPE 1
 class Goomba : public Enemy
 {
 public:
@@ -329,16 +344,18 @@ public:
 	virtual ~Goomba();
 };
 
+#define PROJECTILE_TYPE 2
 class Projectile : public LiveItem
 {
 public:
 	Projectile(Point2f GameItemPos);
 	virtual ~Projectile();
 
-	virtual void UpdateGameItem(float elapsedSec, Level* level);
+	virtual void UpdateGameItem(float elapsedSec, Level* level); 
 	virtual void CollisionDetect(AvatarState* avatarState);
 	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
 	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem);
 
 	virtual void BounceFloor();
+	virtual bool IsEnemyOf(LiveItem* otherLiveItem);
 };

@@ -20,7 +20,23 @@ public:
 	virtual bool CollisionDetectOnGround(AvatarState* avatarState);
 	virtual void UpdateGameItem(float elapsedSec, Level* level);
 	bool IsActive();
-
+	Point2f GetGameItemPos() const {
+		return m_GameItemPos;
+	}
+	float GetGameItemWidth() const {
+		return m_GameItemWidth;
+	}
+	float GetGameItemHeight() const {
+		return m_GameItemHeight;
+	}
+	void SetGameItemPosY(float y)
+	{
+		m_GameItemPos.y = y;
+	}
+	void SetGameItemPosX(float x)
+	{
+		m_GameItemPos.x = x;
+	}
 
 protected:
 	Texture* GetSpriteTexture() const {
@@ -32,27 +48,17 @@ protected:
 	float GetSpriteClipWidth() const {
 		return m_SpriteClipWidth;
 	}
-	Point2f GetGameItemPos() const {
-		return m_GameItemPos;
-	}
-	float GetGameItemWidth() const {
-		return m_GameItemWidth;
-	}
-	float GetGameItemHeight() const {
-		return m_GameItemHeight;
-	}
+	
+	
 	void SetPositionVelocity(Vector2f velocity, float elapsedSec)
 	{
 		m_GameItemPos += velocity * elapsedSec;
-	}
-	void SetGameItemPosY(float y)
-	{
-		m_GameItemPos.y = y;
 	}
 	void SetActivefalse()
 	{
 		m_Active = false;
 	}
+
 private:
 	bool m_Active;
 	Texture* m_SpriteTexture;
@@ -70,6 +76,7 @@ public:
 	virtual ~NormalBlock();
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(AvatarState* avatarState);
+	void CollisionWithGameItemDetect(GameItem* gameItem);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
 	void UpdateGameItem(float elapsedSec, Level* level);
 private:
@@ -220,5 +227,88 @@ private:
 	bool m_IsHit;
 	float m_Teller;
 
+};
+
+class LiveItem : public GameItem
+{
+public:
+	enum LiveItemState { Alive, Dying, Dead };
+
+	LiveItem(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState, 
+		Vector2f velocity, Vector2f acceleration, 
+		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY );
+
+	virtual ~LiveItem();
+
+	LiveItemState GetLiveItemState() const;
+	void SetLiveItemState(LiveItemState liveItemState);
+
+	void Draw(AvatarState* avatarState) const;
+	void UpdateGameItem(float elapsedSec, Level* level);
+	void CollisionDetect(AvatarState* avatarState);
+	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
+
+	void SetVelocityY(float y)
+	{
+		m_Velocity.y = y;
+
+	}
+	Vector2f GetVelocity()
+	{
+		return m_Velocity;
+	}
+
+protected:
+	int GetNrOfFrames() 
+	{ 
+		return m_NrOfFrames; 
+	}
+
+	float GetNrFramesPerSec() 
+	{
+		return m_NrFramesPerSec;
+	}
+
+	float GetAnimTime()
+	{
+		return m_AnimTime;
+	}
+
+	int GetAnimFrame() 
+	{
+		return m_AnimFrame;
+	}
+
+
+private:
+	LiveItemState m_LiveItemState { LiveItemState::Alive };
+
+	int m_NrOfFrames;
+	float m_NrFramesPerSec;
+	float m_AnimTime;
+	int m_AnimFrame;
+
+	int m_AnimStartFrameX;
+	int m_AnimStartFrameY;
+
+	int m_AnimStartDyingFrameX;
+	int m_AnimStartDyingFrameY;
+
+	Vector2f m_Velocity;
+	Vector2f m_Acceleration;
+
+	
+
+};
+
+class Goomba : public LiveItem
+{
+public:
+	Goomba(Point2f GameItemPos);
+	virtual ~Goomba();
+
+	//void Draw(AvatarState* avatarState) const;
+	//void UpdateGameItem(float elapsedSec, Level* level);
+	//void CollisionDetect(AvatarState* avatarState);
 };
 

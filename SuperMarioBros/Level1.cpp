@@ -4,7 +4,6 @@
 Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros.svg", "Images/SuperMarioBros2.svg", "Images/SuperMarioBros3.svg", "Images/SuperMarioBros4.svg" })
 {
 	
-	
 	AddGameItem(new Coin(Point2f(256.f, 320.f)));
 	AddGameItem(new QuestionBlock(Point2f(256.f, 320.f)));
 	AddGameItem(new PowerUp(Point2f(336.f, 320.f)));
@@ -50,7 +49,8 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 	AddGameItem(new Pipe(Point2f(736.f, 272.f), 63.f));
 
 
-	AddGameItem(new FlagPole(Point2f(240.f, 270.f)));
+	AddGameItem(new FlagPole(Point2f(140.f, 270.f)));
+	AddLiveItem(new Goomba(Point2f(200.f, 320.f)));
 
 }
 

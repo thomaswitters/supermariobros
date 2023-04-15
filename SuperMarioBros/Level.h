@@ -7,6 +7,7 @@
 
 class AvatarState;
 class GameItem;
+class LiveItem;
 class GameState;
 class Level
 {
@@ -18,18 +19,24 @@ public:
 	void DrawForeground(AvatarState* avatarState) const;
 	void HandleCollision(AvatarState* avatarState) const;
 	bool IsOnGround(AvatarState* avatarState) const;
-	void UpdateGameItem(float elapsedSec, Level* level);
+
+	void UpdateItems(float elapsedSec, Level* level);
+
 	void DestroyGameItem(GameItem* gameItem);
 	void AddGameItem(GameItem* gameItem);
+
+	void AddLiveItem(LiveItem* liveItem);
 
 protected:
 	
 	std::vector<GameItem*> GetGameItems() const;
+	std::vector<LiveItem*> GetLiveItems() const;
 
 private:
 	std::vector<std::vector<std::vector<Point2f>>> m_Vertices;
 	Texture* m_pBackgroundTexture;
 
 	std::vector<GameItem*> m_GameItems;
+	std::vector<LiveItem*> m_LiveItems;
 };
 

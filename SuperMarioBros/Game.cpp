@@ -55,7 +55,7 @@ void Game::Update( float elapsedSec )
 	m_Level->HandleCollision(m_GameState.GetAvatarState());
 	
 
-	m_Level->UpdateGameItem(elapsedSec, m_Level);
+	m_Level->UpdateItems(elapsedSec, m_Level);
 
 	m_Camera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
 

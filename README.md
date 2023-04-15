@@ -76,3 +76,26 @@ Complicated gameplay
 
 5. Quality of code
 
+-> virtuele methodes in GameItem die geen implementatie hebben mogen weg
+
+-> 			Rectf src{ GetSpriteClipWidth() * (m_AnimStartFrameX), GetSpriteClipHeight() * (m_AnimStartFrameY + 1),sourceWidth,sourceHeight };
+	Y begint bij 0, niet 1. Zou overal aangepast moeten worden
+	
+-> misschien, renqme UpdateGameItem naam UpdateItem
+
+-> CollisionDetect met GameState, niet AvarState zodate we die() kunnen implementeren
+
+-> Hernoem CollisionLocation items, moet zijn 
+
+	enum class CollisionLocation {
+		liveItemBumpsOnTheRight,
+		liveItemBumpsOnTheLeft,
+		liveItemBumpsFromTheBottom,
+		liveItemBumpsFromTheTop,
+		liveItemBumpsOnTheLeftTop,
+		noCollision
+	};
+
+	static CollisionLocation determineCollisionDir(Rectf liveItemRect, Vector2f RichtingLiveItem, Rectf itemRect);
+
+-> Als LivceItem positie x < 0 dan setActive(false)

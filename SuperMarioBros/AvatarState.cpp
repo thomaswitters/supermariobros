@@ -2,7 +2,7 @@
 #include "AvatarState.h"
 
 AvatarState::AvatarState(Avatar *initialAvatar)
-	: m_AvatarX{ 100.f }
+	: m_AvatarX{ 120.f }
 	, m_AvatarY{ 400.f }
 	, m_Velocity{ 0.f, 0.f }
 	, m_Acceleration{ 0.f, -981.f }

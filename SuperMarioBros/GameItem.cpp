@@ -129,6 +129,7 @@ void NormalBlock::CollisionDetect(AvatarState* avatarState) {
 	}
 
 }
+
 bool NormalBlock::CollisionDetectOnGround(AvatarState* avatarState) {
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
 
@@ -150,6 +151,7 @@ void NormalBlock::UpdateGameItem(float elapsedSec, Level* level)
 		SetGameItemPosY(m_BeginPosY);
 	}
 }
+
 
 
 QuestionBlock::QuestionBlock(Point2f GameItemPos) : GameItem("Images/tiles.png", 16.f, 16.f, GameItemPos, 16.f, 16.f, true)
@@ -828,3 +830,175 @@ void Coin::UpdateGameItem(float elapsedSec, Level* level)
 	}
 }
 
+
+LiveItem::LiveItem(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState, 
+	Vector2f velocity, Vector2f acceleration,
+	int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY) :
+	GameItem(imagePath, spriteClipHeight, spriteClipWidth, GameItemPos, GameItemWidth, GameItemHeight, IsActive)
+	, m_NrOfFrames{nrOfFrames}
+	, m_NrFramesPerSec{ nrFramesPerSec }
+	, m_AnimTime{ 0.0f}
+	, m_AnimFrame{ 0 }
+	, m_AnimStartFrameX{ animStartFrameX }
+	, m_AnimStartFrameY{ animStartFrameY }
+	, m_AnimStartDyingFrameX{ animStartDyingFrameX }
+	, m_AnimStartDyingFrameY{ animStartDyingFrameY }
+	, m_Velocity{ velocity }
+	, m_Acceleration{ acceleration }
+{}
+
+
+LiveItem::~LiveItem() {
+}
+
+LiveItem::LiveItemState LiveItem::GetLiveItemState() const {
+	return m_LiveItemState;
+}
+
+void LiveItem::SetLiveItemState(LiveItemState liveItemState) {
+	m_LiveItemState = liveItemState;
+}
+
+
+void LiveItem::Draw(AvatarState* avatarState) const {
+
+	float sourceWidth{ GetSpriteTexture()->GetWidth() / 15 };
+	float sourceHeight{ GetSpriteTexture()->GetHeight() / 7 };
+
+	Rectf src{ };
+	Rectf dst{ };
+
+	if (m_LiveItemState == LiveItemState::Alive)
+	{
+		src = Rectf{ GetSpriteClipWidth() * (m_AnimStartFrameX + m_AnimFrame), GetSpriteClipHeight() * (m_AnimStartFrameY + 1),sourceWidth,sourceHeight };
+		dst = Rectf{ GetGameItemPos().x , GetGameItemPos().y, GetGameItemWidth(),  GetGameItemHeight() };
+
+	}
+	else if (m_LiveItemState == LiveItemState::Dying)
+	{
+
+		src = Rectf{ GetSpriteClipWidth() * (m_AnimStartDyingFrameX), GetSpriteClipHeight() * (m_AnimStartDyingFrameY + 1),sourceWidth,sourceHeight };
+		dst = Rectf{ GetGameItemPos().x , GetGameItemPos().y,GetGameItemWidth(),  GetGameItemHeight() };
+
+	}
+	if (m_Velocity.x < 0.f) {
+		glPushMatrix();
+		glTranslatef(GetGameItemPos().x + GetGameItemWidth()/2, GetGameItemPos().y + GetGameItemHeight(), 0);
+		glScalef(-1, 1, 1); 
+		glTranslatef(-GetGameItemPos().x - GetGameItemWidth()/2, -GetGameItemPos().y - GetGameItemHeight(), 0);
+
+		GetSpriteTexture()->Draw(dst, src);
+		glPopMatrix();
+	}
+	else {
+		GetSpriteTexture()->Draw(dst, src);
+	}
+	utils::SetColor(Color4f(0.0f, 1.f, 0.f, 1.0f));
+	utils::DrawRect(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight());
+}
+
+void LiveItem::UpdateGameItem(float elapsedSec, Level* level) {
+	m_AnimTime += elapsedSec;
+	int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) };
+	m_AnimFrame = totalFramesElapsed % m_NrOfFrames;
+
+	m_Velocity += m_Acceleration * elapsedSec;
+	SetPositionVelocity(m_Velocity, elapsedSec);
+}
+
+void LiveItem::CollisionDetect(AvatarState* avatarState) {
+	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), Vector2f(avatarState->GetVelocityAvatar()), Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
+
+	switch (location)
+	{
+	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheLeft:
+	{
+		// todo: should become gameState->die()
+		avatarState->SetActionState(AvatarState::ActionState::dead);
+		break;
+	}
+	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheRight:
+	{
+		avatarState->SetActionState(AvatarState::ActionState::dead);
+		break;
+
+	}
+	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom:
+	{
+		avatarState->SetActionState(AvatarState::ActionState::dead);
+		break;
+	}
+	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop:
+	{
+		//goomba dies
+		break;
+	}
+	}
+
+}
+void LiveItem::CollisionWithGameItemDetect(GameItem* liveItem)
+{
+	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
+		Rectf(liveItem->GetGameItemPos().x,
+			liveItem->GetGameItemPos().y,
+			liveItem->GetGameItemWidth(),
+			liveItem->GetGameItemHeight()
+		),
+		m_Velocity,
+		Rectf(GetGameItemPos().x,
+			GetGameItemPos().y,
+			GetGameItemWidth(),
+			GetGameItemHeight())
+	);
+
+	/*if (location != noCollision)
+	{
+		m_Velocity.x *= (-1);
+
+	}
+	*/
+	switch (location)
+	{
+	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheLeft:
+	{
+		
+		m_Velocity.x *= (-1);
+//		SetGameItemPosX(GetGameItemPos().x);
+		SetGameItemPosX(GetGameItemPos().x - abs(m_Velocity.x));
+		break;
+
+	}
+	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheRight:
+	{
+
+		m_Velocity.x *= (-1);
+		SetGameItemPosX(GetGameItemPos().x + abs(m_Velocity.x));
+		break;
+
+	}
+	}
+}
+
+Goomba::Goomba(Point2f GameItemPos) : LiveItem("Images/smb_enemies_sheet.png", 30, 30, GameItemPos, 30, 30, true, LiveItemState::Alive, 
+	Vector2f{-50.0f, 0}, Vector2f{0.0f, -981.0f},
+	0, 0, 2, 0.2f, 2, 0)
+{
+}
+
+Goomba::~Goomba() {
+}
+
+/*
+void Goomba::Draw(AvatarState* avatarState) const {
+
+	
+}
+
+void Goomba::UpdateGameItem(float elapsedSec, Level* level) {
+}
+
+void Goomba::CollisionDetect(AvatarState* avatarState) {
+
+}
+
+*/

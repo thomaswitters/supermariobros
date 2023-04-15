@@ -40,7 +40,7 @@ void Game::Update( float elapsedSec )
 		
 		//m_GameState.ResetAvatar();
 		//m_GameState.SetAvatar(m_GameState.GetNormalMan());
-		m_GameState.SetAvatar(m_GameState.GetFlowerMan());
+		m_GameState.SetAvatar(m_GameState.GetBiggerMan());
 	}
 	else if (Teller >= 4.f && Teller <= 6.f)
 	{
@@ -50,8 +50,8 @@ void Game::Update( float elapsedSec )
 	}
 	else if (Teller >= 6.f)
 	{
-		m_GameState.SetAvatar(m_GameState.GetFlowerMan());
-		m_GameState.SetAvatar(m_GameState.GetFlowerMan());
+		
+		//m_GameState.SetAvatar(m_GameState.GetFlowerMan());
 		//m_GameState.ResetAvatar();
 		//m_GameState.SetAvatar(m_GameState.GetBiggerMan());
 	}

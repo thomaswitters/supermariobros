@@ -1,31 +1,73 @@
 # TODO:
-2. Flower mannetje kan schieten
 
-3. Vlag op einde plaatsen
+NU:
+1. Vlag op einde plaatsen
 
-4. Eerste Q -> ALTIJD een coin
+2. Eerste Q -> ALTIJD een coin
 
-5. Tweede Q -> mushroom bij klein mannetje, flower bij groot mannetje
+3. Tweede Q -> mushroom bij klein mannetje, flower bij groot mannetje
 
-6. Mushroom -> Switch naar groot mannetje
+4. Mushroom -> Switch naar groot mannetje
 
-7. Flower -> Switch naar flower mannetje
+5. Flower -> Switch naar flower mannetje
 
-8. Derde en 4de Q -> coins
+6. Derde en 4de Q -> coins
 
-9. 5de Q -> mushroom bij klein mannetje, flower bij groot mannetje
+7. 5de Q -> mushroom bij klein mannetje, flower bij groot mannetje
 
-10. m_p bij pointer
+8. Kunnen sterven!
 
-# LATER
-Mushroom beweegt
+9. Kunnen winnen (vlag nemen)!
 
-Camera automatic zoom in/out
+EN TESTEN
 
-Parallax background effect: ?
+DAN:
 
-Camera transition
+0. Presentatie
 
+1. m_p bij pointer
+
+2. LiveItem protected member variables moeten protected member functions worden (getters and setters)
+
+3. Delete LiveItems in Level (crasht)
+
+4. Bibber
+
+5. virtuele methodes in GameItem die geen implementatie hebben mogen weg
+
+6. Hernoem CollisionLocation items, moet zijn 
+
+	enum class CollisionLocation {
+		liveItemBumpsOnTheRight,
+		liveItemBumpsOnTheLeft,
+		liveItemBumpsFromTheBottom,
+		liveItemBumpsFromTheTop,
+		liveItemBumpsOnTheLeftTop,
+		noCollision
+	};
+
+	static CollisionLocation determineCollisionDir(Rectf liveItemRect, Vector2f RichtingLiveItem, Rectf itemRect);
+
+7. Als LivceItem positie x < 0 dan setActive(false)
+
+LATER:
+1. 
+-> 			Rectf src{ GetSpriteClipWidth() * (m_AnimStartFrameX), GetSpriteClipHeight() * (m_AnimStartFrameY + 1),sourceWidth,sourceHeight };
+	Y begint bij 0, niet 1. Zou overal aangepast moeten worden
+	
+2. rename UpdateGameItem naam UpdateItem
+
+3. Mushroom beweegt
+
+4. Camera automatic zoom in/out
+
+5. Parallax background effect: ?
+
+6. Camera transition
+
+7. In Pipe gaan
+
+8. Ster -> onoverwinnelijk
 
 # Presentatie
 
@@ -74,33 +116,4 @@ Complicated gameplay
 
 5. Quality of code
 
--> virtuele methodes in GameItem die geen implementatie hebben mogen weg
-
--> 			Rectf src{ GetSpriteClipWidth() * (m_AnimStartFrameX), GetSpriteClipHeight() * (m_AnimStartFrameY + 1),sourceWidth,sourceHeight };
-	Y begint bij 0, niet 1. Zou overal aangepast moeten worden
-	
--> misschien, renqme UpdateGameItem naam UpdateItem
-
--> CollisionDetect met GameState, niet AvarState zodate we die() kunnen implementeren
-
--> Hernoem CollisionLocation items, moet zijn 
-
-	enum class CollisionLocation {
-		liveItemBumpsOnTheRight,
-		liveItemBumpsOnTheLeft,
-		liveItemBumpsFromTheBottom,
-		liveItemBumpsFromTheTop,
-		liveItemBumpsOnTheLeftTop,
-		noCollision
-	};
-
-	static CollisionLocation determineCollisionDir(Rectf liveItemRect, Vector2f RichtingLiveItem, Rectf itemRect);
-
--> Als LivceItem positie x < 0 dan setActive(false)
-
--> mannetje beeft
-
--> LiveItem protected member variables moeten protected member functions worden (getters and setters)
-
--> Delete LiveItems in Level (crasht)
 

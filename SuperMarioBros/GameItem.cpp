@@ -498,7 +498,7 @@ void PowerUp::CollisionDetect(GameState* gameState)
 	{
 		if (m_CanPickUpFlower)
 		{
-
+			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
 		}
 		break;
@@ -507,6 +507,7 @@ void PowerUp::CollisionDetect(GameState* gameState)
 	{
 		if (m_CanPickUpFlower)
 		{
+			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
 		}
 
@@ -533,6 +534,7 @@ void PowerUp::CollisionDetect(GameState* gameState)
 
 		if (m_CanPickUpFlower)
 		{
+			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
 
 		}
@@ -543,6 +545,7 @@ void PowerUp::CollisionDetect(GameState* gameState)
 		if (m_CanPickUpFlower)
 		{
 			//GameState.SetAvatar(GameState.GetFlowerMan());
+			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
 			
 		}

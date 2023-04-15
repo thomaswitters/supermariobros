@@ -76,7 +76,6 @@ public:
 	virtual ~NormalBlock();
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(AvatarState* avatarState);
-	void CollisionWithGameItemDetect(GameItem* gameItem);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
 	void UpdateGameItem(float elapsedSec, Level* level);
 private:

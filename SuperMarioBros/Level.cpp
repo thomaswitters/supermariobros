@@ -47,7 +47,7 @@ void Level::DrawBackground() const
 	m_pBackgroundTexture->Draw();
 }
 
-void Level::HandleCollision(AvatarState* avatarState) const
+void Level::HandleCollision(float elapsedSec, AvatarState* avatarState) const
 {
 	Point2f AvatarOrigin1{ avatarState->GetPositionAvatar().x + 5.f, avatarState->GetPositionAvatar().y };
 	Point2f AvatarOrigin2{ avatarState->GetPositionAvatar().x + 5.f, avatarState->GetPositionAvatar().y + 30.f };

@@ -883,9 +883,9 @@ void LiveItem::Draw(AvatarState* avatarState) const {
 	}
 	if (m_Velocity.x < 0.f) {
 		glPushMatrix();
-		glTranslatef(GetGameItemPos().x + GetGameItemWidth()/2, GetGameItemPos().y + GetGameItemHeight(), 0);
-		glScalef(-1, 1, 1); 
-		glTranslatef(-GetGameItemPos().x - GetGameItemWidth()/2, -GetGameItemPos().y - GetGameItemHeight(), 0);
+		glTranslatef(GetGameItemPos().x + GetGameItemWidth() / 2, GetGameItemPos().y + GetGameItemHeight(), 0);
+		glScalef(-1, 1, 1);
+		glTranslatef(-GetGameItemPos().x - GetGameItemWidth() / 2, -GetGameItemPos().y - GetGameItemHeight(), 0);
 
 		GetSpriteTexture()->Draw(dst, src);
 		glPopMatrix();
@@ -893,8 +893,6 @@ void LiveItem::Draw(AvatarState* avatarState) const {
 	else {
 		GetSpriteTexture()->Draw(dst, src);
 	}
-	utils::SetColor(Color4f(0.0f, 1.f, 0.f, 1.0f));
-	utils::DrawRect(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight());
 }
 
 void LiveItem::UpdateGameItem(float elapsedSec, Level* level) {
@@ -936,19 +934,19 @@ void LiveItem::CollisionDetect(AvatarState* avatarState) {
 	}
 
 }
-void LiveItem::CollisionWithGameItemDetect(GameItem* liveItem)
+void LiveItem::CollisionWithGameItemDetect(GameItem* gameItem)
 {
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
-		Rectf(liveItem->GetGameItemPos().x,
-			liveItem->GetGameItemPos().y,
-			liveItem->GetGameItemWidth(),
-			liveItem->GetGameItemHeight()
-		),
-		m_Velocity,
 		Rectf(GetGameItemPos().x,
 			GetGameItemPos().y,
 			GetGameItemWidth(),
-			GetGameItemHeight())
+			GetGameItemHeight()),
+		m_Velocity,
+		Rectf(gameItem->GetGameItemPos().x,
+			gameItem->GetGameItemPos().y,
+			gameItem->GetGameItemWidth(),
+			gameItem->GetGameItemHeight()
+		)
 	);
 
 	/*if (location != noCollision)
@@ -964,7 +962,8 @@ void LiveItem::CollisionWithGameItemDetect(GameItem* liveItem)
 		
 		m_Velocity.x *= (-1);
 //		SetGameItemPosX(GetGameItemPos().x);
-		SetGameItemPosX(GetGameItemPos().x - abs(m_Velocity.x));
+//		SetGameItemPosX(GetGameItemPos().x - abs(m_Velocity.x * elapsedSec) * 2);
+		SetGameItemPosX(gameItem->GetGameItemPos().x - GetGameItemWidth());
 		break;
 
 	}
@@ -972,7 +971,8 @@ void LiveItem::CollisionWithGameItemDetect(GameItem* liveItem)
 	{
 
 		m_Velocity.x *= (-1);
-		SetGameItemPosX(GetGameItemPos().x + abs(m_Velocity.x));
+//		SetGameItemPosX(GetGameItemPos().x + abs(m_Velocity.x * elapsedSec) * 2);
+		SetGameItemPosX(gameItem->GetGameItemPos().x);
 		break;
 
 	}

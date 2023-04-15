@@ -78,14 +78,6 @@ void Level::HandleCollision(float elapsedSec, AvatarState* avatarState) const
 	{ 
 		if (LiveItem->IsActive())
 		{
-			LiveItem->CollisionDetect(avatarState);
-			for (GameItem* GameItem : m_GameItems)
-			{
-				if (GameItem->IsActive())
-				{
-					LiveItem->CollisionWithGameItemDetect(GameItem);
-				}
-			}
 
 			Point2f liveItemOrigin1 = Point2f{ LiveItem->GetGameItemPos().x + LiveItem->GetGameItemWidth() / 2, LiveItem->GetGameItemPos().y };
 			Point2f liveItemOrigin2 = Point2f{ LiveItem->GetGameItemPos().x + LiveItem->GetGameItemWidth() / 2, LiveItem->GetGameItemPos().y + LiveItem->GetGameItemHeight() };
@@ -95,6 +87,15 @@ void Level::HandleCollision(float elapsedSec, AvatarState* avatarState) const
 				{
 					LiveItem->SetVelocityY(0.f);
 					LiveItem->SetGameItemPosY(hitInfo.intersectPoint.y);
+				}
+			}
+
+			LiveItem->CollisionDetect(avatarState);
+						for (GameItem* GameItem : m_GameItems)
+			{
+				if (GameItem->IsActive())
+				{
+					LiveItem->CollisionWithGameItemDetect(GameItem);
 				}
 			}
 		}

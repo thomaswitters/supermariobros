@@ -143,9 +143,7 @@ void NormalBlock::UpdateGameItem(float elapsedSec, Level* level)
 {
 	//float beginPos{ GetGameItemPos().y };
 
-//	m_Velocity += m_Acceleration * elapsedSec;
-	m_Velocity.x += m_Acceleration.x * elapsedSec;
-	m_Velocity.y += m_Acceleration.y * elapsedSec;
+	m_Velocity += m_Acceleration * elapsedSec;
 	SetPositionVelocity(m_Velocity, elapsedSec);
 
 	if (GetGameItemPos().y <= m_BeginPosY)
@@ -936,7 +934,6 @@ void LiveItem::CollisionDetect(AvatarState* avatarState) {
 	}
 
 }
-
 void LiveItem::CollisionWithGameItemDetect(GameItem* gameItem)
 {
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(

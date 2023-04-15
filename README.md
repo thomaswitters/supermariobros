@@ -1,6 +1,4 @@
 # TODO:
-1. Introductie enemie
-
 2. Flower mannetje kan schieten
 
 3. Vlag op einde plaatsen
@@ -99,3 +97,5 @@ Complicated gameplay
 	static CollisionLocation determineCollisionDir(Rectf liveItemRect, Vector2f RichtingLiveItem, Rectf itemRect);
 
 -> Als LivceItem positie x < 0 dan setActive(false)
+
+-> mannetje beeft

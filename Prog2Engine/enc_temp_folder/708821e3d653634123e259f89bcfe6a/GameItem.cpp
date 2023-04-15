@@ -936,7 +936,6 @@ void LiveItem::CollisionDetect(AvatarState* avatarState) {
 	}
 
 }
-
 void LiveItem::CollisionWithGameItemDetect(GameItem* gameItem)
 {
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(

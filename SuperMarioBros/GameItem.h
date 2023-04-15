@@ -52,7 +52,9 @@ protected:
 	
 	void SetPositionVelocity(Vector2f velocity, float elapsedSec)
 	{
-		m_GameItemPos += velocity * elapsedSec;
+//		m_GameItemPos += velocity * elapsedSec;
+		m_GameItemPos.x += velocity.x * elapsedSec;
+		m_GameItemPos.y += velocity.y * elapsedSec;
 	}
 	void SetActivefalse()
 	{

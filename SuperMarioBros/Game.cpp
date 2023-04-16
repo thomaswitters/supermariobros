@@ -66,10 +66,15 @@ void Game::Update( float elapsedSec )
 
 	m_Camera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
 
+	
 	if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x || m_GameState.GetAvatarState()->GetPositionAvatar().x <= 0.f && m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f)
 	{
-		m_CameraFollow = m_GameState.GetAvatarState()->GetPositionAvatar();
+		if (m_GameState.GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
+		{
+			m_CameraFollow = m_GameState.GetAvatarState()->GetPositionAvatar();
+		}
 	}
+	
 	//std::cout << Teller << std::endl;
 	// Check keyboard state
 	//const Uint8 *pStates = SDL_GetKeyboardState( nullptr );

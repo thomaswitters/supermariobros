@@ -347,11 +347,9 @@ void AvatarState::HandleKeys(float elapsedSec, Level* level)
 			if (m_ActionState != ActionState::ducking)
 			{
 				
-				
 				if (m_AmmoCounterAmound >= 1)
 				{
 					level->AddLiveItem(new Projectile(Point2f(m_AvatarX, m_AvatarY + 10.f)));
-					std::cout << "shoot";
 					m_AmmoCounterAmound--;
 				}
 				

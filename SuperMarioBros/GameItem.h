@@ -120,6 +120,16 @@ private:
 	bool m_IsHitMushRoom;
 };
 
+class ConcreteBlockQ : public GameItem
+{
+public:
+	ConcreteBlockQ(Point2f GameItemPos);
+	virtual ~ConcreteBlockQ();
+	void Draw(AvatarState* avatarState) const;
+	void CollisionDetect(GameState* gameState);
+	bool CollisionDetectOnGround(AvatarState* avatarState);
+};
+
 class ConcreteBlock : public GameItem
 {
 public:
@@ -128,7 +138,6 @@ public:
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
-	//void UpdateGameItem(float elapsedSec);
 };
 
 class Pipe : public GameItem
@@ -256,6 +265,11 @@ public:
 	void SetVelocityY(float y)
 	{
 		m_Velocity.y = y;
+
+	}
+	void SetVelocityX(float x)
+	{
+		m_Velocity.x = x;
 
 	}
 	void SetVelocityEnemy(Vector2f acceleration, float elapsedSec)

@@ -31,7 +31,7 @@ public:
 	GameState();
 	virtual ~GameState();
 
-	void LevelWon() { exit(0); };
+	void LevelWon();
 
 	// TODO: move to AvatarState
 	NormalMan* GetNormalMan();
@@ -50,6 +50,11 @@ public:
 	{
 		return m_Level;
 	}
+
+	void SetLevel(Level* level) {
+		m_Level = level;
+	}
+
 private:
 	AvatarState* m_AvatarState;
 

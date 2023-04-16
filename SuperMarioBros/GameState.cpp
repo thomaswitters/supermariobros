@@ -46,6 +46,12 @@ void GameState::UpdateDrawAvatar(float elapsedSec) {
 	m_AvatarState->GetCurrentAvatar()->UpdateDraw(elapsedSec);
 }
 
+void GameState::LevelWon() {
+	SDL_Event fake;
+	fake.type = SDL_QUIT;
+	SDL_PushEvent(&fake);
+}
+
 NormalMan* GameState::GetNormalMan() {
 	return m_NormalMan;
 }

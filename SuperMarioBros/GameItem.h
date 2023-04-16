@@ -18,7 +18,7 @@ public:
 	virtual void Draw(AvatarState* avatarState) const;
 	virtual void CollisionDetect(GameState* gameState);
 	virtual bool CollisionDetectOnGround(AvatarState* avatarState);
-	virtual void UpdateGameItem(float elapsedSec, Level* level);
+	virtual void UpdateGameItem(float elapsedSec, GameState* gameState);
 	bool IsActive();
 	Point2f GetGameItemPos() const {
 		return m_GameItemPos;
@@ -80,7 +80,7 @@ public:
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
-	void UpdateGameItem(float elapsedSec, Level* level);
+	void UpdateGameItem(float elapsedSec, GameState* gameState);
 private:
 	Vector2f m_Velocity;
 	Vector2f m_Acceleration;
@@ -95,7 +95,7 @@ public:
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
-	void UpdateGameItem(float elapsedSec, Level* level);
+	void UpdateGameItem(float elapsedSec, GameState* gameState);
 protected:
 	bool GetIsHitFlower() const
 	{
@@ -152,7 +152,7 @@ public:
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
-	void UpdateGameItem(float elapsedSec, Level* level);
+	void UpdateGameItem(float elapsedSec, GameState* gameState);
 private:
 	Point2f m_PosPowerUp;
 	float m_Teller;
@@ -177,7 +177,7 @@ public:
 	virtual ~DecorBlock();
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
-	void UpdateGameItem(float elapsedSec, Level* level);
+	void UpdateGameItem(float elapsedSec, GameState* gameState);
 private:
 	bool m_IsHit;
 	Point2f m_BeginPosSquar1;
@@ -203,7 +203,7 @@ public:
 	virtual ~FlagPole();
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
-	void UpdateGameItem(float elapsedSec, Level* level);
+	void UpdateGameItem(float elapsedSec, GameState* gameState);
 private:
 	Texture* m_pTexture;
 	bool m_IsHit;
@@ -217,7 +217,7 @@ public:
 	virtual ~Coin();
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
-	void UpdateGameItem(float elapsedSec, Level* level);
+	void UpdateGameItem(float elapsedSec, GameState* gameState);
 private:
 	Point2f m_PosCoin;
 
@@ -247,7 +247,7 @@ public:
 
 	void Draw(AvatarState* avatarState) const;
 
-	virtual void UpdateGameItem(float elapsedSec, Level* level) = 0;
+	virtual void UpdateGameItem(float elapsedSec, GameState* gameState) = 0;
 	virtual void CollisionDetect(GameState* gameState) = 0;
 	virtual void CollisionWithGameItemDetect(GameItem* gameItem) = 0;
 	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem) = 0;
@@ -336,7 +336,7 @@ public:
 
 	virtual ~Enemy();
 
-	virtual void UpdateGameItem(float elapsedSec, Level* level);
+	virtual void UpdateGameItem(float elapsedSec, GameState* gameState);
 	virtual void CollisionDetect(GameState* gameState);
 	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
 	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem);
@@ -357,7 +357,7 @@ public:
 	Projectile(Point2f GameItemPos);
 	virtual ~Projectile();
 
-	virtual void UpdateGameItem(float elapsedSec, Level* level); 
+	virtual void UpdateGameItem(float elapsedSec, GameState* gameState); 
 	virtual void CollisionDetect(GameState* gameState);
 	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
 	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem);

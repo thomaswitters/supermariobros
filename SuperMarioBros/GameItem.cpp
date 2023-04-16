@@ -32,7 +32,7 @@ bool GameItem::CollisionDetectOnGround(AvatarState* avatarState)
 	//return true;
 	return false;
 }
-void GameItem::UpdateGameItem(float elapsedSec, Level* level)
+void GameItem::UpdateGameItem(float elapsedSec, GameState* gameState)
 {
 
 }
@@ -142,8 +142,9 @@ bool NormalBlock::CollisionDetectOnGround(AvatarState* avatarState) {
 	}
 	return false;
 }
-void NormalBlock::UpdateGameItem(float elapsedSec, Level* level)
+void NormalBlock::UpdateGameItem(float elapsedSec, GameState* gameState)
 {
+	Level* level = gameState->GetLevel();
 	//float beginPos{ GetGameItemPos().y };
 
 //	m_Velocity += m_Acceleration * elapsedSec;
@@ -262,8 +263,9 @@ bool QuestionBlock::CollisionDetectOnGround(AvatarState* avatarState) {
 	}
 	return false;
 }
-void QuestionBlock::UpdateGameItem(float elapsedSec, Level* level)
+void QuestionBlock::UpdateGameItem(float elapsedSec, GameState* gameState)
 {
+	Level* level = gameState->GetLevel();
 	m_AnimTime += elapsedSec;
 	int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) };
 	m_AnimFrame = totalFramesElapsed % m_NrOfFrames;
@@ -601,8 +603,9 @@ bool PowerUp::CollisionDetectOnGround(AvatarState* avatarState)
 {
 	return false;
 }
-void PowerUp::UpdateGameItem(float elapsedSec, Level* level)
+void PowerUp::UpdateGameItem(float elapsedSec, GameState* gameState)
 {
+	Level* level = gameState->GetLevel();
 	m_AnimTime += elapsedSec;
 	int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) };
 	m_AnimFrame = totalFramesElapsed % m_NrOfFrames;
@@ -717,9 +720,10 @@ void DecorBlock::CollisionDetect(GameState* gameState)
 		
 	}
 }
-void DecorBlock::UpdateGameItem(float elapsedSec, Level* level)
+void DecorBlock::UpdateGameItem(float elapsedSec, GameState* gameState)
 {
-	
+	Level* level = gameState->GetLevel();
+
 	if (m_IsHit)
 	{	
 
@@ -830,8 +834,9 @@ void FlagPole::CollisionDetect(GameState* gameState)
 		std::cout << "hit";
 	}
 }
-void FlagPole::UpdateGameItem(float elapsedSec, Level* level)
+void FlagPole::UpdateGameItem(float elapsedSec, GameState* gameState)
 {
+	Level* level = gameState->GetLevel();
 	if (m_IsHit)
 	{
 		m_FlagPoleYPos = m_FlagPoleYPos -1.5f;
@@ -883,8 +888,9 @@ void Coin::CollisionDetect(GameState* gameState)
 		m_IsHit = true;
 	}
 }
-void Coin::UpdateGameItem(float elapsedSec, Level* level)
+void Coin::UpdateGameItem(float elapsedSec, GameState* gameState)
 {
+	Level* level = gameState->GetLevel();
 	m_AnimTime += elapsedSec;
 	int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) };
 	m_AnimFrame = totalFramesElapsed % m_NrOfFrames;
@@ -989,7 +995,8 @@ Enemy::~Enemy()
 {
 
 }
-void Enemy::UpdateGameItem(float elapsedSec, Level* level) {
+void Enemy::UpdateGameItem(float elapsedSec, GameState* gameState) {
+	Level* level = gameState->GetLevel();
 	switch (m_LiveItemState) {
 	case LiveItemState::Alive:
 	{ 
@@ -1146,9 +1153,10 @@ Projectile::Projectile(Point2f GameItemPos) : LiveItem("Images/fireball.png", 12
 }
 Projectile::~Projectile() {
 }
-void Projectile::UpdateGameItem(float elapsedSec, Level* level)
+void Projectile::UpdateGameItem(float elapsedSec, GameState* gameState)
 {
-	
+	Level* level = gameState->GetLevel();
+
 
 	//SetGameItemPosY(GetGameItemPos().y + float(1.5f * GolfbewegingInPercent(m_AnimTime, 1.f)));
 	switch (m_LiveItemState) {

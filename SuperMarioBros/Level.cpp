@@ -192,14 +192,15 @@ void Level::DrawForeground(AvatarState* avatarState) const
 	}
 }
 
-void Level::UpdateItems(float elapsedSec, Level* level, Point2f cameraPos)
+void Level::UpdateItems(float elapsedSec, GameState* gameState, Point2f cameraPos)
 {
+	Level* level = gameState->GetLevel();
 	for (size_t i = 0; i < m_GameItems.size(); i++) 
 	{
 		GameItem* GameItem = m_GameItems[i];
 		if (GameItem->IsActive())
 		{
-			GameItem->UpdateGameItem(elapsedSec, level);
+			GameItem->UpdateGameItem(elapsedSec, gameState);
 		}
 	}
 
@@ -213,7 +214,7 @@ void Level::UpdateItems(float elapsedSec, Level* level, Point2f cameraPos)
 		{
 			if (cameraPos.x + Window().width / 2 + 35.f >= ALiveItem->GetGameItemPos().x)
 			{
-				ALiveItem->UpdateGameItem(elapsedSec, level);
+				ALiveItem->UpdateGameItem(elapsedSec, gameState);
 			}
 		}
 

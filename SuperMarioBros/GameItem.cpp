@@ -130,7 +130,6 @@ void NormalBlock::CollisionDetect(GameState* gameState) {
 	}
 
 }
-
 bool NormalBlock::CollisionDetectOnGround(AvatarState* avatarState) {
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
 		Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), 
@@ -839,6 +838,7 @@ void FlagPole::UpdateGameItem(float elapsedSec, Level* level)
 		if (m_FlagPoleYPos <= GetGameItemPos().y)
 		{
 			m_FlagPoleYPos = GetGameItemPos().y;
+			gameState->LevelWon();
 		}
 	}
 
@@ -1117,6 +1117,13 @@ void Enemy::CollisionWithGameItemDetect(GameItem* gameItem)
 		break;
 
 	}
+	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop:
+	{
+		SetVelocityY(0.f);
+		SetGameItemPosY(gameItem->GetGameItemPos().y + gameItem->GetGameItemHeight());
+		break;
+
+	}
 	}
 }
 void Enemy::CollisionWithLiveItemDetect(LiveItem* liveItem)
@@ -1125,7 +1132,7 @@ void Enemy::CollisionWithLiveItemDetect(LiveItem* liveItem)
 }
 
 Goomba::Goomba(Point2f GameItemPos) : Enemy("Images/smb_enemies_sheet.png", 30, 30, GameItemPos, 16, 20, true, LiveItemState::Alive,
-	Vector2f{-50.0f, -140.f}, Vector2f{0.0f, -981.0f},
+	Vector2f{-30.0f, 0.f}, Vector2f{0.0f, -581.0f},
 	0, 0, 2, 0.2f, 2, 0, 15, 7, GOOMBA_TYPE)
 {
 }
@@ -1191,14 +1198,14 @@ void Projectile::CollisionWithGameItemDetect(GameItem* gameItem)
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom:
 	{
 
-		
+		m_LiveItemState = LiveItemState::Dying;
 		break;
 
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop:
 	{
 
-		m_LiveItemState = LiveItemState::Dying;
+		m_Velocity.y = float(sqrt(2.0f * 400.f * 10));
 		break;
 
 	}

@@ -31,6 +31,8 @@ public:
 	GameState();
 	virtual ~GameState();
 
+	void LevelWon() { exit(0); };
+
 	// TODO: move to AvatarState
 	NormalMan* GetNormalMan();
 	BiggerMan* GetBiggerMan();

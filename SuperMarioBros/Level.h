@@ -20,7 +20,7 @@ public:
 	void HandleCollision(float elapsedSec, GameState* gameState) const;
 	bool IsOnGround(AvatarState* avatarState) const;
 
-	void UpdateItems(float elapsedSec, Level* level);
+	void UpdateItems(float elapsedSec, Level* level, Point2f cameraPos);
 
 	void DestroyGameItem(GameItem* gameItem);
 	void AddGameItem(GameItem* gameItem);

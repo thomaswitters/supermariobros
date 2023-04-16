@@ -192,7 +192,7 @@ void Level::DrawForeground(AvatarState* avatarState) const
 	}
 }
 
-void Level::UpdateItems(float elapsedSec, Level* level)
+void Level::UpdateItems(float elapsedSec, Level* level, Point2f cameraPos)
 {
 	for (size_t i = 0; i < m_GameItems.size(); i++) 
 	{
@@ -203,13 +203,18 @@ void Level::UpdateItems(float elapsedSec, Level* level)
 		}
 	}
 
+	//25.f width avatar
+	
 	for (size_t i = 0; i < m_LiveItems.size(); i++)
 	{
 		LiveItem* ALiveItem = m_LiveItems[i];
 
 		if (ALiveItem->IsActive())
 		{
-			ALiveItem->UpdateGameItem(elapsedSec, level);
+			if (cameraPos.x + Window().width / 2 + 35.f >= ALiveItem->GetGameItemPos().x)
+			{
+				ALiveItem->UpdateGameItem(elapsedSec, level);
+			}
 		}
 
 	}

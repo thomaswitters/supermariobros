@@ -32,6 +32,5 @@ private:
 	void Initialize();
 	void Cleanup( );
 	void ClearBackground( ) const;
-	float Teller;
 	Point2f m_CameraFollow;
 };

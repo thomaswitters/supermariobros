@@ -217,7 +217,14 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 	}
 	if (m_ActionState == AvatarState::ActionState::dead)
 	{
+		if (m_AvatarY <= 0.f)
+		{
+			m_AvatarX = 0.f;
+			m_AvatarY = 272.f;
+			m_ActionState = AvatarState::ActionState::moving;
+		}
 		
+
 	}
 	UpdatePosition(elapsedSec, cameraPos);
 	if (m_AmmoCounterAmound >= 2)

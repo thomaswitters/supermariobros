@@ -152,7 +152,6 @@ private:
 	Texture* m_SpriteTextureBottom;
 };
 
-
 class PowerUp : public GameItem
 {
 public:
@@ -176,8 +175,6 @@ private:
 	float m_AnimTime;
 	int m_AnimFrame;
 };
-
-
 
 class DecorBlock : public GameItem
 {

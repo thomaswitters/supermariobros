@@ -233,7 +233,8 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 
 	AddGameItem(new FlagPole(Point2f(3174.f, 288.f)));
 	AddGameItem(new ConcreteBlock(Point2f(3168.f, 272)));
-	AddLiveItem(new Goomba(Point2f(300.f, 272.f)));
+	AddLiveItem(new Goomba(Point2f(400.f, 272.f)));
+	AddLiveItem(new Goomba(Point2f(450.f, 272.f)));
 	AddLiveItem(new Goomba(Point2f(650.f, 272.f)));
 	AddLiveItem(new Goomba(Point2f(750.f, 272.f)));
 
@@ -251,6 +252,9 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 
 	AddLiveItem(new Goomba(Point2f(2040.f, 272.f)));
 	AddLiveItem(new Goomba(Point2f(2060.f, 272.f)));
+
+	AddLiveItem(new Goomba(Point2f(2648.f, 272.f)));
+	AddLiveItem(new Goomba(Point2f(2670.f, 272.f)));
 
 	
 }

@@ -17,7 +17,6 @@ void Game::Initialize( )
 {
 	m_Level = new Level1();
 	m_Camera = new Camera{ Window().width, Window().height };
-	Teller = 0.f;
 }
 
 void Game::Cleanup( )
@@ -34,28 +33,6 @@ void Game::Cleanup( )
 
 void Game::Update( float elapsedSec )
 {
-	Teller += elapsedSec;
-	if (Teller >= 2.f && Teller <= 4)
-	{
-		
-		//m_GameState.ResetAvatar();
-		//m_GameState.SetAvatar(m_GameState.GetNormalMan());
-		//m_GameState.SetAvatar(m_GameState.GetBiggerMan());
-	}
-	else if (Teller >= 4.f && Teller <= 6.f)
-	{
-		//m_GameState.SetAvatar(m_GameState.GetBiggerMan());
-		//m_GameState.ResetAvatar();
-		//m_GameState.SetAvatar(m_GameState.GetNormalMan());
-	}
-	else if (Teller >= 6.f)
-	{
-		
-		//m_GameState.SetAvatar(m_GameState.GetFlowerMan());
-		//m_GameState.ResetAvatar();
-		//m_GameState.SetAvatar(m_GameState.GetBiggerMan());
-	}
-
 	m_GameState.UpdateDrawAvatar(elapsedSec);
 	m_GameState.SetLevel(m_Level);
 	

@@ -6,7 +6,7 @@ AvatarState::AvatarState(Avatar *initialAvatar)
 	, m_AvatarY{ 400.f }
 	, m_Velocity{ 0.f, 0.f }
 	, m_Acceleration{ 0.f, -981.f }
-	, m_currentAvatar{ initialAvatar }
+	, m_pCurrentAvatar{ initialAvatar }
 	, m_CountStartJump{0.40f}
 	, m_JumpTime{}
 	, m_IsJumping{false}
@@ -109,13 +109,13 @@ Vector2f AvatarState::GetAccelerationAvatar()
 }
 
 void AvatarState::SetCurrentAvatar(Avatar* currentAvatar) {
-	m_currentAvatar = currentAvatar;
+	m_pCurrentAvatar = currentAvatar;
 }
 Avatar* AvatarState::GetCurrentAvatar() const {
-	return m_currentAvatar;
+	return m_pCurrentAvatar;
 }
 void AvatarState::ResetAvatar(Avatar* normalMan) {
-	m_currentAvatar = normalMan;
+	m_pCurrentAvatar = normalMan;
 }
 
 AvatarState::ActionState AvatarState::GetActionState() const
@@ -127,19 +127,6 @@ void AvatarState::SetActionState(ActionState actionState)
 	m_ActionState = actionState;
 }
 
-//void AvatarState::UpdateAvatarState()
-//{
-//	if (m_Velocity.y <= 0.f && m_Velocity.x < 0.f && m_Velocity.x > 0.f)
-//	{
-//		m_ActionState = ActionState::moving;
-//	}
-//	else if (m_Velocity.y > 0.f)
-//	{
-//		m_ActionState = ActionState::jumping;
-//	}
-//}
-
-
 void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* level, Point2f cameraPos)
 {
 	if (m_ActionState != AvatarState::ActionState::dead)
@@ -147,6 +134,10 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 		HandleKeys(elapsedSec, level);
 	}
 	
+	if (m_AvatarY <= 0.f)
+	{
+		m_ActionState = AvatarState::ActionState::dead;
+	}
 
 	SetVelocityAvatar(m_Acceleration, elapsedSec);
 	SetPositionVelosityAvatar(m_Velocity, elapsedSec);
@@ -364,17 +355,7 @@ void AvatarState::HandleKeys(float elapsedSec, Level* level)
 			
 		}
 	}
-
-	
-	//else if (pStates[SDL_SCANCODE_DOWN] && pStates[SDL_SCANCODE_UP])
-	//{
-	//	m_ActionState = ActionState::ducking;
-	//	//m_Velocity.x *= 0.96f;
-	//}
-	
-	
-	
-	
+		
 }
 bool AvatarState::CheckKeys()
 {

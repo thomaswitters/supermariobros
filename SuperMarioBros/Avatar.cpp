@@ -3,49 +3,11 @@
 #include <iostream>
 #include <utils.h>
 
-//class TextureImage {
-//	int m_amountOfImagesHorizontally;
-//	int m_amountOfImagesVertically;
-//	int m_positionImageX;
-//	int m_positionImageY;
-//
-//	TextureImage(const std::string& imagePath) {
-//		m_spriteTexture = new Texture("Images/mario.png");
-//	}
-//
-//	virtual ~TextureImage() {
-//		if (m_spriteTexture) {
-// 
-//			delete m_spriteTexture;
-//			m_spriteTexture = NULL;
-//		}
-//	}
-//
-//	Texture* m_spriteTexture;
-//
-//	virtual void Draw(const Rectf dst) const {
-//		float sourceWidth{ m_spriteTexture->GetWidth() / m_amountOfImagesHorizontally };
-//		float sourceHeight{ m_spriteTexture->GetHeight() / m_amountOfImagesVertically };
-//
-//		Rectf src{ sourceWidth * m_positionImageX,sourceHeight * m_positionImageY,sourceWidth,sourceHeight };
-//		m_spriteTexture->Draw(dst, src);
-//
-//	}
-//
-//	void SetX(int newX) {
-//		m_positionImageX = newX;
-//	}
-//
-//	void SetY(int newY) {
-//		m_positionImageX = newY;
-//	}
-//};
 
-//TODO: parameter const std::string& imagePath ipv Texture* spriteTexture!!!! en dus texure in avatar aanmaken en verwijderen
 Avatar::Avatar(AvatarType type, float horSpeed, float jumpSpeed, const  std::string& imagePath, float spriteClipHeight, float spriteClipWidth, float avatarWidth, float avatarHeight, int nrOfFrames)
 	: m_HorSpeed{ horSpeed }
 	, m_JumpSpeed{ jumpSpeed }
-	, m_SpriteTexture{ new Texture(imagePath) }
+	, m_pSpriteTexture{ new Texture(imagePath) }
 	, m_SpriteClipHeight{ spriteClipHeight }
 	, m_SpriteClipWidth{ spriteClipWidth }
 	, m_AvatarWidth{ avatarWidth }
@@ -62,9 +24,9 @@ Avatar::Avatar(AvatarType type, float horSpeed, float jumpSpeed, const  std::str
 
 Avatar::~Avatar()
 {
-	if (m_SpriteTexture) {
-		delete m_SpriteTexture;
-		m_SpriteTexture = NULL;
+	if (m_pSpriteTexture) {
+		delete m_pSpriteTexture;
+		m_pSpriteTexture = NULL;
 	}
 }
 
@@ -203,10 +165,6 @@ void BiggerMan::Draw(const AvatarState* avatarState) const
 		GetSpriteTexture()->Draw(dst, src);
 	}
 	
-	//GetSpriteTexture()->Draw(dst, src);
-	//utils::SetColor(Color4f(1.0f, 0.f, 0.f, 1.f));
-	//utils::DrawRect(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, GetAvatarWidth(), GetAvatarHeight());
-	//utils::DrawRect(GetSpriteClipWidth() * 13, GetSpriteClipHeight() * 3.f, sourceWidth, sourceHeight);
 }
 void BiggerMan::UpdateDraw(float elapsedSec)
 {

@@ -39,7 +39,7 @@ protected:
 		return m_JumpSpeed;
 	}
 	Texture* GetSpriteTexture() const{
-		return m_SpriteTexture;
+		return m_pSpriteTexture;
 	}
 	float GetSpriteClipHeight() const{
 		return m_SpriteClipHeight;
@@ -74,7 +74,7 @@ private:
 	AvatarType m_Type;
 	float m_HorSpeed;
 	float m_JumpSpeed;
-	Texture* m_SpriteTexture;
+	Texture* m_pSpriteTexture;
 	float m_SpriteClipHeight;
 	float m_SpriteClipWidth;
 	float m_AvatarWidth;

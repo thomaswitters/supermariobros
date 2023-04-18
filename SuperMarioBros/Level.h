@@ -36,7 +36,7 @@ private:
 	std::vector<std::vector<std::vector<Point2f>>> m_Vertices;
 	Texture* m_pBackgroundTexture;
 
-	std::vector<GameItem*> m_GameItems;
-	std::vector<LiveItem*> m_LiveItems;
+	std::vector<GameItem*> m_pGameItems;
+	std::vector<LiveItem*> m_pLiveItems;
 };
 

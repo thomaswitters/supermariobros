@@ -2,7 +2,7 @@
 #include "GameItem.h"
 
 GameItem::GameItem(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive)
-	: m_SpriteTexture{new Texture(imagePath)}
+	: m_pSpriteTexture{new Texture(imagePath)}
 	, m_SpriteClipHeight{ spriteClipHeight }
 	, m_SpriteClipWidth{ spriteClipWidth }
 	, m_GameItemPos{ GameItemPos }
@@ -14,9 +14,9 @@ GameItem::GameItem(const std::string& imagePath, float spriteClipHeight, float s
 }
 GameItem::~GameItem()
 {
-	if (m_SpriteTexture) {
-		delete m_SpriteTexture;
-		m_SpriteTexture = NULL;
+	if (m_pSpriteTexture) {
+		delete m_pSpriteTexture;
+		m_pSpriteTexture = NULL;
 	}
 }
 void GameItem::Draw(AvatarState* avatarState) const
@@ -157,7 +157,6 @@ void NormalBlock::UpdateGameItem(float elapsedSec, GameState* gameState)
 		SetGameItemPosY(m_BeginPosY);
 	}
 }
-
 
 
 QuestionBlock::QuestionBlock(Point2f GameItemPos) : GameItem("Images/tiles.png", 16.f, 16.f, GameItemPos, 16.f, 16.f, true)
@@ -443,15 +442,15 @@ bool ConcreteBlock::CollisionDetectOnGround(AvatarState* avatarState) {
 
 
 Pipe::Pipe(Point2f GameItemPos, float height) : GameItem("Images/tiles.png", 32.f, 32.f, GameItemPos, 32.f, height, true)
-, m_SpriteTextureBottom{ new Texture ("Images/tiles.png") }
+, m_pSpriteTextureBottom{ new Texture ("Images/tiles.png") }
 {
 
 }
 Pipe::~Pipe()
 {
-	if (m_SpriteTextureBottom) {
-		delete m_SpriteTextureBottom;
-		m_SpriteTextureBottom = NULL;
+	if (m_pSpriteTextureBottom) {
+		delete m_pSpriteTextureBottom;
+		m_pSpriteTextureBottom = NULL;
 	}
 }
 void Pipe::Draw(AvatarState* avatarState) const
@@ -475,7 +474,7 @@ void Pipe::Draw(AvatarState* avatarState) const
 
 
 	GetSpriteTexture()->Draw(dst, src);
-	m_SpriteTextureBottom->Draw(dst2, src2);
+	m_pSpriteTextureBottom->Draw(dst2, src2);
 	//utils::DrawRect(GetGameItemPos().x, GetGameItemPos().y, 16.f, 16.f);
 }
 void Pipe::CollisionDetect(GameState* gameState) {
@@ -538,14 +537,16 @@ bool Pipe::CollisionDetectOnGround(AvatarState* avatarState) {
 PowerUp::PowerUp(Point2f GameItemPos) : GameItem("Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true)
 , m_PosPowerUp{ GetGameItemPos().x, GetGameItemPos().y }
 , m_Teller{}
-, m_IsHitFlower{false}
-, m_IsHitMushRoom{false}
-, m_CanPickUpFlower{false}
-, m_CanPickUpMushRoom{false}
+, m_IsHitFlower{ false }
+, m_IsHitMushRoom{ false }
+, m_CanPickUpFlower{ false }
+, m_CanPickUpMushRoom{ false }
 , m_NrOfFrames{ 4 }
 , m_NrFramesPerSec{ 0.1f }
 , m_AnimTime{}
 , m_AnimFrame{}
+, m_Velocity{ 0.f, 0.f }
+, m_Acceleration{ 0.f, -598.f }
 {
 
 }
@@ -557,10 +558,10 @@ void PowerUp::Draw(AvatarState* avatarState) const
 {
 	if (/*avatarState->GetCurrentAvatar()->getAvatarType() == NormalManType*/m_IsHitMushRoom)
 	{
-		float sourceWidth{ GetSpriteTexture()->GetWidth()/36};
-		float sourceHeight{ GetSpriteTexture()->GetHeight()/13};
+		float sourceWidth{ GetSpriteTexture()->GetWidth() / 36 };
+		float sourceHeight{ GetSpriteTexture()->GetHeight() / 13 };
 
-		Rectf src{ GetSpriteClipWidth()*0, GetSpriteClipHeight(),sourceWidth,sourceHeight };
+		Rectf src{ GetSpriteClipWidth() * 0, GetSpriteClipHeight(),sourceWidth,sourceHeight };
 		Rectf dst{ m_PosPowerUp.x,m_PosPowerUp.y,sourceWidth, sourceHeight };
 
 		GetSpriteTexture()->Draw(dst, src);
@@ -585,11 +586,11 @@ void PowerUp::CollisionDetect(GameState* gameState)
 {
 	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
-		Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), 
-		Vector2f(avatarState->GetVelocityAvatar()), 
-		Rectf (m_PosPowerUp.x, m_PosPowerUp.y, GetGameItemWidth(), GetGameItemHeight()));
+		Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()),
+		Vector2f(avatarState->GetVelocityAvatar()),
+		Rectf(m_PosPowerUp.x, m_PosPowerUp.y, GetGameItemWidth(), GetGameItemHeight()));
 
-	
+
 	switch (location)
 	{
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheLeft:
@@ -660,7 +661,7 @@ void PowerUp::CollisionDetect(GameState* gameState)
 			//GameState.SetAvatar(GameState.GetFlowerMan());
 			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
-			
+
 		}
 		if (m_CanPickUpMushRoom)
 		{
@@ -683,18 +684,21 @@ void PowerUp::UpdateGameItem(float elapsedSec, GameState* gameState)
 	int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) };
 	m_AnimFrame = totalFramesElapsed % m_NrOfFrames;
 
+
+
 	if (m_IsHitFlower)
 	{
 		if (m_Teller < 16)
 		{
 			m_PosPowerUp.y = m_PosPowerUp.y + 0.5f;
 			m_Teller = m_Teller + 0.5f;
+
 		}
-		if (m_Teller >= 2)
+		if (m_Teller >= 5)
 		{
 			m_CanPickUpFlower = true;
 		}
-	
+
 	}
 	if (m_IsHitMushRoom)
 	{
@@ -703,9 +707,12 @@ void PowerUp::UpdateGameItem(float elapsedSec, GameState* gameState)
 			m_PosPowerUp.y = m_PosPowerUp.y + 0.5f;
 			m_Teller = m_Teller + 0.5f;
 		}
-		if(m_Teller >= 2)
+		if (m_Teller >= 5)
 		{
 			m_CanPickUpMushRoom = true;
+			/*m_Velocity += m_Acceleration * elapsedSec;
+			m_PosPowerUp.x += m_Velocity.x * elapsedSec;
+			m_PosPowerUp.y += m_Velocity.y * elapsedSec;*/
 		}
 
 	}
@@ -1379,3 +1386,5 @@ bool Projectile::IsEnemyOf(LiveItem* otherLiveItem)
 {
 	return otherLiveItem->GetLiveItemType() != GetLiveItemType();
 }
+
+

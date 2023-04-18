@@ -48,21 +48,21 @@ public:
 
 	Level* GetLevel() const
 	{
-		return m_Level;
+		return m_pLevel;
 	}
 
 	void SetLevel(Level* level) {
-		m_Level = level;
+		m_pLevel = level;
 	}
 
 private:
-	AvatarState* m_AvatarState;
+	AvatarState* m_pAvatarState;
 
 	// TODO: move to AvatarState
-	NormalMan* m_NormalMan;
-	BiggerMan* m_BiggerMan;
-	FlowerMan* m_FlowerMan;
+	NormalMan* m_pNormalMan;
+	BiggerMan* m_pBiggerMan;
+	FlowerMan* m_pFlowerMan;
 	// TODO: end move to AvatarState
-	Level* m_Level{};
+	Level* m_pLevel{};
 };
 

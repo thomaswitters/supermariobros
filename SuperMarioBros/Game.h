@@ -26,8 +26,8 @@ public:
 
 private:
 	GameState m_GameState;
-	Level* m_Level;
-	Camera* m_Camera;
+	Level* m_pLevel;
+	Camera* m_pCamera;
 	// FUNCTIONS
 	void Initialize();
 	void Cleanup( );

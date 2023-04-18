@@ -15,40 +15,43 @@ Game::~Game( )
 
 void Game::Initialize( )
 {
-	m_Level = new Level1();
-	m_Camera = new Camera{ Window().width, Window().height };
+	m_pLevel = new Level1();
+	m_pCamera = new Camera{ Window().width, Window().height };
 }
 
 void Game::Cleanup( )
 {
-	if (m_Level) {
-		delete m_Level;
-		m_Level = NULL;
+	if (m_pLevel) {
+		delete m_pLevel;
+		m_pLevel = NULL;
 	}
-	if (m_Camera) {
-		delete m_Camera;
-		m_Camera = NULL;
+	if (m_pCamera) {
+		delete m_pCamera;
+		m_pCamera = NULL;
 	}
 }
 
 void Game::Update( float elapsedSec )
 {
 	m_GameState.UpdateDrawAvatar(elapsedSec);
-	m_GameState.SetLevel(m_Level);
+	m_GameState.SetLevel(m_pLevel);
 	
-	m_GameState.UpdateAvatar(elapsedSec, m_Level, m_CameraFollow);
-	m_Level->UpdateItems(elapsedSec, &m_GameState, m_CameraFollow);
-	m_Level->HandleCollision(elapsedSec, &m_GameState);
+	m_GameState.UpdateAvatar(elapsedSec, m_pLevel, m_CameraFollow);
+	m_pLevel->UpdateItems(elapsedSec, &m_GameState, m_CameraFollow);
+	m_pLevel->HandleCollision(elapsedSec, &m_GameState);
 	
 
-	m_Camera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
+	m_pCamera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
 
 	
 	if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x || m_GameState.GetAvatarState()->GetPositionAvatar().x <= 0.f && m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f)
 	{
 		if (m_GameState.GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
 		{
-			m_CameraFollow = m_GameState.GetAvatarState()->GetPositionAvatar();
+			if (m_GameState.GetAvatarState()->GetPositionAvatar().y >= 272.f)
+			{
+				m_CameraFollow = m_GameState.GetAvatarState()->GetPositionAvatar();
+			}
 		}
 	}
 	
@@ -72,9 +75,9 @@ void Game::Draw( ) const
 	glPushMatrix();
 	{
 		// T R S
-		m_Camera->Transform(Point2f{ m_CameraFollow });
-		m_Level->DrawBackground();
-		m_Level->DrawForeground(m_GameState.GetAvatarState());
+		m_pCamera->Transform(Point2f{ m_CameraFollow });
+		m_pLevel->DrawBackground();
+		m_pLevel->DrawForeground(m_GameState.GetAvatarState());
 		m_GameState.DrawAvatar();
 	}
 	glPopMatrix();

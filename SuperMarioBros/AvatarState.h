@@ -63,7 +63,7 @@ private:
 	Vector2f m_Acceleration{};
 	bool m_IsOnGround{};
 
-	Avatar* m_currentAvatar;
+	Avatar* m_pCurrentAvatar;
 	ActionState m_ActionState{ ActionState::moving };
 
 	float m_CountStartJump;

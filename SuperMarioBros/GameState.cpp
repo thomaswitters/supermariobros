@@ -2,71 +2,64 @@
 #include "GameState.h"
 
 GameState::GameState():
-	m_NormalMan{ new NormalMan() }
-	, m_BiggerMan{ new BiggerMan() }
-	, m_FlowerMan{ new FlowerMan() }
-	, m_AvatarState{}
+	m_pNormalMan{ new NormalMan() }
+	, m_pBiggerMan{ new BiggerMan() }
+	, m_pFlowerMan{ new FlowerMan() }
+	, m_pAvatarState{}
 	
 
 {
-	m_AvatarState = new AvatarState(m_NormalMan);
+	m_pAvatarState = new AvatarState(m_pNormalMan);
 }
-
 GameState::~GameState() {
-	if (m_AvatarState) {
-		delete m_AvatarState;
-		m_AvatarState = NULL;
+	if (m_pAvatarState) {
+		delete m_pAvatarState;
+		m_pAvatarState = NULL;
 	}
-	if (m_NormalMan) {
-		delete m_NormalMan;
-		m_NormalMan = NULL;
+	if (m_pNormalMan) {
+		delete m_pNormalMan;
+		m_pNormalMan = NULL;
 	}
-	if (m_BiggerMan) {
-		delete m_BiggerMan;
-		m_BiggerMan = NULL;
+	if (m_pBiggerMan) {
+		delete m_pBiggerMan;
+		m_pBiggerMan = NULL;
 	}
-	if (m_FlowerMan) {
-		delete m_FlowerMan;
-		m_FlowerMan = NULL;
+	if (m_pFlowerMan) {
+		delete m_pFlowerMan;
+		m_pFlowerMan = NULL;
 	}
 	
 }
-
 void GameState::DrawAvatar() const {
-	m_AvatarState->GetCurrentAvatar()->Draw(m_AvatarState);
+	m_pAvatarState->GetCurrentAvatar()->Draw(m_pAvatarState);
 }
 AvatarState* GameState::GetAvatarState() const
 {
-	return m_AvatarState;
+	return m_pAvatarState;
 }
 void GameState::UpdateAvatar(float elapsedSec, Level* level, Point2f cameraPos) {
-	m_AvatarState->Update(elapsedSec, m_AvatarState, level, cameraPos);
+	m_pAvatarState->Update(elapsedSec, m_pAvatarState, level, cameraPos);
 }
 void GameState::UpdateDrawAvatar(float elapsedSec) {
-	m_AvatarState->GetCurrentAvatar()->UpdateDraw(elapsedSec);
+	m_pAvatarState->GetCurrentAvatar()->UpdateDraw(elapsedSec);
 }
-
 void GameState::LevelWon() {
 	SDL_Event fake;
 	fake.type = SDL_QUIT;
 	SDL_PushEvent(&fake);
 }
-
 NormalMan* GameState::GetNormalMan() {
-	return m_NormalMan;
+	return m_pNormalMan;
 }
-
 FlowerMan* GameState::GetFlowerMan() {
-	return m_FlowerMan;
+	return m_pFlowerMan;
 }
-
 BiggerMan* GameState::GetBiggerMan() {
-	return m_BiggerMan;
+	return m_pBiggerMan;
 }
-
 void GameState::ResetAvatar() {
-	m_AvatarState->ResetAvatar(m_NormalMan);
+	m_pAvatarState->ResetAvatar(m_pNormalMan);
 }
 void GameState::SetAvatar(Avatar* newAvatar) {
-	m_AvatarState->SetCurrentAvatar(newAvatar);
+	m_pAvatarState->SetCurrentAvatar(newAvatar);
 }

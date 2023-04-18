@@ -7,8 +7,8 @@
 Level::Level(const std::string& imagePath, std::vector<std::string> verticesImagePaths  /* EN OOK DE GAMEELEMENTS */)
 	: m_Vertices{}
 	, m_pBackgroundTexture{new Texture(imagePath)}
-	, m_GameItems{}
-	, m_LiveItems{}
+	, m_pGameItems{}
+	, m_pLiveItems{}
 {
 	for (size_t i = 0; i < verticesImagePaths.size(); i++) {
 		std::vector<std::vector<Point2f>> m_VerticesTemp;
@@ -24,15 +24,15 @@ Level::~Level()
 		m_pBackgroundTexture = NULL;
 	}
 
-	for (size_t i = 0; i < m_GameItems.size(); i++)
+	for (size_t i = 0; i < m_pGameItems.size(); i++)
 	{
-		GameItem* GameItem = m_GameItems[i];
+		GameItem* GameItem = m_pGameItems[i];
 		delete GameItem;
 	}
 
-	for (size_t i = 0; i < m_LiveItems.size(); i++)
+	for (size_t i = 0; i < m_pLiveItems.size(); i++)
 	{
-		LiveItem* ALiveItem = m_LiveItems[i];
+		LiveItem* ALiveItem = m_pLiveItems[i];
 		delete ALiveItem;
 	}
 }
@@ -75,9 +75,9 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 		}
 	}
 
-	for (size_t i = 0; i < m_GameItems.size(); i++)
+	for (size_t i = 0; i < m_pGameItems.size(); i++)
 	{
-		GameItem* GameItem = m_GameItems[i];
+		GameItem* GameItem = m_pGameItems[i];
 		if (GameItem->IsActive()) 
 		{ 
 #
@@ -85,25 +85,25 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 		}
 	}
 
-	for (size_t i = 0; i < m_LiveItems.size(); i++)
+	for (size_t i = 0; i < m_pLiveItems.size(); i++)
 	{
-		LiveItem* ALiveItem = m_LiveItems[i];
+		LiveItem* ALiveItem = m_pLiveItems[i];
 		if (ALiveItem->IsActive())
 		{
 			ALiveItem->CollisionDetect(gameState);
 
-			for (size_t i = 0; i < m_GameItems.size(); i++)
+			for (size_t i = 0; i < m_pGameItems.size(); i++)
 			{
-				GameItem* GameItem = m_GameItems[i];
+				GameItem* GameItem = m_pGameItems[i];
 				if (GameItem->IsActive())
 				{
 					ALiveItem->CollisionWithGameItemDetect(GameItem);
 				}
 			}
 
-			for (size_t i = 0; i < m_LiveItems.size(); i++)
+			for (size_t i = 0; i < m_pLiveItems.size(); i++)
 			{
-				LiveItem* OtherLiveItem = m_LiveItems[i];
+				LiveItem* OtherLiveItem = m_pLiveItems[i];
 				if (OtherLiveItem->IsActive())
 				{
 					ALiveItem->CollisionWithLiveItemDetect(OtherLiveItem);
@@ -138,9 +138,9 @@ bool Level::IsOnGround(AvatarState* avatarState) const
 			return true;
 		}
 
-		for (size_t i = 0; i < m_GameItems.size(); i++)
+		for (size_t i = 0; i < m_pGameItems.size(); i++)
 		{
-			GameItem* GameItem = m_GameItems[i];
+			GameItem* GameItem = m_pGameItems[i];
 			if (GameItem->IsActive())
 			{
 				if (GameItem->CollisionDetectOnGround(avatarState))
@@ -156,34 +156,34 @@ bool Level::IsOnGround(AvatarState* avatarState) const
 
 void Level::AddGameItem(GameItem* gameItem)
 {
-	m_GameItems.push_back(gameItem);
+	m_pGameItems.push_back(gameItem);
 }
 
 void Level::AddLiveItem(LiveItem* liveItem)
 {
-	m_LiveItems.push_back(liveItem);
+	m_pLiveItems.push_back(liveItem);
 }
 
 std::vector<GameItem*> Level::GetGameItems() const
 {
-	return m_GameItems;
+	return m_pGameItems;
 }
 
 
 void Level::DrawForeground(AvatarState* avatarState) const
 {
-	for (size_t i = 0; i < m_GameItems.size(); i++)
+	for (size_t i = 0; i < m_pGameItems.size(); i++)
 	{
-		GameItem* GameItem = m_GameItems[i];
+		GameItem* GameItem = m_pGameItems[i];
 		if (GameItem->IsActive())
 		{
 			GameItem->Draw(avatarState);
 		}
 	}
 
-	for (size_t i = 0; i < m_LiveItems.size(); i++)
+	for (size_t i = 0; i < m_pLiveItems.size(); i++)
 	{
-		LiveItem* ALiveItem = m_LiveItems[i];
+		LiveItem* ALiveItem = m_pLiveItems[i];
 		if (ALiveItem->IsActive())
 		{
 			ALiveItem->Draw(avatarState);
@@ -195,9 +195,9 @@ void Level::DrawForeground(AvatarState* avatarState) const
 void Level::UpdateItems(float elapsedSec, GameState* gameState, Point2f cameraPos)
 {
 	Level* level = gameState->GetLevel();
-	for (size_t i = 0; i < m_GameItems.size(); i++) 
+	for (size_t i = 0; i < m_pGameItems.size(); i++) 
 	{
-		GameItem* GameItem = m_GameItems[i];
+		GameItem* GameItem = m_pGameItems[i];
 		if (GameItem->IsActive())
 		{
 			GameItem->UpdateGameItem(elapsedSec, gameState);
@@ -206,9 +206,9 @@ void Level::UpdateItems(float elapsedSec, GameState* gameState, Point2f cameraPo
 
 	//25.f width avatar
 	
-	for (size_t i = 0; i < m_LiveItems.size(); i++)
+	for (size_t i = 0; i < m_pLiveItems.size(); i++)
 	{
-		LiveItem* ALiveItem = m_LiveItems[i];
+		LiveItem* ALiveItem = m_pLiveItems[i];
 
 		if (ALiveItem->IsActive())
 		{

@@ -37,10 +37,9 @@ public:
 	{
 		m_GameItemPos.x = x;
 	}
-
 protected:
 	Texture* GetSpriteTexture() const {
-		return m_SpriteTexture;
+		return m_pSpriteTexture;
 	}
 	float GetSpriteClipHeight() const {
 		return m_SpriteClipHeight;
@@ -64,7 +63,7 @@ protected:
 
 private:
 	bool m_Active;
-	Texture* m_SpriteTexture;
+	Texture* m_pSpriteTexture;
 	float m_SpriteClipHeight;
 	float m_SpriteClipWidth;
 	Point2f m_GameItemPos;
@@ -149,7 +148,7 @@ public:
 	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
 private:
-	Texture* m_SpriteTextureBottom;
+	Texture* m_pSpriteTextureBottom;
 };
 
 class PowerUp : public GameItem
@@ -174,7 +173,11 @@ private:
 	float m_NrFramesPerSec;
 	float m_AnimTime;
 	int m_AnimFrame;
+
+	Vector2f m_Velocity;
+	Vector2f m_Acceleration;
 };
+
 
 class DecorBlock : public GameItem
 {
@@ -376,3 +379,5 @@ public:
 	virtual void BounceFloor();
 	virtual bool IsEnemyOf(LiveItem* otherLiveItem);
 };
+
+

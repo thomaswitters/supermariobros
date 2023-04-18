@@ -1,7 +1,5 @@
 #TODO
 
-1. NU: m_p bij pointer
-
 2. LiveItem protected member variables moeten protected member functions worden (getters and setters)
 
 3. virtuele methodes in GameItem die geen implementatie hebben mogen weg

@@ -16,6 +16,7 @@ BeginVieuw::BeginVieuw()
 	m_pText1Player = new Texture("1 PLAYER GAME", m_pTextFont, Color4f{ 1,1,1,1 });
 	m_pText2Player = new Texture("2 PLAYER GAME", m_pTextFont, Color4f{ 1,1,1,1 });
 }
+
 BeginVieuw::~BeginVieuw()
 {
 	delete m_pBeginBackground;

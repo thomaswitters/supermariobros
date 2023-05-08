@@ -19,7 +19,7 @@ void Game::Initialize( )
 {
 	m_pLevel = new Level1();
 	m_pCamera = new Camera{ Window().width, Window().height };
-	m_pHud = new Hud{ Point2f(Window().width, Window().height*2), int(400)};
+	m_pHud = new Hud{ Point2f(Window().width, Window().height*2), int(400), 1, 3};
 	m_BeginScreen = new BeginVieuw();
 }
 

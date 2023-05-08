@@ -32,7 +32,6 @@ public:
 	void SetVelocityYCollisionTopAvatar();
 
 	Vector2f GetAccelerationAvatar();
-
 	enum class ActionState {
 		waiting,
 		moving,

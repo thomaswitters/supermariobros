@@ -7,7 +7,7 @@ AvatarState::AvatarState(Avatar *initialAvatar)
 	, m_Velocity{ 0.f, 0.f }
 	, m_Acceleration{ 0.f, -981.f }
 	, m_pCurrentAvatar{ initialAvatar }
-	, m_CountStartJump{0.40f}
+	, m_CountStartJump{0.35f}
 	, m_JumpTime{}
 	, m_IsJumping{false}
 	, m_AmmoCounterAmound{2}
@@ -127,6 +127,7 @@ void AvatarState::SetActionState(ActionState actionState)
 	m_ActionState = actionState;
 }
 
+
 void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* level, Point2f cameraPos)
 {
 	if (m_ActionState != AvatarState::ActionState::dead)
@@ -193,13 +194,27 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 	}
 	if (m_ActionState == AvatarState::ActionState::ducking)
 	{
+		if (avatarState->GetCurrentAvatar()->getAvatarType() == BiggerManType || avatarState->GetCurrentAvatar()->getAvatarType() == FlowerManType)
+		{
+			avatarState->GetCurrentAvatar()->SetAvatarHeight(15.f);
+		}
+		
+		//avatarState->GetCurrentAvatar()->GetAvatarHeight();
 		if (!CheckKeys() && m_IsOnGround)
 		{
 			SetActionState(AvatarState::ActionState::waiting);
+			if (avatarState->GetCurrentAvatar()->getAvatarType() == BiggerManType || avatarState->GetCurrentAvatar()->getAvatarType() == FlowerManType)
+			{
+				avatarState->GetCurrentAvatar()->SetAvatarHeight(30.f);
+			}
 		}
 		else if (!CheckKeyDown())
 		{
 			SetActionState(AvatarState::ActionState::jumping);
+			if (avatarState->GetCurrentAvatar()->getAvatarType() == BiggerManType || avatarState->GetCurrentAvatar()->getAvatarType() == FlowerManType)
+			{
+				avatarState->GetCurrentAvatar()->SetAvatarHeight(30.f);
+			}
 		}
 		else
 		{
@@ -336,6 +351,8 @@ void AvatarState::HandleKeys(float elapsedSec, Level* level)
 		if (m_IsOnGround)
 		{
 			m_Velocity.x *= 0.96f;
+			//m_AvatarHeight
+			//SetAvatarHeight();
 		}
 	} 
 	if (pStates[SDL_SCANCODE_SPACE])
@@ -350,6 +367,7 @@ void AvatarState::HandleKeys(float elapsedSec, Level* level)
 					level->AddLiveItem(new Projectile(Point2f(m_AvatarX, m_AvatarY + 10.f)));
 					m_AmmoCounterAmound--;
 				}
+				
 				
 			}
 			

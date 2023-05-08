@@ -142,13 +142,15 @@ public:
 class Pipe : public GameItem
 {
 public:
-	Pipe(Point2f GameItemPos, float height);
+	Pipe(Point2f GameItemPos, float height, bool canGoThrough);
 	virtual ~Pipe();
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
 private:
 	Texture* m_pSpriteTextureBottom;
+	bool m_CanGoThrough;
+	bool m_IsGoingThrough;
 };
 
 class PowerUp : public GameItem

@@ -30,6 +30,10 @@ public:
 	AvatarType getAvatarType() const {
 		return m_Type;
 	}
+	void SetAvatarHeight(float height)
+	{
+		m_AvatarHeight = height;
+	}
 	
 protected:
 	float getHorSpeed() const{
@@ -65,7 +69,7 @@ protected:
 	void SetAnimFrame(int totalFramesElapsed, int NrOfFrames) {
 		m_AnimFrame = totalFramesElapsed % NrOfFrames;
 	}
-	void SetAvatarHeight(float height)
+	void SetAvatarHeightSprite(float height)
 	{
 		m_SpriteClipHeight = height;
 	}

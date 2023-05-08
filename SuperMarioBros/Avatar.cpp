@@ -39,7 +39,7 @@ void Avatar::UpdateDraw(float elapsedSec)
 
 // (float horSpeed, float jumpSpeed, Texture* spriteTexture, float spriteClipHeight, float spriteClipWidth, float avatarWidth, float avatarHeight)
 
-NormalMan::NormalMan() : Avatar(NormalManType ,200.f, 600.f, "Images/mario.png", 325.f, 160.f, 12.f, 20.f, 4)
+NormalMan::NormalMan() : Avatar(NormalManType ,200.f, 600.f, "Images/mario.png", 325.f, 160.f, 12.f, 15.f, 4)
 {
 
 }
@@ -164,7 +164,8 @@ void BiggerMan::Draw(const AvatarState* avatarState) const
 	{
 		GetSpriteTexture()->Draw(dst, src);
 	}
-	
+	//utils::DrawRect(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, GetAvatarWidth(), GetAvatarHeight());
+
 }
 void BiggerMan::UpdateDraw(float elapsedSec)
 {
@@ -177,7 +178,7 @@ void BiggerMan::UpdateDraw(float elapsedSec)
 
 
 
-FlowerMan::FlowerMan() : Avatar(FlowerManType, 200.f, 600.f, "Images/Mario2.png", 28.8f, 25.6f, 12.f, 30.f, 4)
+FlowerMan::FlowerMan() : Avatar(FlowerManType, 200.f, 600.f, "Images/Mario2.png", 29.f, 25.6f, 12.f, 30.f, 4)
 {
 
 }
@@ -215,7 +216,7 @@ void FlowerMan::Draw(const AvatarState* avatarState) const
 	}
 	else if (avatarState->GetActionState() == AvatarState::ActionState::ducking)
 	{
-		src = Rectf{ GetSpriteClipWidth() * 15.f,GetSpriteClipHeight() * 5.2f,sourceWidth,sourceHeight };
+		src = Rectf{ GetSpriteClipWidth() * 15.f,GetSpriteClipHeight() * 5.15f,sourceWidth,sourceHeight };
 
 	}
 	if (avatarState->GetVelocityAvatar().x < 0.f /*&& avatarState->GetActionState() != AvatarState::ActionState::stopping*/) {

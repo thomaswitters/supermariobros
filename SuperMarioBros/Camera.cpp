@@ -21,6 +21,7 @@ void Camera::Transform(const Point2f& target)
 	Clamp(newTarget);
 
 	glTranslatef(-newTarget.x, -newTarget.y, 0.f);
+	
 }
 
 Point2f Camera::Track(const Point2f& target) // target is peetie

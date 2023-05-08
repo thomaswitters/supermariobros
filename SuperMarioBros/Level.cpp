@@ -62,6 +62,7 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 
 	utils::HitInfo
 		hitInfo{};
+	
 	if (avatarState->GetActionState() != AvatarState::ActionState::dead)
 	{
 		for (size_t i = 0; i < m_Vertices.size(); i++) {
@@ -74,14 +75,16 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 
 		}
 	}
-
+	
+	
 	for (size_t i = 0; i < m_pGameItems.size(); i++)
 	{
-		GameItem* GameItem = m_pGameItems[i];
-		if (GameItem->IsActive()) 
+		GameItem* AGameItem = m_pGameItems[i];
+		//if (AGameItem == DecorBlock)
+		if (AGameItem->IsActive())
 		{ 
 #
-			GameItem->CollisionDetect(gameState);
+			AGameItem->CollisionDetect(gameState);
 		}
 	}
 
@@ -94,10 +97,10 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 
 			for (size_t i = 0; i < m_pGameItems.size(); i++)
 			{
-				GameItem* GameItem = m_pGameItems[i];
-				if (GameItem->IsActive())
+				GameItem* AGameItem = m_pGameItems[i];
+				if (AGameItem->IsActive())
 				{
-					ALiveItem->CollisionWithGameItemDetect(GameItem);
+					ALiveItem->CollisionWithGameItemDetect(AGameItem);
 				}
 			}
 
@@ -117,8 +120,8 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 				if (utils::Raycast(m_Vertices.at(i).front(), liveItemOrigin1, liveItemOrigin2, hitInfo))
 				{
 					ALiveItem->SetVelocityY(0.f);
-					ALiveItem->SetGameItemPosY(hitInfo.intersectPoint.y );
-					ALiveItem->BounceFloor();
+					ALiveItem->SetGameItemPosY(hitInfo.intersectPoint.y);
+					ALiveItem->BounceFloor();	
 				}
 			}
 		}

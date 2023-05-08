@@ -224,18 +224,19 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 	AddGameItem(new ConcreteBlock(Point2f(3024.f, 384)));
 
 
-	AddGameItem(new Pipe(Point2f(448.f, 272.f), 32.f));
-	AddGameItem(new Pipe(Point2f(608.f, 272.f), 47.f));
-	AddGameItem(new Pipe(Point2f(736.f, 272.f), 63.f));
-	AddGameItem(new Pipe(Point2f(912.f, 272.f), 63.f));
-	AddGameItem(new Pipe(Point2f(2608.f, 272.f), 32.f));
-	AddGameItem(new Pipe(Point2f(2864.f, 272.f), 32.f));
+	AddGameItem(new Pipe(Point2f(448.f, 272.f), 32.f, false));
+	AddGameItem(new Pipe(Point2f(608.f, 272.f), 47.f, false));
+	AddGameItem(new Pipe(Point2f(736.f, 272.f), 63.f, true));
+	AddGameItem(new Pipe(Point2f(912.f, 272.f), 63.f, false));
+	AddGameItem(new Pipe(Point2f(2608.f, 272.f), 32.f, false));
+	AddGameItem(new Pipe(Point2f(2864.f, 272.f), 32.f, false));
 
 	AddGameItem(new FlagPole(Point2f(3174.f, 288.f)));
 	AddGameItem(new ConcreteBlock(Point2f(3168.f, 272)));
 	AddLiveItem(new Goomba(Point2f(400.f, 272.f)));
 	AddLiveItem(new Goomba(Point2f(450.f, 272.f)));
 	AddLiveItem(new Goomba(Point2f(650.f, 272.f)));
+	AddLiveItem(new Goomba(Point2f(850.f, 272.f)));
 	AddLiveItem(new Goomba(Point2f(750.f, 272.f)));
 
 	AddLiveItem(new Goomba(Point2f(1280.f, 400.f)));

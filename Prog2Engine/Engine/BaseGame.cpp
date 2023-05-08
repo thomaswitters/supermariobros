@@ -97,14 +97,14 @@ void BaseGame::InitializeGameEngine()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Initialize PNG loading
-	/*
+	
 	int imgFlags = IMG_INIT_PNG;
 	if ( !( IMG_Init( imgFlags ) & imgFlags ) )
 	{
 		std::cerr << "BaseGame::Initialize( ), error when calling IMG_Init: " << IMG_GetError( ) << std::endl;
 		return;
 	}
-	*/
+	
 
 	// Initialize SDL_ttf
 	if (TTF_Init() == -1)
@@ -114,13 +114,13 @@ void BaseGame::InitializeGameEngine()
 	}
 
 	//Initialize SDL_mixer
-	/*
+	
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 	{
 		std::cerr << "BaseGame::Initialize( ), error when calling Mix_OpenAudio: " << Mix_GetError() << std::endl;
 		return;
 	}
-	*/
+	
 
 	m_Initialized = true;
 }

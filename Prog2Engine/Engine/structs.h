@@ -3,7 +3,7 @@
 
 struct Window
 {
-	explicit Window( const std::string& title = "Title", float width = 380.0f, 
+	explicit Window( const std::string& title = "Title", float width = 460, 
 		float height = 240.0f, bool isVSyncOn = true );
 
 	std::string title;

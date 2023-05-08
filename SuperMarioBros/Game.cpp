@@ -4,6 +4,8 @@
 
 Game::Game( const Window& window ) 
 	:BaseGame{ window }
+	, m_SoundStreamMario{ new SoundStream("Sounds/Mario.mp3") }
+	, m_SoundEffectMarioJump{ new SoundEffect("Sounds/MarioJump.mp3")}
 {
 	Initialize();
 }
@@ -17,6 +19,8 @@ void Game::Initialize( )
 {
 	m_pLevel = new Level1();
 	m_pCamera = new Camera{ Window().width, Window().height };
+	m_pHud = new Hud{ Point2f(Window().width, Window().height*2), int(400)};
+	m_BeginScreen = new BeginVieuw();
 }
 
 void Game::Cleanup( )
@@ -29,31 +33,45 @@ void Game::Cleanup( )
 		delete m_pCamera;
 		m_pCamera = NULL;
 	}
+	if (m_pHud != NULL) {
+		delete m_pHud;
+		m_pHud = NULL;
+	}
+	delete m_SoundStreamMario;
+	delete m_SoundEffectMarioJump;
+	delete m_BeginScreen;
 }
 
 void Game::Update( float elapsedSec )
 {
-	m_GameState.UpdateDrawAvatar(elapsedSec);
-	m_GameState.SetLevel(m_pLevel);
-	
-	m_GameState.UpdateAvatar(elapsedSec, m_pLevel, m_CameraFollow);
-	m_pLevel->UpdateItems(elapsedSec, &m_GameState, m_CameraFollow);
-	m_pLevel->HandleCollision(elapsedSec, &m_GameState);
-	
-
-	m_pCamera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
-
-	
-	if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x || m_GameState.GetAvatarState()->GetPositionAvatar().x <= 0.f && m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f)
+	if (m_BeginScreen->HasStartedGame())
 	{
-		if (m_GameState.GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
+		m_GameState.UpdateDrawAvatar(elapsedSec);
+		m_GameState.SetLevel(m_pLevel);
+
+		m_pLevel->UpdateItems(elapsedSec, &m_GameState, m_CameraFollow);
+		m_GameState.UpdateAvatar(elapsedSec, m_pLevel, m_CameraFollow);
+
+		m_pLevel->HandleCollision(elapsedSec, &m_GameState);
+
+
+		m_pCamera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
+
+
+		if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x || m_GameState.GetAvatarState()->GetPositionAvatar().x <= 0.f && m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f)
 		{
-			if (m_GameState.GetAvatarState()->GetPositionAvatar().y >= 272.f)
+			if (m_GameState.GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
 			{
-				m_CameraFollow = m_GameState.GetAvatarState()->GetPositionAvatar();
+				if (m_GameState.GetAvatarState()->GetPositionAvatar().y >= 272.f)
+				{
+					m_CameraFollow = m_GameState.GetAvatarState()->GetPositionAvatar();
+				}
 			}
 		}
+
+		m_pHud->Update(elapsedSec);
 	}
+	
 	
 	//std::cout << Teller << std::endl;
 	// Check keyboard state
@@ -71,23 +89,62 @@ void Game::Update( float elapsedSec )
 void Game::Draw( ) const
 {
 	ClearBackground( );
-	
-	glPushMatrix();
+	if (m_BeginScreen->HasStartedGame())
 	{
-		// T R S
-		m_pCamera->Transform(Point2f{ m_CameraFollow });
-		m_pLevel->DrawBackground();
-		m_pLevel->DrawForeground(m_GameState.GetAvatarState());
-		m_GameState.DrawAvatar();
+		glPushMatrix();
+		{
+			// T R S
+			glScalef(2.f, 2.f, 1.f);
+			m_pCamera->Transform(Point2f{ m_CameraFollow });
+
+			m_pLevel->DrawBackground();
+			m_pLevel->DrawForeground(m_GameState.GetAvatarState());
+			m_GameState.DrawAvatar();
+
+
+		}
+		glPopMatrix();
+		m_pHud->Draw();
 	}
-	glPopMatrix();
+	if (!m_BeginScreen->HasStartedGame())
+	{
+		m_BeginScreen->Draw();
+	}
 	
+
 	//utils::DrawLine(54.f, 600.f, 54.f, 0.f);
 }
 
 void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 {
-	//std::cout << "KEYDOWN event: " << e.keysym.sym << std::endl;
+	switch (e.keysym.sym)
+	{
+	case SDLK_1:
+	case SDLK_KP_1:
+		m_SoundStreamMario->Play(true);
+		break;
+		
+	case SDLK_2:
+	case SDLK_KP_2:
+		//m_SoundStreamMario->Play(true);
+		m_SoundEffectMarioJump->Play(false);
+		break;
+	case SDLK_UP:
+		m_SoundStreamMario->SetVolume(m_SoundStreamMario->GetVolume() + 1);
+		break;
+	case SDLK_DOWN:
+		m_SoundStreamMario->SetVolume(m_SoundStreamMario->GetVolume() - 1);
+		break;
+	case SDLK_p:
+		m_SoundStreamMario->Pause();
+		break;
+	case SDLK_r:
+		m_SoundStreamMario->Resume();
+		break;
+	case SDLK_s:
+		m_SoundStreamMario->Stop();
+		break;
+	}
 }
 
 void Game::ProcessKeyUpEvent( const SDL_KeyboardEvent& e )
@@ -110,29 +167,21 @@ void Game::ProcessKeyUpEvent( const SDL_KeyboardEvent& e )
 
 void Game::ProcessMouseMotionEvent( const SDL_MouseMotionEvent& e )
 {
+	m_BeginScreen->ProcessMouseMotionEvent(e);
 	//std::cout << "MOUSEMOTION event: " << e.x << ", " << e.y << std::endl;
 }
 
 void Game::ProcessMouseDownEvent( const SDL_MouseButtonEvent& e )
 {
-	//std::cout << "MOUSEBUTTONDOWN event: ";
-	//switch ( e.button )
-	//{
-	//case SDL_BUTTON_LEFT:
-	//	std::cout << " left button " << std::endl;
-	//	break;
-	//case SDL_BUTTON_RIGHT:
-	//	std::cout << " right button " << std::endl;
-	//	break;
-	//case SDL_BUTTON_MIDDLE:
-	//	std::cout << " middle button " << std::endl;
-	//	break;
-	//}
+	
 	
 }
 
+
+
 void Game::ProcessMouseUpEvent( const SDL_MouseButtonEvent& e )
 {
+	m_BeginScreen->ProcessMouseUpEvent(e);
 	//std::cout << "MOUSEBUTTONUP event: ";
 	//switch ( e.button )
 	//{
@@ -150,6 +199,6 @@ void Game::ProcessMouseUpEvent( const SDL_MouseButtonEvent& e )
 
 void Game::ClearBackground( ) const
 {
-	glClearColor( 0.0f, 0.0f, 0.3f, 1.0f );
+	glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 	glClear( GL_COLOR_BUFFER_BIT );
 }

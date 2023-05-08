@@ -23,21 +23,21 @@ CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineC
 	// Oplossing 1: kijk naar RichtingAvatar.y < 0.f: dit werkt om op blokje te springen maar dan kunnen we DOOR een blokje springen
 	// Oplossing 2: -15.f: dit werkt maar is niet ideaal
 
-	
+
 	// |AVATAR| -> |RECT|
 	if ((RichtingAvatar.x >= 0.f) || (RichtingItem.x < 0.f))// && beweegt ook (naar rechts)
 	{
 		if (
-				(aRight >= iLeft - 0.f) &&
-				(aRight <= iRight + 0.f) &&
-				(
-					((aBottom >= iBottom ) && (aBottom <= iTop - 10.f)) 
-					||
-					((aTop <= iTop) && (aTop >= iBottom + 10.f))
-					||
-					((aBottom <= iBottom) && (aTop >= iTop))
+			(aRight >= iLeft - 0.f) &&
+			(aRight <= iRight + 0.f) &&
+			(
+				((aBottom >= iBottom) && (aBottom <= iTop - 10.f))
+				||
+				((aTop <= iTop) && (aTop >= iBottom + 10.f))
+				||
+				((aBottom <= iBottom) && (aTop >= iTop))
 				)
-			) 
+			)
 		{
 			return CollisionLocation::avatorBumpsOnTheLeft;
 		}
@@ -46,21 +46,21 @@ CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineC
 	if ((RichtingAvatar.x <= 0.f) || (RichtingItem.x > 0.f)) // && beweegt ook(naar links)
 	{
 		if (
-				(aLeft <= iRight + 0.f) &&
-				(aLeft >= iLeft - 0.f) &&
-				(
-					((aBottom >= iBottom ) && (aBottom <= iTop - 10.f))
-					||
-					((aTop <= iTop) && (aTop >= iBottom + 10.f))
-					||
-					((aBottom <= iBottom) && (aTop >= iTop))
+			(aLeft <= iRight + 0.f) &&
+			(aLeft >= iLeft - 0.f) &&
+			(
+				((aBottom >= iBottom) && (aBottom <= iTop - 10.f))
+				||
+				((aTop <= iTop) && (aTop >= iBottom + 10.f))
+				||
+				((aBottom <= iBottom) && (aTop >= iTop))
 				)
 			)
 		{
 			return CollisionLocation::avatorBumpsOnTheRight;
 		}
 	}
-	
+
 	// |RECT|		
 	//    ^
 	//    |
@@ -102,5 +102,5 @@ CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineC
 	}
 
 	return CollisionLocation::noCollision;
-	
+
 }

@@ -149,11 +149,13 @@ xcopy "$(SolutionDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
   <ItemGroup>
     <ClCompile Include="Avatar.cpp" />
     <ClCompile Include="AvatarState.cpp" />
+    <ClCompile Include="BeginVieuw.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CollisionDetectionHelper.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameItem.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Hud.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Level1.cpp" />
     <ClCompile Include="pch.cpp" />
@@ -162,11 +164,13 @@ xcopy "$(SolutionDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
   <ItemGroup>
     <ClInclude Include="Avatar.h" />
     <ClInclude Include="AvatarState.h" />
+    <ClInclude Include="BeginVieuw.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionDetectionHelper.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameItem.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="Hud.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Level1.h" />
     <ClInclude Include="pch.h" />

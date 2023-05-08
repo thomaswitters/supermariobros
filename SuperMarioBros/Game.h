@@ -3,6 +3,10 @@
 #include "GameState.h"
 #include "Level1.h"
 #include "Camera.h"
+#include <SoundStream.h>
+#include "Hud.h"
+#include <SoundEffect.h>
+#include "BeginVieuw.h"
 class Game : public BaseGame
 {
 public:
@@ -25,12 +29,23 @@ public:
 	void ProcessMouseUpEvent( const SDL_MouseButtonEvent& e ) override;
 
 private:
+	/*SoundStream* m_pSoundStreamMario;
+	, m_pSoundStreamMario{ new SoundStream("Sounds/MarioJump.mp3") }*/
+
 	GameState m_GameState;
+	Hud* m_pHud;
 	Level* m_pLevel;
 	Camera* m_pCamera;
+	SoundStream* m_SoundStreamMario;
+	SoundEffect* m_SoundEffectMarioJump;
+	BeginVieuw* m_BeginScreen;
+	
+
+	Point2f m_CameraFollow;
+
 	// FUNCTIONS
 	void Initialize();
 	void Cleanup( );
 	void ClearBackground( ) const;
-	Point2f m_CameraFollow;
+	
 };

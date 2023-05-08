@@ -1,8 +1,10 @@
 #TODO
 
-1. NU: m_p bij pointer
+1. In Pipe gaan
+	-> 2 dagen
 
 2. LiveItem protected member variables moeten protected member functions worden (getters and setters)
+	-> 2 dagen
 
 3. virtuele methodes in GameItem die geen implementatie hebben mogen weg
 
@@ -40,13 +42,22 @@
 	AddGameItem(new QuestionBlock(Point2f(336.f, 320.f)));
 	AddGameItem(new Coin(Point2f(368.f, 320.f)));
 
-13. In Pipe gaan
+
 
 14. Ster -> onoverwinnelijk
 
 15. Naar beneden crashen (gehurkt springen)
 
 16. In de lucht niet mogelijk om te draaien
+
+17. HUD:
+	- Time
+	- Lives
+
+18. UI:
+		
+
+4 weken
 
 
 # NOTITIES

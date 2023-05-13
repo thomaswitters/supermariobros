@@ -50,6 +50,7 @@ void Game::Cleanup( )
 
 void Game::Update( float elapsedSec )
 {
+	
 	m_LoadingScreen->Update(elapsedSec, &m_GameState);
 	if (m_LoadingScreen->HasLoadGame())
 	{

@@ -13,6 +13,7 @@ GameState::GameState():
 {
 	m_pAvatarState = new AvatarState(m_pNormalMan);
 }
+
 GameState::~GameState() {
 	if (m_pAvatarState) {
 		delete m_pAvatarState;

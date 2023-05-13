@@ -4,6 +4,8 @@
 
 Coins pakken -> krijgt meerdere coins *****
 
+Schieten op een goomba, van boven : ok, horizontaal soms er dwars door
+
 ## Feedback
 
 - Feedback van leerkracht verwerken *****

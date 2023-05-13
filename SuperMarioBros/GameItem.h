@@ -11,14 +11,14 @@ class GameState;
 class Avatar;
 class Level;
 
-//enum GameItemType {
-//	DecorBlock, NormalBlock, QuestionBlock
-//};
+enum GameItemType {
+	NormalBlockType, QuestionBlockType, PipeType, ConcreteBlockQType, ConcreteBlockType, PowerUpType, DecorBlockType, FlagPoleType, CoinType, GoombaType, ProjectileType
+};
 
 class GameItem
 {
 public:
-	GameItem(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive);
+	GameItem(const GameItemType gameItemType, const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive);
 	virtual ~GameItem();
 	virtual void Draw(AvatarState* avatarState) const;
 	virtual void CollisionDetect(GameState* gameState);
@@ -42,7 +42,12 @@ public:
 	{
 		m_GameItemPos.x = x;
 	}
-	virtual bool CanCollide() { return true; }
+	virtual bool CanCollide(GameItem* gameItem) { return true; }
+
+	GameItemType GetGameItemType() {
+		return m_GameItemType;
+	}
+
 protected:
 	Texture* GetSpriteTexture() const {
 		return m_pSpriteTexture;
@@ -68,6 +73,7 @@ protected:
 	}
 
 private:
+	GameItemType m_GameItemType;
 	bool m_Active;
 	Texture* m_pSpriteTexture;
 	float m_SpriteClipHeight;
@@ -195,7 +201,10 @@ public:
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
 	void UpdateGameItem(float elapsedSec, GameState* gameState);
-	virtual bool CanCollide() { return false; }
+
+	virtual bool CanCollide(GameItem *gameItem) {
+		return false; 
+	}
 private:
 	bool m_IsHit;
 	Point2f m_BeginPosSquar1;
@@ -254,9 +263,9 @@ class LiveItem : public GameItem
 public:
 	enum LiveItemState { Alive, Dying, Dead };
 
-	LiveItem(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState, 
+	LiveItem(const GameItemType gameItemType, const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
 		Vector2f velocity, Vector2f acceleration, 
-		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames, int liveItemType);
+		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames);
 
 	virtual ~LiveItem();
 
@@ -296,11 +305,6 @@ public:
 	 */
 	virtual bool IsEnemyOf(LiveItem* otherLiveItem) {
 		return false;
-	}
-
-	int GetLiveItemType()
-	{
-		return m_LiveItemType;
 	}
 
 protected:
@@ -346,16 +350,14 @@ protected:
 	Vector2f m_Acceleration;
 
 	float m_DyingCounter;
-
-	int m_LiveItemType;	// int to allow pluggable live items
 };
 
 class Enemy : public LiveItem
 {
 public:
-	Enemy(const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
+	Enemy(const GameItemType gameItemType, const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
 		Vector2f velocity, Vector2f acceleration,
-		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames, int liveItemType);
+		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames);
 
 	virtual ~Enemy();
 
@@ -365,15 +367,20 @@ public:
 	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem);
 };
 
-#define GOOMBA_TYPE 1
 class Goomba : public Enemy
 {
 public:
 	Goomba(Point2f GameItemPos);
 	virtual ~Goomba();
+
+	virtual bool CanCollide(GameItem* gameItem) {
+		if (gameItem->GetGameItemType() == GameItemType::ProjectileType) return false;
+
+		return true;
+	}
+
 };
 
-#define PROJECTILE_TYPE 2
 class Projectile : public LiveItem
 {
 public:

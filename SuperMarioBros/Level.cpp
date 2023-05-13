@@ -95,19 +95,26 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 		{
 			ALiveItem->CollisionDetect(gameState);
 
+			/* Example detection...
+			   Goomba->CanCollide(Decor)
+			*/
 			for (size_t i = 0; i < m_pGameItems.size(); i++)
 			{
 				GameItem* AGameItem = m_pGameItems[i];
-				if (AGameItem->IsActive() && AGameItem->CanCollide())
+				if (AGameItem != ALiveItem && AGameItem->IsActive() && AGameItem->CanCollide(ALiveItem))
 				{
 					ALiveItem->CollisionWithGameItemDetect(AGameItem);
 				}
 			}
 
+			/* Example detection...
+			   Goomba->CanCollide(Vuurbal)
+			   Vuurbal->CanCollide(Goomba)
+			*/
 			for (size_t i = 0; i < m_pLiveItems.size(); i++)
 			{
 				LiveItem* OtherLiveItem = m_pLiveItems[i];
-				if (OtherLiveItem->IsActive() && OtherLiveItem->CanCollide())
+				if (OtherLiveItem != ALiveItem && OtherLiveItem->IsActive() && ALiveItem->CanCollide(OtherLiveItem))
 				{
 					ALiveItem->CollisionWithLiveItemDetect(OtherLiveItem);
 				}

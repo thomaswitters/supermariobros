@@ -6,6 +6,9 @@ Game::Game( const Window& window )
 	:BaseGame{ window }
 	, m_SoundStreamMario{ new SoundStream("Sounds/Mario.mp3") }
 	, m_SoundEffectMarioJump{ new SoundEffect("Sounds/MarioJump.mp3")}
+	, m_SoundEffectMarioFinnish{ new SoundEffect("Sounds/MarioFinnish.mp3")}
+	, m_AmountOfLives{ m_GameState.GetAmountOfLives() }
+	, m_AmountCoins{ m_GameState.GetAmountCoins()}
 {
 	Initialize();
 }
@@ -19,8 +22,9 @@ void Game::Initialize( )
 {
 	m_pLevel = new Level1();
 	m_pCamera = new Camera{ Window().width, Window().height };
-	m_pHud = new Hud{ Point2f(Window().width, Window().height*2), int(400), 1, 3};
+	m_pHud = new Hud{ Point2f(Window().width, Window().height*2), int(400), 1, m_AmountOfLives, m_AmountCoins, 000000};
 	m_BeginScreen = new BeginVieuw();
+	m_LoadingScreen = new LoadingScreen(m_BeginScreen, 1, m_AmountOfLives);
 }
 
 void Game::Cleanup( )
@@ -39,12 +43,15 @@ void Game::Cleanup( )
 	}
 	delete m_SoundStreamMario;
 	delete m_SoundEffectMarioJump;
+	delete m_SoundEffectMarioFinnish;
 	delete m_BeginScreen;
+	delete m_LoadingScreen;
 }
 
 void Game::Update( float elapsedSec )
 {
-	if (m_BeginScreen->HasStartedGame())
+	m_LoadingScreen->Update(elapsedSec, &m_GameState);
+	if (m_LoadingScreen->HasLoadGame())
 	{
 		m_GameState.UpdateDrawAvatar(elapsedSec);
 		m_GameState.SetLevel(m_pLevel);
@@ -58,7 +65,7 @@ void Game::Update( float elapsedSec )
 		m_pCamera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
 
 
-		if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x || m_GameState.GetAvatarState()->GetPositionAvatar().x <= 0.f && m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f)
+		if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x)
 		{
 			if (m_GameState.GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
 			{
@@ -69,7 +76,7 @@ void Game::Update( float elapsedSec )
 			}
 		}
 
-		m_pHud->Update(elapsedSec);
+		m_pHud->Update(elapsedSec, &m_GameState);
 	}
 	
 	
@@ -89,6 +96,7 @@ void Game::Update( float elapsedSec )
 void Game::Draw( ) const
 {
 	ClearBackground( );
+	
 	if (m_BeginScreen->HasStartedGame())
 	{
 		glPushMatrix();
@@ -106,6 +114,7 @@ void Game::Draw( ) const
 		glPopMatrix();
 		m_pHud->Draw();
 	}
+	m_LoadingScreen->Draw();
 	if (!m_BeginScreen->HasStartedGame())
 	{
 		m_BeginScreen->Draw();
@@ -123,11 +132,15 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	case SDLK_KP_1:
 		m_SoundStreamMario->Play(true);
 		break;
-		
 	case SDLK_2:
 	case SDLK_KP_2:
 		//m_SoundStreamMario->Play(true);
 		m_SoundEffectMarioJump->Play(false);
+		break;
+	case SDLK_3:
+	case SDLK_KP_3:
+		//m_SoundStreamMario->Play(true);
+		m_SoundEffectMarioFinnish->Play(false);
 		break;
 	case SDLK_UP:
 		m_SoundStreamMario->SetVolume(m_SoundStreamMario->GetVolume() + 1);

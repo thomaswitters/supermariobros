@@ -40,6 +40,8 @@ void Avatar::UpdateDraw(float elapsedSec)
 // (float horSpeed, float jumpSpeed, Texture* spriteTexture, float spriteClipHeight, float spriteClipWidth, float avatarWidth, float avatarHeight)
 
 NormalMan::NormalMan() : Avatar(NormalManType ,200.f, 600.f, "Images/mario.png", 325.f, 160.f, 12.f, 15.f, 4)
+	, m_TimerIsHit{0.2f}
+	, m_TimeInterval{0.1f}
 {
 
 }
@@ -62,12 +64,10 @@ void NormalMan::Draw(const AvatarState* avatarState) const
 	else if (avatarState->GetActionState() == AvatarState::ActionState::moving)
 	{
 		src = Rectf{ GetSpriteClipWidth() * GetAnimFrame(),GetSpriteClipHeight(),sourceWidth,sourceHeight };
-
 	}
 	else if (avatarState->GetActionState() == AvatarState::ActionState::waiting || avatarState->GetActionState() == AvatarState::ActionState::ducking)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 0,GetSpriteClipHeight(),sourceWidth,sourceHeight };
-
 	}
 	else if (avatarState->GetActionState() == AvatarState::ActionState::stopping)
 	{
@@ -79,13 +79,25 @@ void NormalMan::Draw(const AvatarState* avatarState) const
 		src = Rectf{ GetSpriteClipWidth() * 6,GetSpriteClipHeight(),sourceWidth,sourceHeight };
 
 	}
+	
 	if (avatarState->GetVelocityAvatar().x < 0.f && avatarState->GetActionState() != AvatarState::ActionState::stopping) {
 		glPushMatrix();
 		glTranslatef(avatarState->GetPositionAvatar().x + GetAvatarWidth()/2, avatarState->GetPositionAvatar().y + GetAvatarHeight()/2, 0);
 		glScalef(-1, 1, 1);
 		glTranslatef(-avatarState->GetPositionAvatar().x - GetAvatarWidth()/2, -avatarState->GetPositionAvatar().y - GetAvatarHeight()/2, 0);
 
-		GetSpriteTexture()->Draw(dst, src);
+		
+		if (avatarState->GetCanBeHit() == false)
+		{
+			if (m_TimerIsHit <= m_TimeInterval)
+			{
+				GetSpriteTexture()->Draw(dst, src);
+			}
+		}
+		else
+		{
+			GetSpriteTexture()->Draw(dst, src);
+		}
 		glPopMatrix();
 	}
 	else if (avatarState->GetVelocityAvatar().x > 0.f && avatarState->GetActionState() == AvatarState::ActionState::stopping) {
@@ -94,12 +106,32 @@ void NormalMan::Draw(const AvatarState* avatarState) const
 		glScalef(-1, 1, 1);
 		glTranslatef(-avatarState->GetPositionAvatar().x - GetAvatarWidth()/2, -avatarState->GetPositionAvatar().y - GetAvatarHeight() / 2, 0);
 
-		GetSpriteTexture()->Draw(dst, src);
+		if (avatarState->GetCanBeHit() == false)
+		{
+			if (m_TimerIsHit <= m_TimeInterval)
+			{
+				GetSpriteTexture()->Draw(dst, src);
+			}
+		}
+		else
+		{
+			GetSpriteTexture()->Draw(dst, src);
+		}
 		glPopMatrix();
 	}
 	else
 	{
-		GetSpriteTexture()->Draw(dst, src);
+		if (avatarState->GetCanBeHit() == false)
+		{
+			if (m_TimerIsHit <= m_TimeInterval)
+			{
+				GetSpriteTexture()->Draw(dst, src);
+			}
+		}
+		else
+		{
+			GetSpriteTexture()->Draw(dst, src);
+		}
 	}
 	//utils::DrawRect(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, GetAvatarWidth(), GetAvatarHeight());
 }
@@ -108,6 +140,12 @@ void NormalMan::UpdateDraw(float elapsedSec)
 	SetAnimTime(elapsedSec);
 	int totalFramesElapsed{ int(GetAnimTime() / GetNrFramesPerSec()) };
 	SetAnimFrame(totalFramesElapsed, GetNrOfFrames());
+	
+	m_TimerIsHit = m_TimerIsHit - elapsedSec;
+	if (m_TimerIsHit <= 0)
+	{
+		m_TimerIsHit = 0.2f;
+	}
 }
 
 BiggerMan::BiggerMan() : Avatar(BiggerManType, 200.f, 600.f, "Images/Mario2.png", 28.f, 29.7f, 12.f, 30.f, 3)

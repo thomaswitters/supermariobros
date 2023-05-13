@@ -1,14 +1,86 @@
-#TODO
+# TODO
 
-1. In Pipe gaan
-	-> 2 dagen
+## Bugs
 
-2. LiveItem protected member variables moeten protected member functions worden (getters and setters)
-	-> 2 dagen
+Coins pakken -> krijgt meerdere coins *****
 
-3. virtuele methodes in GameItem die geen implementatie hebben mogen weg
+## Feedback
 
-4. Hernoem CollisionLocation items, moet zijn 
+- Feedback van leerkracht verwerken *****
+
+## Grading rubric
+
+### Camera +
+
+- Camera makes a transition move to different rooms/areas. -> Pipe *****
+
+- Parallax background effect -> 2 background, 1 met wolken, 1 met boompjes **
+
+- Ease in/out camera moving speed.??? 
+
+- Camera automatic zoom in/out -> in en uitzoom bij start level en einde level?
+
+### Animations ++
+
+### Interaction player and props, enemies, level, equipment +++
+
+- Transfer ownership of one object to another -> mogelijk in dit spel??
+
+### Game implementation (how much is there) ++++
+
+- In Pipe gaan *****
+
+- Mushroom powerup beweegt ***
+
+- 2de level **
+
+- Ster -> onoverwinnelijk
+
+- Naar beneden crashen (gehurkt springen)
+
+- In de lucht niet mogelijk om te draaien
+
+### HUD and UI (heads up and user interface) ++
+
+- Animatie in de HUD (coin draait) ***
+
+- Game settings, zoals sounds on/off, verhogen, ... *****
+
+### Sound +
+
+- Ambient or environment sound is present *****
+
+- Some actions have a sounds representation *****
+
+- Many actions in the game have a sound representation that is played / canceled when necessary. *****
+ 
+- The volume can be adjusted/turned on/off using keypresses. *****
+
+### Exceeds standards
+
+- Level editor ... <- Doenbaar
+- load level from a file <- Doenbaar
+- Animation system based on data from a file.
+- load/save game system
+- Bone animation
+- Pathfinding
+- A.I.
+- Inventory system.
+- Particle system
+- Level generation
+- others..
+
+##Details
+
+- Als je doodvalt en er zijn obstakels, dan bots je daartegen
+
+##Code
+
+- LiveItem protected member variables moeten protected member functions worden (getters and setters)
+
+- virtuele methodes in GameItem die geen implementatie hebben mogen weg
+
+- Hernoem CollisionLocation items, moet zijn 
 
 	enum class CollisionLocation {
 		liveItemBumpsOnTheRight,
@@ -21,44 +93,17 @@
 
 	static CollisionLocation determineCollisionDir(Rectf liveItemRect, Vector2f RichtingLiveItem, Rectf itemRect);
 
-5. Als LivceItem positie x < 0 dan setActive(false)
+- Als LivceItem positie x < 0 dan setActive(false)
 
-6. 
--> 			Rectf src{ GetSpriteClipWidth() * (m_AnimStartFrameX), GetSpriteClipHeight() * (m_AnimStartFrameY + 1),sourceWidth,sourceHeight };
+- Rectf src{ GetSpriteClipWidth() * (m_AnimStartFrameX), GetSpriteClipHeight() * (m_AnimStartFrameY + 1),sourceWidth,sourceHeight };
 	Y begint bij 0, niet 1. Zou overal aangepast moeten worden
-	
-7. rename UpdateGameItem naam UpdateItem
 
-8. Mushroom beweegt
+- rename UpdateGameItem naam UpdateItem
 
-9. Camera automatic zoom in/out
-
-10. Parallax background effect: ?
-
-11. Camera transition
-
-12. QuestonBlock zou de verassing als parameter kunnen meekrijgen en die dan bij activatie toevoegen aan de level ipv bij de start
+- QuestonBlock zou de verassing als parameter kunnen meekrijgen en die dan bij activatie toevoegen aan de level ipv bij de start
 
 	AddGameItem(new QuestionBlock(Point2f(336.f, 320.f)));
 	AddGameItem(new Coin(Point2f(368.f, 320.f)));
-
-
-
-14. Ster -> onoverwinnelijk
-
-15. Naar beneden crashen (gehurkt springen)
-
-16. In de lucht niet mogelijk om te draaien
-
-17. HUD:
-	- Time
-	- Lives
-
-18. UI:
-		
-
-4 weken
-
 
 # NOTITIES
 

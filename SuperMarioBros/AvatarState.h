@@ -55,6 +55,7 @@ public:
 	{
 		m_IsJumping = false;
 	}
+	bool GetCanBeHit() const;
 private:
 	float m_AvatarX;
 	float m_AvatarY;
@@ -70,4 +71,9 @@ private:
 	bool m_IsJumping;
 	int m_AmmoCounterAmound;
 	float m_RealoadingCounter;
+
+	bool m_CanBeHit;
+	float m_TimeToHitAgain;
+	float m_TimerCanBeHit;
+	
 };

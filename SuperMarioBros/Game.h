@@ -7,6 +7,7 @@
 #include "Hud.h"
 #include <SoundEffect.h>
 #include "BeginVieuw.h"
+#include "LoadingScreen.h"
 class Game : public BaseGame
 {
 public:
@@ -27,7 +28,6 @@ public:
 	void ProcessMouseMotionEvent( const SDL_MouseMotionEvent& e ) override;
 	void ProcessMouseDownEvent( const SDL_MouseButtonEvent& e ) override;
 	void ProcessMouseUpEvent( const SDL_MouseButtonEvent& e ) override;
-
 private:
 	/*SoundStream* m_pSoundStreamMario;
 	, m_pSoundStreamMario{ new SoundStream("Sounds/MarioJump.mp3") }*/
@@ -38,10 +38,14 @@ private:
 	Camera* m_pCamera;
 	SoundStream* m_SoundStreamMario;
 	SoundEffect* m_SoundEffectMarioJump;
+	SoundEffect* m_SoundEffectMarioFinnish;
 	BeginVieuw* m_BeginScreen;
+	LoadingScreen* m_LoadingScreen;
 	
 
 	Point2f m_CameraFollow;
+	int m_AmountOfLives;
+	int m_AmountCoins;
 
 	// FUNCTIONS
 	void Initialize();

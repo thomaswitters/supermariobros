@@ -5,10 +5,15 @@
 #include "GameState.h"
 #include "Avatar.h"
 
+
 class AvatarState;
 class GameState;
 class Avatar;
 class Level;
+
+//enum GameItemType {
+//	DecorBlock, NormalBlock, QuestionBlock
+//};
 
 class GameItem
 {
@@ -37,6 +42,7 @@ public:
 	{
 		m_GameItemPos.x = x;
 	}
+	virtual bool CanCollide() { return true; }
 protected:
 	Texture* GetSpriteTexture() const {
 		return m_pSpriteTexture;
@@ -189,6 +195,7 @@ public:
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
 	void UpdateGameItem(float elapsedSec, GameState* gameState);
+	virtual bool CanCollide() { return false; }
 private:
 	bool m_IsHit;
 	Point2f m_BeginPosSquar1;

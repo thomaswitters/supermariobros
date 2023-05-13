@@ -101,6 +101,9 @@ public:
 	bool canBumpGameItem() const {
 		return true;
 	}
+private:
+	float m_TimerIsHit;
+	float m_TimeInterval;
 };
 
 class BiggerMan : public Avatar

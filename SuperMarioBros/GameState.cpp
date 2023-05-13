@@ -6,6 +6,8 @@ GameState::GameState():
 	, m_pBiggerMan{ new BiggerMan() }
 	, m_pFlowerMan{ new FlowerMan() }
 	, m_pAvatarState{}
+	, AmountOfLives{3}
+	, m_AmountCoins{0}
 	
 
 {

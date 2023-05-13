@@ -1000,7 +1000,10 @@ void Coin::CollisionDetect(GameState* gameState)
 
 	if (location == CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom)
 	{
+		
 		m_IsHit = true;
+
+		gameState->SetAmountCoinsPlus(1);
 	}
 }
 void Coin::UpdateGameItem(float elapsedSec, GameState* gameState)
@@ -1012,6 +1015,7 @@ void Coin::UpdateGameItem(float elapsedSec, GameState* gameState)
 
 	if (m_IsHit)
 	{
+		
 		if (m_Teller < 11)
 		{
 			m_PosCoin.y = m_PosCoin.y + 2.5f;
@@ -1154,13 +1158,15 @@ void Enemy::CollisionDetect(GameState* gameState) {
 			// todo: should become gameState->die()
 			if (gameState->GetAvatarState()->GetCurrentAvatar()->getAvatarType() != NormalManType)
 			{
-				gameState->SetAvatar(gameState->GetNormalMan());
+				//gameState->SetAvatar(gameState->GetNormalMan());
+				gameState->ResetAvatar();
 			}
 			else
 			{
-				if (gameState->GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
+				if (gameState->GetAvatarState()->GetActionState() != AvatarState::ActionState::dead && gameState->GetAvatarState()->GetCanBeHit() == true)
 				{
 					avatarState->SetActionState(AvatarState::ActionState::dead);
+					gameState->SetAmountOfLives();
 					gameState->GetAvatarState()->SetVelocityXCollisionAvatar(0.f);
 					gameState->GetAvatarState()->SetVelocityYAvatar(float(sqrt(2.0f * 981.f * 100)));
 				}
@@ -1175,13 +1181,15 @@ void Enemy::CollisionDetect(GameState* gameState) {
 		{
 			if (gameState->GetAvatarState()->GetCurrentAvatar()->getAvatarType() != NormalManType)
 			{
-				gameState->SetAvatar(gameState->GetNormalMan());
+				//gameState->SetAvatar(gameState->GetNormalMan());
+				gameState->ResetAvatar();
 			}
 			else
 			{
-				if (gameState->GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
+				if (gameState->GetAvatarState()->GetActionState() != AvatarState::ActionState::dead && gameState->GetAvatarState()->GetCanBeHit() == true)
 				{
 					avatarState->SetActionState(AvatarState::ActionState::dead);
+					gameState->SetAmountOfLives();
 					gameState->GetAvatarState()->SetVelocityXCollisionAvatar(0.f);
 					gameState->GetAvatarState()->SetVelocityYAvatar(float(sqrt(2.0f * 981.f * 100)));
 				}
@@ -1196,13 +1204,15 @@ void Enemy::CollisionDetect(GameState* gameState) {
 		{
 			if (gameState->GetAvatarState()->GetCurrentAvatar()->getAvatarType() != NormalManType)
 			{
-				gameState->SetAvatar(gameState->GetNormalMan());
+				//gameState->SetAvatar(gameState->GetNormalMan());
+				gameState->ResetAvatar();
 			}
 			else
 			{
-				if (gameState->GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
+				if (gameState->GetAvatarState()->GetActionState() != AvatarState::ActionState::dead && gameState->GetAvatarState()->GetCanBeHit() == true)
 				{
 					avatarState->SetActionState(AvatarState::ActionState::dead);
+					gameState->SetAmountOfLives();
 					gameState->GetAvatarState()->SetVelocityXCollisionAvatar(0.f);
 					gameState->GetAvatarState()->SetVelocityYAvatar(float(sqrt(2.0f * 981.f * 100)));
 				}
@@ -1235,6 +1245,12 @@ void Enemy::CollisionDetect(GameState* gameState) {
 }
 void Enemy::CollisionWithGameItemDetect(GameItem* gameItem)
 {
+	if (gameItem->CanCollide()) {
+		int x = 1;
+	}
+	else {
+		int y = 1;
+	}
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
 		Rectf(GetGameItemPos().x,
 			GetGameItemPos().y,
@@ -1268,6 +1284,7 @@ void Enemy::CollisionWithGameItemDetect(GameItem* gameItem)
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop:
 	{
+
 		SetVelocityY(0.f);
 		SetGameItemPosY(gameItem->GetGameItemPos().y + gameItem->GetGameItemHeight());
 		break;

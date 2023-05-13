@@ -12,6 +12,10 @@ AvatarState::AvatarState(Avatar *initialAvatar)
 	, m_IsJumping{false}
 	, m_AmmoCounterAmound{2}
 	, m_RealoadingCounter{1.f}
+	, m_CanBeHit{true}
+	, m_TimeToHitAgain{ 2.0f }
+	, m_TimerCanBeHit{ m_TimeToHitAgain }
+	
 {
 
 }
@@ -116,7 +120,9 @@ Avatar* AvatarState::GetCurrentAvatar() const {
 }
 void AvatarState::ResetAvatar(Avatar* normalMan) {
 	m_pCurrentAvatar = normalMan;
+	m_CanBeHit = false;
 }
+
 
 AvatarState::ActionState AvatarState::GetActionState() const
 {
@@ -130,6 +136,7 @@ void AvatarState::SetActionState(ActionState actionState)
 
 void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* level, Point2f cameraPos)
 {
+
 	if (m_ActionState != AvatarState::ActionState::dead)
 	{
 		HandleKeys(elapsedSec, level);
@@ -225,6 +232,7 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 	{
 		if (m_AvatarY <= 0.f)
 		{
+			
 			m_AvatarX = 0.f;
 			m_AvatarY = 272.f;
 			m_ActionState = AvatarState::ActionState::moving;
@@ -251,6 +259,18 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 			m_RealoadingCounter = m_RealoadingCounter - elapsedSec;
 		}		
 	}
+
+	if (m_CanBeHit == false)
+	{
+		m_TimerCanBeHit = m_TimerCanBeHit - elapsedSec;
+		//std::cout << m_TimerCanBeHit << std::endl;
+		if (m_TimerCanBeHit <= 0)
+		{
+			m_TimerCanBeHit = m_TimeToHitAgain;
+			m_CanBeHit = true;
+		}
+	}
+	
 }
 void AvatarState::UpdatePosition(float elapsedSec, Point2f cameraPos)
 {
@@ -397,5 +417,9 @@ bool AvatarState::CheckKeyDown()
 	return false;
 }
 
+bool AvatarState::GetCanBeHit() const
+{
+	return m_CanBeHit;
+}
 
 

@@ -4,7 +4,7 @@ class BeginVieuw
 {
 public:
 	BeginVieuw();
-	~BeginVieuw();
+	virtual ~BeginVieuw();
 	void Draw();
 	void Update(float elapsedSec);
 	void ProcessMouseMotionEvent(const SDL_MouseMotionEvent& e);

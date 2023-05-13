@@ -98,7 +98,7 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 			for (size_t i = 0; i < m_pGameItems.size(); i++)
 			{
 				GameItem* AGameItem = m_pGameItems[i];
-				if (AGameItem->IsActive())
+				if (AGameItem->IsActive() && AGameItem->CanCollide())
 				{
 					ALiveItem->CollisionWithGameItemDetect(AGameItem);
 				}
@@ -107,7 +107,7 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 			for (size_t i = 0; i < m_pLiveItems.size(); i++)
 			{
 				LiveItem* OtherLiveItem = m_pLiveItems[i];
-				if (OtherLiveItem->IsActive())
+				if (OtherLiveItem->IsActive() && OtherLiveItem->CanCollide())
 				{
 					ALiveItem->CollisionWithLiveItemDetect(OtherLiveItem);
 				}

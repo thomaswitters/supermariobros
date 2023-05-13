@@ -55,6 +55,31 @@ public:
 		m_pLevel = level;
 	}
 
+	int GetAmountOfLives()
+	{
+		return AmountOfLives;
+	}
+
+	void SetAmountOfLives()
+	{
+		AmountOfLives = GetAmountOfLives() - 1;
+	}
+
+
+	int GetAmountCoins()
+	{
+		return m_AmountCoins;
+	}
+
+	void SetAmountCoinsPlus(int amount)
+	{
+		m_AmountCoins = GetAmountCoins() + amount;
+	}
+
+	void SetAmountCoins(int amount)
+	{
+		m_AmountCoins = amount;
+	}
 private:
 	AvatarState* m_pAvatarState;
 
@@ -64,5 +89,7 @@ private:
 	FlowerMan* m_pFlowerMan;
 	// TODO: end move to AvatarState
 	Level* m_pLevel{};
+	int AmountOfLives;
+	int m_AmountCoins;
 };
 

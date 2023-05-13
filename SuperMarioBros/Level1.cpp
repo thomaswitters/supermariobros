@@ -226,8 +226,8 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 
 	AddGameItem(new Pipe(Point2f(448.f, 272.f), 32.f, false));
 	AddGameItem(new Pipe(Point2f(608.f, 272.f), 47.f, false));
-	AddGameItem(new Pipe(Point2f(736.f, 272.f), 63.f, true));
-	AddGameItem(new Pipe(Point2f(912.f, 272.f), 63.f, false));
+	AddGameItem(new Pipe(Point2f(736.f, 272.f), 63.f, false));
+	AddGameItem(new Pipe(Point2f(912.f, 272.f), 63.f, true));
 	AddGameItem(new Pipe(Point2f(2608.f, 272.f), 32.f, false));
 	AddGameItem(new Pipe(Point2f(2864.f, 272.f), 32.f, false));
 

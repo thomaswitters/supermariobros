@@ -66,7 +66,7 @@ void Game::Update( float elapsedSec )
 		m_pCamera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
 
 
-		if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x)
+		if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x /*|| m_GameState.GetAvatarState()->GetPositionAvatar().x <= 100.f*/)
 		{
 			if (m_GameState.GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
 			{

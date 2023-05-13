@@ -38,6 +38,7 @@ public:
 		jumping,
 		ducking,
 		stopping,
+		isGoingTroughPipe,
 		dead
 	};
 
@@ -75,5 +76,7 @@ private:
 	bool m_CanBeHit;
 	float m_TimeToHitAgain;
 	float m_TimerCanBeHit;
+
+	float m_TimerGoingInPipe;
 	
 };

@@ -17,7 +17,7 @@ Hud::Hud(const Point2f& topLeft, float totalTime, int level, int lives, int coin
 	, m_pTextLives{}
 	, m_pTextMario{}
 	, m_pCoinTexture{ new Texture("Images/coin.png") }
-	, m_PosCoin{ m_BottomLeft.x - 226, m_BottomLeft.y - 50 }
+	, m_PosCoin{ m_BottomLeft.x - 266, m_BottomLeft.y - 50 }
 	, m_pTextX{}
 	, m_pCoins{}
 //	, m_pTextTimeCount{}
@@ -56,21 +56,21 @@ void Hud::Draw()
 	float sourceHeightCoin{ m_pCoinTexture->GetHeight() };
 	Rectf dstCoin{ m_PosCoin.x, m_PosCoin.y,sourceWidthCoin, sourceHeightCoin };
 
-	Rectf dstX{ m_BottomLeft.x - 209.f, m_BottomLeft.y - 55, 10.f, 25 };
+	Rectf dstX{ m_BottomLeft.x - 249.f, m_BottomLeft.y - 55, 10.f, 25 };
 	//Rectf dstCoins{ m_BottomLeft.x - 192.f, m_BottomLeft.y - 55, 28.f, 28 };
 	//m_pTextTimeCount->Draw(Point2f(m_BottomLeft.x, m_BottomLeft.y));
 	//m_pCoins->Draw(dstCoins);
 	m_pTextX->Draw(dstX);
 	m_pCoinTexture->Draw(dstCoin);
-	m_pTextTime->Draw(Point2f(m_BottomLeft.x + 70, m_BottomLeft.y - 35));
-	m_pTextLevel->Draw(Point2f(m_BottomLeft.x - 90, m_BottomLeft.y - 35));
-	m_pTextLives->Draw(Point2f(m_BottomLeft.x + 220, m_BottomLeft.y - 35));
-	m_pTextMario->Draw(Point2f(m_BottomLeft.x - 380, m_BottomLeft.y - 35));
-	TextureHelper::DrawInt((int)m_TotalTime, Point2f(m_BottomLeft.x + 77, m_BottomLeft.y - 55), m_pHudFont);
-	TextureHelper::DrawInt(m_Level , Point2f(m_BottomLeft.x - 62, m_BottomLeft.y - 55), m_pHudFont);
-	TextureHelper::DrawInt(m_Lives, Point2f(m_BottomLeft.x + 249, m_BottomLeft.y - 55), m_pHudFont);
-	TextureHelper::DrawInt(m_Coins, Point2f(m_BottomLeft.x - 192.f, m_BottomLeft.y - 55), m_pHudFont);
-	TextureHelper::DrawInt(m_Score, Point2f(m_BottomLeft.x - 380, m_BottomLeft.y - 55), m_pHudFont);
+	m_pTextTime->Draw(Point2f(m_BottomLeft.x + 30, m_BottomLeft.y - 35));
+	m_pTextLevel->Draw(Point2f(m_BottomLeft.x - 130, m_BottomLeft.y - 35));
+	m_pTextLives->Draw(Point2f(m_BottomLeft.x + 170, m_BottomLeft.y - 35));
+	m_pTextMario->Draw(Point2f(m_BottomLeft.x - 420, m_BottomLeft.y - 35));
+	TextureHelper::DrawInt((int)m_TotalTime, Point2f(m_BottomLeft.x + 37, m_BottomLeft.y - 55), m_pHudFont);
+	TextureHelper::DrawInt(m_Level , Point2f(m_BottomLeft.x - 102, m_BottomLeft.y - 55), m_pHudFont);
+	TextureHelper::DrawInt(m_Lives, Point2f(m_BottomLeft.x + 199, m_BottomLeft.y - 55), m_pHudFont);
+	TextureHelper::DrawInt(m_Coins, Point2f(m_BottomLeft.x - 232.f, m_BottomLeft.y - 55), m_pHudFont);
+	TextureHelper::DrawInt(m_Score, Point2f(m_BottomLeft.x - 420, m_BottomLeft.y - 55), m_pHudFont);
 
 }
 

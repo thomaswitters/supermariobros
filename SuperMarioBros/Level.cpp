@@ -83,8 +83,10 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 		//if (AGameItem == DecorBlock)
 		if (AGameItem->IsActive())
 		{ 
-#
-			AGameItem->CollisionDetect(gameState);
+			if (avatarState->GetActionState() != AvatarState::ActionState::dead)
+			{
+				AGameItem->CollisionDetect(gameState);
+			}
 		}
 	}
 

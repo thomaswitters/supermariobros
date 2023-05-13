@@ -491,18 +491,17 @@ void Pipe::CollisionDetect(GameState* gameState) {
 			avatarState->SetVelocityXCollisionAvatar(0.f);
 			avatarState->SetPositionXCollisionLeftAvatar(GetGameItemPos().x, avatarState->GetCurrentAvatar()->GetAvatarWidth());
 		}
-		
+	
 		break;
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheRight:
 	{
-		//avatarRect.left = itemRect.left;
+		//avatarRect.left = itemRect.left;	
 		if (!m_IsGoingThrough)
 		{
 			avatarState->SetVelocityXCollisionAvatar(-1.f);
 			avatarState->SetPositionXCollisionRightAvatar(GetGameItemPos().x, GetGameItemWidth());
 		}
-
 		break;
 
 	}
@@ -513,7 +512,7 @@ void Pipe::CollisionDetect(GameState* gameState) {
 		{
 			avatarState->SetIsJumpingfalse();
 			avatarState->SetVelocityYCollisionBottomAvatar();
-			avatarState->SetPositionYCollisionBottomAvatar(GetGameItemPos().y, avatarState->GetCurrentAvatar()->GetAvatarHeight());	
+			avatarState->SetPositionYCollisionBottomAvatar(GetGameItemPos().y, avatarState->GetCurrentAvatar()->GetAvatarHeight());
 		}
 		break;
 	}
@@ -525,23 +524,19 @@ void Pipe::CollisionDetect(GameState* gameState) {
 			if (m_CanGoThrough)
 			{
 				m_IsGoingThrough = true;
-				avatarState->SetVelocityYAvatar(-10.f);
-				avatarState->SetVelocityXCollisionAvatar(0.f);
-				avatarState->SetActionState(AvatarState::ActionState::waiting);
 			}
 			else
 			{
-				if (!m_IsGoingThrough)
-				{
-					avatarState->SetVelocityYCollisionTopAvatar();
-					avatarState->SetPositionYCollisionTopAvatar(GetGameItemPos().y, GetGameItemHeight());
-					m_IsGoingThrough = false;
-				}
+
+				avatarState->SetVelocityYCollisionTopAvatar();
+				avatarState->SetPositionYCollisionTopAvatar(GetGameItemPos().y, GetGameItemHeight());
+				avatarState->SetActionState(AvatarState::ActionState::waiting);
+				m_IsGoingThrough = false;
 			}
 		}
 		else
 		{
-		
+
 			avatarState->SetVelocityYCollisionTopAvatar();
 			avatarState->SetPositionYCollisionTopAvatar(GetGameItemPos().y, GetGameItemHeight());
 			m_IsGoingThrough = false;
@@ -564,6 +559,17 @@ bool Pipe::CollisionDetectOnGround(AvatarState* avatarState) {
 		return true;
 	}
 	return false;
+}
+void Pipe::UpdateGameItem(float elapsedSec, GameState* gameState)
+{
+	//std::cout << m_IsGoingThrough << std::endl;
+	AvatarState* avatarState = gameState->GetAvatarState();
+	if (m_IsGoingThrough)
+	{
+		avatarState->SetVelocityYAvatar(-10.f);
+		avatarState->SetVelocityXCollisionAvatar(0.f);
+		avatarState->SetActionState(AvatarState::ActionState::isGoingTroughPipe);
+	}
 }
 
 
@@ -1384,7 +1390,7 @@ void Projectile::CollisionWithGameItemDetect(GameItem* gameItem)
 		Rectf(gameItem->GetGameItemPos().x,
 			gameItem->GetGameItemPos().y,
 			gameItem->GetGameItemWidth(),
-			gameItem->GetGameItemHeight()-10.f
+			gameItem->GetGameItemHeight()-10
 		)
 	);
 	
@@ -1425,7 +1431,7 @@ void Projectile::CollisionWithLiveItemDetect(LiveItem* liveItem)
 	//if (this == liveItem) return;
 	if (IsEnemyOf(liveItem)) {
 		CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
-			Rectf(GetGameItemPos().x + GetGameItemWidth() / 2,
+			Rectf(GetGameItemPos().x,
 				GetGameItemPos().y,
 				GetGameItemWidth(),
 				GetGameItemHeight()),
@@ -1433,7 +1439,7 @@ void Projectile::CollisionWithLiveItemDetect(LiveItem* liveItem)
 			Rectf(liveItem->GetGameItemPos().x,
 				liveItem->GetGameItemPos().y,
 				liveItem->GetGameItemWidth(),
-				liveItem->GetGameItemHeight()-10.f
+				liveItem->GetGameItemHeight()
 			),
 			liveItem->GetVelocity()
 		);

@@ -159,6 +159,7 @@ public:
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
+	void UpdateGameItem(float elapsedSec, GameState* gameState);
 private:
 	Texture* m_pSpriteTextureBottom;
 	bool m_CanGoThrough;

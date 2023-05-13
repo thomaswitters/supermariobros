@@ -15,6 +15,7 @@ AvatarState::AvatarState(Avatar *initialAvatar)
 	, m_CanBeHit{true}
 	, m_TimeToHitAgain{ 2.0f }
 	, m_TimerCanBeHit{ m_TimeToHitAgain }
+	, m_TimerGoingInPipe{2}
 	
 {
 
@@ -137,7 +138,7 @@ void AvatarState::SetActionState(ActionState actionState)
 void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* level, Point2f cameraPos)
 {
 
-	if (m_ActionState != AvatarState::ActionState::dead)
+	if (m_ActionState != AvatarState::ActionState::dead && m_ActionState != AvatarState::ActionState::isGoingTroughPipe)
 	{
 		HandleKeys(elapsedSec, level);
 	}
@@ -233,12 +234,22 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 		if (m_AvatarY <= 0.f)
 		{
 			
-			m_AvatarX = 0.f;
+			m_AvatarX = 10.f;
 			m_AvatarY = 272.f;
 			m_ActionState = AvatarState::ActionState::moving;
+			
 		}
 		
 
+	}
+	if (m_ActionState == AvatarState::ActionState::isGoingTroughPipe)
+	{
+		m_TimerGoingInPipe -= elapsedSec;
+		if (m_TimerGoingInPipe <= 0.f)
+		{
+			m_ActionState = AvatarState::ActionState::waiting;
+		}
+		std::cout << m_TimerGoingInPipe << std::endl;
 	}
 	UpdatePosition(elapsedSec, cameraPos);
 	if (m_AmmoCounterAmound >= 2)
@@ -282,10 +293,13 @@ void AvatarState::UpdatePosition(float elapsedSec, Point2f cameraPos)
 
 	if (m_Velocity.x <= 0.f)
 	{
-		if (m_AvatarX <= cameraPos.x - Window().width / 2 + 20.f)
+		if (m_ActionState != AvatarState::ActionState::dead)
 		{
-			m_AvatarX = cameraPos.x - Window().width / 2 + 20.f;
-			m_Velocity.x = -1;
+			if (m_AvatarX <= cameraPos.x - Window().width / 2 + 20.f)
+			{
+				m_AvatarX = cameraPos.x - Window().width / 2 + 20.f;
+				m_Velocity.x = -1;
+			}
 		}
 	}
 	

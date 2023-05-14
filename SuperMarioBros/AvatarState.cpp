@@ -132,6 +132,11 @@ AvatarState::ActionState AvatarState::GetActionState() const
 void AvatarState::SetActionState(ActionState actionState)
 {
 	m_ActionState = actionState;
+
+	//if (actionState == AvatarState::ActionState::isGoingTroughPipe) {
+	//	SetVelocityYAvatar(-10.f);
+	//	SetVelocityXCollisionAvatar(0.f);
+	//}
 }
 
 
@@ -233,23 +238,22 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 	{
 		if (m_AvatarY <= 0.f)
 		{
-			
+			m_ActionState = AvatarState::ActionState::moving;
 			m_AvatarX = 10.f;
 			m_AvatarY = 272.f;
-			m_ActionState = AvatarState::ActionState::moving;
-			
 		}
 		
 
 	}
 	if (m_ActionState == AvatarState::ActionState::isGoingTroughPipe)
 	{
-		m_TimerGoingInPipe -= elapsedSec;
-		if (m_TimerGoingInPipe <= 0.f)
+		m_ActionState = AvatarState::ActionState::waiting;
+		//m_TimerGoingInPipe -= elapsedSec;
+		/*if (m_TimerGoingInPipe <= 0.f)
 		{
 			m_ActionState = AvatarState::ActionState::waiting;
 		}
-		std::cout << m_TimerGoingInPipe << std::endl;
+		std::cout << m_TimerGoingInPipe << std::endl;*/
 	}
 	UpdatePosition(elapsedSec, cameraPos);
 	if (m_AmmoCounterAmound >= 2)
@@ -437,3 +441,8 @@ bool AvatarState::GetCanBeHit() const
 }
 
 
+void AvatarState::TravelTo(Point2f* travelToPosition, PrepareForTravelAnimation prepareForTravelAnimation) {
+	m_AvatarX = travelToPosition->x;
+	m_AvatarY = travelToPosition->y;
+//	m_pAvatarState->TravelTo(Positie, GoDown / GoUp / GoLeft / GoRight);
+}

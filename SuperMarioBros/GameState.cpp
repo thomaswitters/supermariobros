@@ -66,3 +66,4 @@ void GameState::ResetAvatar() {
 void GameState::SetAvatar(Avatar* newAvatar) {
 	m_pAvatarState->SetCurrentAvatar(newAvatar);
 }
+

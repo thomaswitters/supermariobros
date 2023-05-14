@@ -154,16 +154,56 @@ public:
 class Pipe : public GameItem
 {
 public:
-	Pipe(Point2f GameItemPos, float height, bool canGoThrough);
+	/*
+	 * transportToPos will be deleted by Pipe
+	 */
+	Pipe(Point2f GameItemPos, float spriteClipHeight, float spriteClipWidth, float GameItemWidth, float GameItemHeight, Point2f* transportToPos);
 	virtual ~Pipe();
-	void Draw(AvatarState* avatarState) const;
+
 	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
-	void UpdateGameItem(float elapsedSec, GameState* gameState);
+
 private:
 	Texture* m_pSpriteTextureBottom;
-	bool m_CanGoThrough;
-	bool m_IsGoingThrough;
+	Point2f* m_transportToPos;
+
+protected:
+	Texture* GetSpriteTextureBottom() const {
+		return m_pSpriteTextureBottom;
+	}
+	Point2f* GetTransportToPos() {
+		return m_transportToPos;
+	}
+};
+
+enum VerticalDirection { FromTopToBottom, FromBottomToTop };
+class VerticalPipe : public Pipe {
+public:
+	/*
+	 * transportToPos will be deleted by VerticalPipe
+	 */
+	VerticalPipe(VerticalDirection verticalDirection, Point2f GameItemPos, float height, Point2f* transportToPos = NULL);
+	virtual ~VerticalPipe();
+
+	void Draw(AvatarState* avatarState) const;
+	void CollisionDetect(GameState* gameState);
+private:
+	VerticalDirection m_VerticalDirection;
+};
+
+enum HorizonDirection { FromLeftToRight, FromRightToLeft };
+class HorizontalPipe : public Pipe {
+public:
+	/*
+	 * transportToPos will be deleted by HorizontalPipe
+	 */
+	HorizontalPipe(HorizonDirection horizonDirection, Point2f GameItemPos, float width, Point2f* transportToPos);
+	virtual ~HorizontalPipe();
+	void Draw(AvatarState* avatarState) const;
+	void CollisionDetect(GameState* gameState);
+	
+private:
+	HorizonDirection m_HorizonDirection;
 };
 
 class PowerUp : public GameItem

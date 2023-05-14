@@ -6,6 +6,11 @@
 
 class Level;
 class Avatar;
+
+enum PrepareForTravelAnimation {
+	FallDown, RiseUp, GoLeft, GoRight
+};
+
 class AvatarState
 {
 public:
@@ -57,6 +62,8 @@ public:
 		m_IsJumping = false;
 	}
 	bool GetCanBeHit() const;
+
+	void TravelTo(Point2f* travelToPosition, PrepareForTravelAnimation prepareForTravelAnimation);
 private:
 	float m_AvatarX;
 	float m_AvatarY;

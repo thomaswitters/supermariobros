@@ -65,7 +65,7 @@ void NormalMan::Draw(const AvatarState* avatarState) const
 	{
 		src = Rectf{ GetSpriteClipWidth() * GetAnimFrame(),GetSpriteClipHeight(),sourceWidth,sourceHeight };
 	}
-	else if (avatarState->GetActionState() == AvatarState::ActionState::waiting || avatarState->GetActionState() == AvatarState::ActionState::ducking)
+	else if (avatarState->GetActionState() == AvatarState::ActionState::waiting || avatarState->GetActionState() == AvatarState::ActionState::ducking || avatarState->GetActionState() == AvatarState::ActionState::isGoingTroughPipe)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 0,GetSpriteClipHeight(),sourceWidth,sourceHeight };
 	}
@@ -174,7 +174,7 @@ void BiggerMan::Draw(const AvatarState* avatarState) const
 		src = Rectf{ GetSpriteClipWidth() * (8 + GetAnimFrame()),GetSpriteClipHeight() * 3.f,sourceWidth,sourceHeight };
 
 	}
-	else if (avatarState->GetActionState() == AvatarState::ActionState::waiting)
+	else if (avatarState->GetActionState() == AvatarState::ActionState::waiting || avatarState->GetActionState() == AvatarState::ActionState::isGoingTroughPipe)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 7,GetSpriteClipHeight() * 3.f,sourceWidth,sourceHeight };
 
@@ -242,7 +242,7 @@ void FlowerMan::Draw(const AvatarState* avatarState) const
 		src = Rectf{ GetSpriteClipWidth() * (9 + GetAnimFrame()),GetSpriteClipHeight() * 5.3f,sourceWidth,sourceHeight };
 
 	}
-	else if (avatarState->GetActionState() == AvatarState::ActionState::waiting)
+	else if (avatarState->GetActionState() == AvatarState::ActionState::waiting || avatarState->GetActionState() == AvatarState::ActionState::isGoingTroughPipe)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 8,GetSpriteClipHeight() * 5.3f,sourceWidth,sourceHeight };
 

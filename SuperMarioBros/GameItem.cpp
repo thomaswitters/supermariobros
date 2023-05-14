@@ -435,119 +435,56 @@ bool ConcreteBlock::CollisionDetectOnGround(AvatarState* avatarState) {
 	return false;
 }
 
-
-Pipe::Pipe(Point2f GameItemPos, float height, bool canGoThrough) : GameItem(GameItemType::PipeType, "Images/tiles.png", 32.f, 32.f, GameItemPos, 32.f, height, true)
-, m_pSpriteTextureBottom{ new Texture ("Images/tiles.png") }
-, m_CanGoThrough{ canGoThrough }
-, m_IsGoingThrough{false}
+Pipe::Pipe(Point2f GameItemPos, float spriteClipHeight, float spriteClipWidth, float GameItemWidth, float GameItemHeight, Point2f* transportToPos) : GameItem(GameItemType::PipeType, "Images/tiles.png", spriteClipHeight, spriteClipWidth, GameItemPos, GameItemWidth, GameItemHeight, true)
+, m_pSpriteTextureBottom{ new Texture("Images/tiles.png") }
+, m_transportToPos(transportToPos)
 {
 
 }
 Pipe::~Pipe()
 {
+	if (m_transportToPos) {
+		delete m_transportToPos;
+		m_transportToPos = NULL;
+	}
 	if (m_pSpriteTextureBottom) {
 		delete m_pSpriteTextureBottom;
 		m_pSpriteTextureBottom = NULL;
 	}
 }
-void Pipe::Draw(AvatarState* avatarState) const
-{
-	/*float sourceWidth{ GetSpriteTexture()->GetWidth() / 21.f };
-	float sourceHeight{ GetSpriteTexture()->GetHeight() / 28 };
-
-	Rectf src{ 16.f * 15,16.f ,sourceWidth,sourceHeight };
-	Rectf dst{ GetGameItemPos().x, GetGameItemPos().y,sourceWidth, sourceHeight };
-	GetSpriteTexture()->Draw(dst, src);*/
-
-	float sourceWidth{ GetSpriteTexture()->GetWidth() / 10.5f };
-	float sourceHeight{ GetSpriteTexture()->GetHeight() / 28 };
-
-	Rectf src{ 0.f,32 * 5,sourceWidth,sourceHeight };
-	Rectf dst{ GetGameItemPos().x, GetGameItemPos().y,sourceWidth, sourceHeight + GetGameItemHeight() - 15.f };
-
-	Rectf src2{ 0.f,32 * 4.5f,sourceWidth,sourceHeight };
-	Rectf dst2{ GetGameItemPos().x, GetGameItemPos().y + sourceHeight + GetGameItemHeight() - 15 - 16,sourceWidth, sourceHeight };
-
-
-
-	GetSpriteTexture()->Draw(dst, src);
-	m_pSpriteTextureBottom->Draw(dst2, src2);
-	//utils::DrawRect(GetGameItemPos().x, GetGameItemPos().y, 16.f, 16.f);
-}
 void Pipe::CollisionDetect(GameState* gameState) {
 	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
-		Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), 
-		Vector2f(avatarState->GetVelocityAvatar()), 
+		Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()),
+		Vector2f(avatarState->GetVelocityAvatar()),
 		Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
 
 	switch (location)
 	{
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheLeft:
 	{
-		//avatarRect.left = itemRect.left + itemRect.width;
-		if (!m_IsGoingThrough)
-		{
-			avatarState->SetVelocityXCollisionAvatar(0.f);
-			avatarState->SetPositionXCollisionLeftAvatar(GetGameItemPos().x, avatarState->GetCurrentAvatar()->GetAvatarWidth());
-		}
-		
+		avatarState->SetVelocityXCollisionAvatar(0.f);
+		avatarState->SetPositionXCollisionLeftAvatar(GetGameItemPos().x, avatarState->GetCurrentAvatar()->GetAvatarWidth());
 		break;
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheRight:
 	{
-		//avatarRect.left = itemRect.left;
-		if (!m_IsGoingThrough)
-		{
-			avatarState->SetVelocityXCollisionAvatar(-1.f);
-			avatarState->SetPositionXCollisionRightAvatar(GetGameItemPos().x, GetGameItemWidth());
-		}
-
+		avatarState->SetVelocityXCollisionAvatar(-1.f);
+		avatarState->SetPositionXCollisionRightAvatar(GetGameItemPos().x, GetGameItemWidth());
 		break;
 
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom:
 	{
-		//avatarRect.bottom = itemRect.bottom - avatarRect.height;
-		if (!m_IsGoingThrough)
-		{
-			avatarState->SetIsJumpingfalse();
-			avatarState->SetVelocityYCollisionBottomAvatar();
-			avatarState->SetPositionYCollisionBottomAvatar(GetGameItemPos().y, avatarState->GetCurrentAvatar()->GetAvatarHeight());	
-		}
+		avatarState->SetIsJumpingfalse();
+		avatarState->SetVelocityYCollisionBottomAvatar();
+		avatarState->SetPositionYCollisionBottomAvatar(GetGameItemPos().y, avatarState->GetCurrentAvatar()->GetAvatarHeight());
 		break;
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop:
 	{
-		const Uint8* pStates = SDL_GetKeyboardState(nullptr);
-		if (pStates[SDL_SCANCODE_DOWN])
-		{
-			if (m_CanGoThrough)
-			{
-				m_IsGoingThrough = true;
-				avatarState->SetVelocityYAvatar(-10.f);
-				avatarState->SetVelocityXCollisionAvatar(0.f);
-				avatarState->SetActionState(AvatarState::ActionState::waiting);
-			}
-			else
-			{
-				if (!m_IsGoingThrough)
-				{
-					avatarState->SetVelocityYCollisionTopAvatar();
-					avatarState->SetPositionYCollisionTopAvatar(GetGameItemPos().y, GetGameItemHeight());
-					m_IsGoingThrough = false;
-				}
-			}
-		}
-		else
-		{
-		
-			avatarState->SetVelocityYCollisionTopAvatar();
-			avatarState->SetPositionYCollisionTopAvatar(GetGameItemPos().y, GetGameItemHeight());
-			m_IsGoingThrough = false;
-		}
-		//avatarRect.bottom = itemRect.bottom + itemRect.height;
-		
+		avatarState->SetVelocityYCollisionTopAvatar();
+		avatarState->SetPositionYCollisionTopAvatar(GetGameItemPos().y, GetGameItemHeight());
 		break;
 	}
 	}
@@ -555,8 +492,8 @@ void Pipe::CollisionDetect(GameState* gameState) {
 }
 bool Pipe::CollisionDetectOnGround(AvatarState* avatarState) {
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
-		Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), 
-		Vector2f(avatarState->GetVelocityAvatar()), 
+		Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()),
+		Vector2f(avatarState->GetVelocityAvatar()),
 		Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
 
 	if (location == CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop)
@@ -566,6 +503,137 @@ bool Pipe::CollisionDetectOnGround(AvatarState* avatarState) {
 	return false;
 }
 
+VerticalPipe::VerticalPipe(VerticalDirection verticalDirection, Point2f GameItemPos, float height, Point2f* transportToPos) :
+	Pipe(GameItemPos, 32.f, 32.f, 32.f, height, transportToPos)
+	, m_VerticalDirection{ verticalDirection }
+{
+}
+VerticalPipe::~VerticalPipe()
+{
+}
+void VerticalPipe::Draw(AvatarState* avatarState) const
+{
+	if (m_VerticalDirection == VerticalDirection::FromTopToBottom)
+	{
+		float sourceWidth{ GetSpriteTexture()->GetWidth() / 10.5f };
+		float sourceHeight{ GetSpriteTexture()->GetHeight() / 28 };
+
+		Rectf src{ GetSpriteClipWidth() * 0 ,GetSpriteClipHeight() * 5,sourceWidth,sourceHeight };
+		Rectf dst{ GetGameItemPos().x, GetGameItemPos().y,sourceWidth, sourceHeight + GetGameItemHeight() - 15.f };
+
+		Rectf src2{ GetSpriteClipWidth() * 0 ,GetSpriteClipHeight() * 4.5f,sourceWidth,sourceHeight };
+		Rectf dst2{ GetGameItemPos().x, GetGameItemPos().y + sourceHeight + GetGameItemHeight() - 15 - 16 ,sourceWidth, sourceHeight };
+
+		GetSpriteTexture()->Draw(dst, src);
+		GetSpriteTextureBottom()->Draw(dst2, src2);
+	}
+	else if (m_VerticalDirection == VerticalDirection::FromBottomToTop)
+	{
+		float sourceWidth{ GetSpriteTexture()->GetWidth() / 10.5f };
+		float sourceHeight{ GetSpriteTexture()->GetHeight() / 28 };
+
+		Rectf src{ GetSpriteClipWidth() * 0 ,GetSpriteClipHeight() * 5,sourceWidth,sourceHeight };
+		Rectf dst{ GetGameItemPos().x, GetGameItemPos().y,sourceWidth, sourceHeight + GetGameItemHeight() - 15.f};
+
+		Rectf src2{ GetSpriteClipWidth() * 0 ,GetSpriteClipHeight() * 4.5f,sourceWidth,sourceHeight };
+		Rectf dst2{ GetGameItemPos().x, GetGameItemPos().y - 2.f,sourceWidth, sourceHeight };
+
+		GetSpriteTexture()->Draw(dst, src);
+		GetSpriteTextureBottom()->Draw(dst2, src2);
+		
+	}
+}
+void VerticalPipe::CollisionDetect(GameState* gameState) {
+	AvatarState* avatarState = gameState->GetAvatarState();
+	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
+		Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()), 
+		Vector2f(avatarState->GetVelocityAvatar()), 
+		Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
+
+	switch (location)
+	{
+
+	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop:
+	{
+		const Uint8* pStates = SDL_GetKeyboardState(nullptr);
+		if ((pStates[SDL_SCANCODE_DOWN]) && (GetTransportToPos() != NULL)) {
+			avatarState->SetActionState(AvatarState::ActionState::isGoingTroughPipe);
+			avatarState->TravelTo(GetTransportToPos(), PrepareForTravelAnimation::FallDown);
+			return;
+		}
+		break;
+	}
+	}
+	Pipe::CollisionDetect(gameState);
+
+}
+
+HorizontalPipe::HorizontalPipe(HorizonDirection horizonDirection, Point2f GameItemPos, float width, Point2f* transportToPos) :
+	Pipe(GameItemPos, 32.f, 16.f, width, 32.f, transportToPos)
+	, m_HorizonDirection{ horizonDirection }
+{
+	
+}
+HorizontalPipe::~HorizontalPipe()
+{
+
+}
+void HorizontalPipe::Draw(AvatarState* avatarState) const
+{
+	if (m_HorizonDirection == HorizonDirection::FromLeftToRight)
+	{
+		float sourceWidth{ GetSpriteTexture()->GetWidth() / 21.f };
+		float sourceHeight{ GetSpriteTexture()->GetHeight() / 14 };
+
+		Rectf src{ GetSpriteClipWidth() * 3.f ,GetSpriteClipHeight() * 5.f,sourceWidth,sourceHeight };
+		Rectf dst{ GetGameItemPos().x, GetGameItemPos().y, sourceWidth + GetGameItemWidth() - 16, sourceHeight};
+
+		Rectf src2{ GetSpriteClipWidth() * 2.f ,GetSpriteClipHeight() * 5.f,sourceWidth,sourceHeight };
+		Rectf dst2{ GetGameItemPos().x, GetGameItemPos().y,sourceWidth, sourceHeight};
+
+		GetSpriteTexture()->Draw(dst, src);
+		GetSpriteTextureBottom()->Draw(dst2, src2);
+	}
+	/*else if (m_HorizonDirection == HorizonDirection::FromRightToLeft)
+	{
+		float sourceWidth{ GetSpriteTexture()->GetWidth() / 10.5f };
+		float sourceHeight{ GetSpriteTexture()->GetHeight() / 28 };
+
+		Rectf src{ GetSpriteClipWidth() * 0 ,GetSpriteClipHeight() * 5,sourceWidth,sourceHeight };
+		Rectf dst{ GetGameItemPos().x, GetGameItemPos().y,sourceWidth, sourceHeight + GetGameItemHeight() - 15.f };
+
+		Rectf src2{ GetSpriteClipWidth() * 0 ,GetSpriteClipHeight() * 4.5f,sourceWidth,sourceHeight };
+		Rectf dst2{ GetGameItemPos().x, GetGameItemPos().y - 2.f,sourceWidth, sourceHeight };
+
+		GetSpriteTexture()->Draw(dst, src);
+		GetSpriteTextureBottom()->Draw(dst2, src2);
+
+	}*/
+}
+void HorizontalPipe::CollisionDetect(GameState* gameState)
+{
+	AvatarState* avatarState = gameState->GetAvatarState();
+	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
+		Rectf(avatarState->GetPositionAvatar().x, avatarState->GetPositionAvatar().y, avatarState->GetCurrentAvatar()->GetAvatarWidth(), avatarState->GetCurrentAvatar()->GetAvatarHeight()),
+		Vector2f(avatarState->GetVelocityAvatar()),
+		Rectf(GetGameItemPos().x, GetGameItemPos().y, GetGameItemWidth(), GetGameItemHeight()));
+
+	switch (location)
+	{
+
+	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheLeft:
+	{
+		const Uint8* pStates = SDL_GetKeyboardState(nullptr);
+		if ((pStates[SDL_SCANCODE_RIGHT]) && (GetTransportToPos() != NULL)) {
+			avatarState->SetActionState(AvatarState::ActionState::isGoingTroughPipe);
+			avatarState->TravelTo(GetTransportToPos(), PrepareForTravelAnimation::FallDown);
+			return;
+		}
+		break;
+	}
+	}
+	Pipe::CollisionDetect(gameState);
+}
 
 PowerUp::PowerUp(Point2f GameItemPos) : GameItem(GameItemType::PowerUpType, "Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true)
 , m_PosPowerUp{ GetGameItemPos().x, GetGameItemPos().y }
@@ -1384,7 +1452,7 @@ void Projectile::CollisionWithGameItemDetect(GameItem* gameItem)
 		Rectf(gameItem->GetGameItemPos().x,
 			gameItem->GetGameItemPos().y,
 			gameItem->GetGameItemWidth(),
-			gameItem->GetGameItemHeight()-10.f
+			gameItem->GetGameItemHeight()-10
 		)
 	);
 	
@@ -1425,7 +1493,7 @@ void Projectile::CollisionWithLiveItemDetect(LiveItem* liveItem)
 	//if (this == liveItem) return;
 	if (IsEnemyOf(liveItem)) {
 		CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
-			Rectf(GetGameItemPos().x + GetGameItemWidth() / 2,
+			Rectf(GetGameItemPos().x,
 				GetGameItemPos().y,
 				GetGameItemWidth(),
 				GetGameItemHeight()),
@@ -1433,7 +1501,7 @@ void Projectile::CollisionWithLiveItemDetect(LiveItem* liveItem)
 			Rectf(liveItem->GetGameItemPos().x,
 				liveItem->GetGameItemPos().y,
 				liveItem->GetGameItemWidth(),
-				liveItem->GetGameItemHeight()-10.f
+				liveItem->GetGameItemHeight()
 			),
 			liveItem->GetVelocity()
 		);

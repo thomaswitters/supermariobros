@@ -17,10 +17,12 @@ Hud::Hud(const Point2f& topLeft, float totalTime, int level, int lives, int coin
 	, m_pTextLives{}
 	, m_pTextMario{}
 	, m_pCoinTexture{ new Texture("Images/coin.png") }
-	, m_PosCoin{ m_BottomLeft.x - 226, m_BottomLeft.y - 50 }
+	, m_pSettingsTexture{new Texture("Images/settings2.png")}
+	, m_PosCoin{ m_BottomLeft.x - 266, m_BottomLeft.y - 50 }
 	, m_pTextX{}
 	, m_pCoins{}
-//	, m_pTextTimeCount{}
+	//, m_pSettingsScreen{new SettingsScreen()}
+	, m_HasOpenSettings{false}
 {
 	m_pTextFont = TTF_OpenFont("Fonts/Inconsolata-ExtraLight.ttf", 32);
 	m_pHudFont = TTF_OpenFont("Fonts/Inconsolata-ExtraBold.ttf", 28);
@@ -38,40 +40,50 @@ Hud::Hud(const Point2f& topLeft, float totalTime, int level, int lives, int coin
 
 Hud::~Hud()
 {
-	
 	//delete m_pTextTimeCount;
 	delete m_pTextX;
 	//delete m_pCoins;
 	delete m_pCoinTexture;
+	delete m_pSettingsTexture;
 	delete m_pTextTime;
 	delete m_pTextLevel;
 	delete m_pTextLives;
 	delete m_pTextMario;
 	TTF_CloseFont(m_pHudFont);
+	//delete m_pSettingsScreen;
 }
 
 void Hud::Draw()
 {
-	float sourceWidthCoin{ m_pCoinTexture->GetWidth() };
-	float sourceHeightCoin{ m_pCoinTexture->GetHeight() };
-	Rectf dstCoin{ m_PosCoin.x, m_PosCoin.y,sourceWidthCoin, sourceHeightCoin };
+	if (!m_HasOpenSettings)
+	{
+		float sourceWidthCoin{ m_pCoinTexture->GetWidth() };
+		float sourceHeightCoin{ m_pCoinTexture->GetHeight() };
+		Rectf dstCoin{ m_PosCoin.x, m_PosCoin.y,sourceWidthCoin, sourceHeightCoin };
+		m_pCoinTexture->Draw(dstCoin);
 
-	Rectf dstX{ m_BottomLeft.x - 209.f, m_BottomLeft.y - 55, 10.f, 25 };
-	//Rectf dstCoins{ m_BottomLeft.x - 192.f, m_BottomLeft.y - 55, 28.f, 28 };
-	//m_pTextTimeCount->Draw(Point2f(m_BottomLeft.x, m_BottomLeft.y));
-	//m_pCoins->Draw(dstCoins);
-	m_pTextX->Draw(dstX);
-	m_pCoinTexture->Draw(dstCoin);
-	m_pTextTime->Draw(Point2f(m_BottomLeft.x + 70, m_BottomLeft.y - 35));
-	m_pTextLevel->Draw(Point2f(m_BottomLeft.x - 90, m_BottomLeft.y - 35));
-	m_pTextLives->Draw(Point2f(m_BottomLeft.x + 220, m_BottomLeft.y - 35));
-	m_pTextMario->Draw(Point2f(m_BottomLeft.x - 380, m_BottomLeft.y - 35));
-	TextureHelper::DrawInt((int)m_TotalTime, Point2f(m_BottomLeft.x + 77, m_BottomLeft.y - 55), m_pHudFont);
-	TextureHelper::DrawInt(m_Level , Point2f(m_BottomLeft.x - 62, m_BottomLeft.y - 55), m_pHudFont);
-	TextureHelper::DrawInt(m_Lives, Point2f(m_BottomLeft.x + 249, m_BottomLeft.y - 55), m_pHudFont);
-	TextureHelper::DrawInt(m_Coins, Point2f(m_BottomLeft.x - 192.f, m_BottomLeft.y - 55), m_pHudFont);
-	TextureHelper::DrawInt(m_Score, Point2f(m_BottomLeft.x - 380, m_BottomLeft.y - 55), m_pHudFont);
 
+		float sourceWidthSettings{ m_pSettingsTexture->GetWidth() / 10 };
+		float sourceHeightSettings{ m_pSettingsTexture->GetHeight() / 10 };
+		Rectf dstSetttings{ m_BottomLeft.x + 280, m_BottomLeft.y - 55,sourceWidthSettings, sourceHeightSettings };
+		m_pSettingsTexture->Draw(dstSetttings);
+		Rectf dstX{ m_BottomLeft.x - 249.f, m_BottomLeft.y - 55, 10.f, 25 };
+		m_pTextX->Draw(dstX);
+
+		m_pTextTime->Draw(Point2f(m_BottomLeft.x + 30, m_BottomLeft.y - 35));
+		m_pTextLevel->Draw(Point2f(m_BottomLeft.x - 130, m_BottomLeft.y - 35));
+		m_pTextLives->Draw(Point2f(m_BottomLeft.x + 170, m_BottomLeft.y - 35));
+		m_pTextMario->Draw(Point2f(m_BottomLeft.x - 420, m_BottomLeft.y - 35));
+		TextureHelper::DrawInt((int)m_TotalTime, Point2f(m_BottomLeft.x + 37, m_BottomLeft.y - 55), m_pHudFont);
+		TextureHelper::DrawInt(m_Level, Point2f(m_BottomLeft.x - 102, m_BottomLeft.y - 55), m_pHudFont);
+		TextureHelper::DrawInt(m_Lives, Point2f(m_BottomLeft.x + 199, m_BottomLeft.y - 55), m_pHudFont);
+		TextureHelper::DrawInt(m_Coins, Point2f(m_BottomLeft.x - 232.f, m_BottomLeft.y - 55), m_pHudFont);
+		TextureHelper::DrawInt(m_Score, Point2f(m_BottomLeft.x - 420, m_BottomLeft.y - 55), m_pHudFont);
+	}
+	else if (m_HasOpenSettings)
+	{
+		//m_pSettingsScreen->Draw();
+	}
 }
 
 void Hud::Update(float elapsedSec, GameState* gameState)
@@ -79,5 +91,24 @@ void Hud::Update(float elapsedSec, GameState* gameState)
 	m_TotalTime -= elapsedSec; 
 	m_Lives = gameState->GetAmountOfLives();
 	m_Coins = gameState->GetAmountCoins();
+}
+
+void Hud::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)
+{
+	if (m_HasOpenSettings)
+	{
+		//m_pSettingsScreen->ProcessMouseUpEvent(e);
+	}
+
+	switch (e.button)
+	{
+	case SDL_BUTTON_LEFT:
+		if (e.x >= m_BottomLeft.x + 280.f && e.y >= m_BottomLeft.y - 55 && e.x <= m_BottomLeft.x + 300.f && e.y <= m_BottomLeft.y - 35)
+		{
+			m_HasOpenSettings = true;
+		}
+		break;
+	}
+
 }
 

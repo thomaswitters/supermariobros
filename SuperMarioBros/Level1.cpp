@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Level1.h"
 
-Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros.svg", "Images/SuperMarioBros2.svg", "Images/SuperMarioBros3.svg", "Images/SuperMarioBros4.svg" })
+Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros.svg", "Images/SuperMarioBros2.svg", "Images/SuperMarioBros3.svg", "Images/SuperMarioBros4.svg", "Images/SuperMarioBros5.svg" })
 {
 	
 	AddGameItem(new Coin(Point2f(256.f, 320.f)));
@@ -129,7 +129,6 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 	AddGameItem(new NormalBlock(Point2f(2704.f, 320.f)));
 	AddGameItem(new NormalBlock(Point2f(2736.f, 320.f)));
 
-
 	AddGameItem(new ConcreteBlock(Point2f(2144.f, 272)));
 	AddGameItem(new ConcreteBlock(Point2f(2160.f, 272)));
 	AddGameItem(new ConcreteBlock(Point2f(2160.f, 288)));
@@ -224,12 +223,24 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 	AddGameItem(new ConcreteBlock(Point2f(3024.f, 384)));
 
 
-	AddGameItem(new Pipe(Point2f(448.f, 272.f), 32.f, false));
-	AddGameItem(new Pipe(Point2f(608.f, 272.f), 47.f, false));
-	AddGameItem(new Pipe(Point2f(736.f, 272.f), 63.f, true));
-	AddGameItem(new Pipe(Point2f(912.f, 272.f), 63.f, false));
-	AddGameItem(new Pipe(Point2f(2608.f, 272.f), 32.f, false));
-	AddGameItem(new Pipe(Point2f(2864.f, 272.f), 32.f, false));
+	/*AddGameItem(new Pipe(Point2f(448.f, 272.f), 32.f, false, Point2f(448.f, 272.f)));
+	AddGameItem(new Pipe(Point2f(608.f, 272.f), 47.f, false, Point2f(448.f, 272.f)));
+	AddGameItem(new Pipe(Point2f(736.f, 272.f), 63.f, false, Point2f(448.f, 272.f)));
+	AddGameItem(new Pipe(Point2f(912.f, 272.f), 63.f, true, Point2f(448.f, 272.f)));
+	AddGameItem(new Pipe(Point2f(2608.f, 272.f), 32.f, false, Point2f(448.f, 272.f)));
+	AddGameItem(new Pipe(Point2f(2864.f, 272.f), 32.f, false, Point2f(448.f, 272.f)));*/
+
+	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(448.f, 272.f), 32.f));
+	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(608.f, 272.f), 47.f));
+	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(736.f, 272.f), 63.f));
+	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(912.f, 272.f), 63.f, new Point2f(908.f, 172.f)));
+	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(2608.f, 272.f), 32.f));
+	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(2864.f, 272.f), 32.f));
+
+	AddGameItem(new HorizontalPipe(HorizonDirection::FromLeftToRight, Point2f(976.f, 32.f), 33.f, new Point2f(2620, 304.f)));
+	AddGameItem(new HorizontalPipe(HorizonDirection::FromLeftToRight, Point2f(110.f, 272.f), 33.f, new Point2f(908.f, 172.f)));
+	//AddGameItem(new HorizontalPipe(HorizonDirection::FromRightToLeft, Point2f(112.f, 272.f), 63.f, new Point2f(908.f, 172.f)));
+	//AddGameItem(new VerticalPipe(VerticalDirection::FromBottomToTop, Point2f(812.f, 272.f), 63.f, new Point2f(108.f, 172.f)));
 
 	AddGameItem(new FlagPole(Point2f(3174.f, 288.f)));
 	AddGameItem(new ConcreteBlock(Point2f(3168.f, 272)));

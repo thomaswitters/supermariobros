@@ -1,6 +1,8 @@
 #pragma once
 #include <Texture.h>
 #include "GameState.h"
+#include "SettingsScreen.h"
+
 class Hud
 {
 public:
@@ -8,6 +10,7 @@ public:
 	~Hud();
 	void Draw();
 	void Update(float elapsedSec, GameState* gameState);
+	void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e);
 
 private:
 	Point2f m_BottomLeft;
@@ -27,6 +30,10 @@ private:
 	Texture* m_pTextMario;
 	Texture* m_pCoinTexture;
 	Point2f m_PosCoin;
+
+	Texture* m_pSettingsTexture;
+	SettingsScreen* m_pSettingsScreen;
+	bool m_HasOpenSettings;
 };
 
 class TextureHelper {

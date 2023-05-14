@@ -64,16 +64,17 @@ void Game::Update( float elapsedSec )
 
 
 		m_pCamera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
+		m_pCamera->SetLevelBoundaries2(Rectf{ 768.0f ,0.f,  3376.f, 240.f });
 
 
-		if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x)
+		if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x || m_GameState.GetAvatarState()->GetPositionAvatar().x >= 0.f)
 		{
 			if (m_GameState.GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
 			{
-				if (m_GameState.GetAvatarState()->GetPositionAvatar().y >= 272.f)
-				{
+				///if (m_GameState.GetAvatarState()->GetPositionAvatar().y >= 272.f)
+				//{
 					m_CameraFollow = m_GameState.GetAvatarState()->GetPositionAvatar();
-				}
+				//}
 			}
 		}
 
@@ -196,6 +197,7 @@ void Game::ProcessMouseDownEvent( const SDL_MouseButtonEvent& e )
 void Game::ProcessMouseUpEvent( const SDL_MouseButtonEvent& e )
 {
 	m_BeginScreen->ProcessMouseUpEvent(e);
+	m_pHud->ProcessMouseUpEvent(e);
 	//std::cout << "MOUSEBUTTONUP event: ";
 	//switch ( e.button )
 	//{

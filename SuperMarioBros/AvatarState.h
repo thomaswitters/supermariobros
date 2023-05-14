@@ -6,6 +6,11 @@
 
 class Level;
 class Avatar;
+
+enum PrepareForTravelAnimation {
+	FallDown, RiseUp, GoLeft, GoRight
+};
+
 class AvatarState
 {
 public:
@@ -38,6 +43,7 @@ public:
 		jumping,
 		ducking,
 		stopping,
+		isGoingTroughPipe,
 		dead
 	};
 
@@ -56,6 +62,8 @@ public:
 		m_IsJumping = false;
 	}
 	bool GetCanBeHit() const;
+
+	void TravelTo(Point2f* travelToPosition, PrepareForTravelAnimation prepareForTravelAnimation);
 private:
 	float m_AvatarX;
 	float m_AvatarY;
@@ -75,5 +83,7 @@ private:
 	bool m_CanBeHit;
 	float m_TimeToHitAgain;
 	float m_TimerCanBeHit;
+
+	float m_TimerGoingInPipe;
 	
 };

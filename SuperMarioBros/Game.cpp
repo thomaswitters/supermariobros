@@ -4,8 +4,6 @@
 
 Game::Game( const Window& window ) 
 	:BaseGame{ window }
-	, m_SoundStreamMario{ new SoundStream("Sounds/Mario.mp3") }
-	, m_SoundEffectMarioJump{ new SoundEffect("Sounds/MarioJump.mp3")}
 	, m_SoundEffectMarioFinnish{ new SoundEffect("Sounds/MarioFinnish.mp3")}
 	, m_AmountOfLives{ m_GameState.GetAmountOfLives() }
 	, m_AmountCoins{ m_GameState.GetAmountCoins()}
@@ -41,8 +39,8 @@ void Game::Cleanup( )
 		delete m_pHud;
 		m_pHud = NULL;
 	}
-	delete m_SoundStreamMario;
-	delete m_SoundEffectMarioJump;
+	
+	
 	delete m_SoundEffectMarioFinnish;
 	delete m_BeginScreen;
 	delete m_LoadingScreen;
@@ -60,7 +58,7 @@ void Game::Update( float elapsedSec )
 		m_pLevel->UpdateItems(elapsedSec, &m_GameState, m_CameraFollow);
 		m_GameState.UpdateAvatar(elapsedSec, m_pLevel, m_CameraFollow);
 
-		m_pLevel->HandleCollision(elapsedSec, &m_GameState);
+		m_pLevel->HandleCollision(elapsedSec, &m_GameState, m_CameraFollow);
 
 
 		m_pCamera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
@@ -132,12 +130,12 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	{
 	case SDLK_1:
 	case SDLK_KP_1:
-		m_SoundStreamMario->Play(true);
+		
 		break;
 	case SDLK_2:
 	case SDLK_KP_2:
 		//m_SoundStreamMario->Play(true);
-		m_SoundEffectMarioJump->Play(false);
+		//m_SoundEffectMarioJump->Play(false);
 		break;
 	case SDLK_3:
 	case SDLK_KP_3:
@@ -145,19 +143,18 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 		m_SoundEffectMarioFinnish->Play(false);
 		break;
 	case SDLK_UP:
-		m_SoundStreamMario->SetVolume(m_SoundStreamMario->GetVolume() + 1);
+		//m_SoundStreamMario->SetVolume(m_SoundStreamMario->GetVolume() + 1);
 		break;
 	case SDLK_DOWN:
-		m_SoundStreamMario->SetVolume(m_SoundStreamMario->GetVolume() - 1);
+		//m_SoundStreamMario->SetVolume(m_SoundStreamMario->GetVolume() - 1);
 		break;
 	case SDLK_p:
-		m_SoundStreamMario->Pause();
+		//m_SoundStreamMario->Pause();
 		break;
 	case SDLK_r:
-		m_SoundStreamMario->Resume();
+		//m_SoundStreamMario->Resume();
 		break;
 	case SDLK_s:
-		m_SoundStreamMario->Stop();
 		break;
 	}
 }
@@ -183,12 +180,14 @@ void Game::ProcessKeyUpEvent( const SDL_KeyboardEvent& e )
 void Game::ProcessMouseMotionEvent( const SDL_MouseMotionEvent& e )
 {
 	m_BeginScreen->ProcessMouseMotionEvent(e);
+	m_pHud->ProcessMouseMotionEvent(e);
+	
 	//std::cout << "MOUSEMOTION event: " << e.x << ", " << e.y << std::endl;
 }
 
 void Game::ProcessMouseDownEvent( const SDL_MouseButtonEvent& e )
 {
-	
+	m_pHud->ProcessMouseDownEvent(e);
 	
 }
 
@@ -198,6 +197,7 @@ void Game::ProcessMouseUpEvent( const SDL_MouseButtonEvent& e )
 {
 	m_BeginScreen->ProcessMouseUpEvent(e);
 	m_pHud->ProcessMouseUpEvent(e);
+	
 	//std::cout << "MOUSEBUTTONUP event: ";
 	//switch ( e.button )
 	//{

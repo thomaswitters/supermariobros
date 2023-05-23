@@ -1,6 +1,5 @@
 #pragma once
 #include <Texture.h>
-#include "GameState.h"
 #include "SettingsScreen.h"
 
 class Hud
@@ -11,6 +10,9 @@ public:
 	void Draw();
 	void Update(float elapsedSec, GameState* gameState);
 	void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e);
+	void ProcessMouseDownEvent(const SDL_MouseButtonEvent& e);
+	void ProcessMouseMotionEvent(const SDL_MouseMotionEvent& e);
+	void SetCloseSettings();
 
 private:
 	Point2f m_BottomLeft;

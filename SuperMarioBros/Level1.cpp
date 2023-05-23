@@ -86,48 +86,95 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 	AddGameItem(new DecorBlock(Point2f(2736.f, 320.f)));
 
 
-	AddGameItem(new NormalBlock(Point2f(320.f, 320.f)));
-	AddGameItem(new NormalBlock(Point2f(352.f, 320.f)));
-	AddGameItem(new NormalBlock(Point2f(384.f, 320.f)));
+	AddGameItem(new NormalBlock(Point2f(320.f, 320.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(352.f, 320.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(384.f, 320.f), KindOfNormalBlock::Outside));
 
-	AddGameItem(new NormalBlock(Point2f(1232.f, 320.f)));
-	AddGameItem(new NormalBlock(Point2f(1264.f, 320.f)));
+	AddGameItem(new NormalBlock(Point2f(1232.f, 320.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1264.f, 320.f), KindOfNormalBlock::Outside));
 
-	AddGameItem(new NormalBlock(Point2f(1280.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1296.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1312.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1328.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1344.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1360.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1376.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1392.f, 384.f)));
+	AddGameItem(new NormalBlock(Point2f(1280.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1296.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1312.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1328.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1344.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1360.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1376.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1392.f, 384.f), KindOfNormalBlock::Outside));
 
-	AddGameItem(new NormalBlock(Point2f(1440.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1456.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1472.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1488.f, 384.f)));
+	AddGameItem(new NormalBlock(Point2f(1440.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1456.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1472.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1488.f, 384.f), KindOfNormalBlock::Outside));
 
-	AddGameItem(new NormalBlock(Point2f(1504.f, 320.f)));
+	AddGameItem(new NormalBlock(Point2f(1504.f, 320.f), KindOfNormalBlock::Outside));
 
-	AddGameItem(new NormalBlock(Point2f(1584.f, 320.f)));
-	AddGameItem(new NormalBlock(Point2f(1600.f, 320.f)));
-	AddGameItem(new NormalBlock(Point2f(1616.f, 320.f)));
+	AddGameItem(new NormalBlock(Point2f(1584.f, 320.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1600.f, 320.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1616.f, 320.f), KindOfNormalBlock::Outside));
 
-	AddGameItem(new NormalBlock(Point2f(1888.f, 320.f)));
+	AddGameItem(new NormalBlock(Point2f(1888.f, 320.f), KindOfNormalBlock::Outside));
 
-	AddGameItem(new NormalBlock(Point2f(1936.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1952.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(1968.f, 384.f)));
+	AddGameItem(new NormalBlock(Point2f(1936.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1952.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(1968.f, 384.f), KindOfNormalBlock::Outside));
 
-	AddGameItem(new NormalBlock(Point2f(2048.f, 384.f)));
-	AddGameItem(new NormalBlock(Point2f(2096.f, 384.f)));
+	AddGameItem(new NormalBlock(Point2f(2048.f, 384.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(2096.f, 384.f), KindOfNormalBlock::Outside));
 
-	AddGameItem(new NormalBlock(Point2f(2064.f, 320.f)));
-	AddGameItem(new NormalBlock(Point2f(2080.f, 320.f)));
+	AddGameItem(new NormalBlock(Point2f(2064.f, 320.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(2080.f, 320.f), KindOfNormalBlock::Outside));
 
-	AddGameItem(new NormalBlock(Point2f(2688.f, 320.f)));
-	AddGameItem(new NormalBlock(Point2f(2704.f, 320.f)));
-	AddGameItem(new NormalBlock(Point2f(2736.f, 320.f)));
+	AddGameItem(new NormalBlock(Point2f(2688.f, 320.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(2704.f, 320.f), KindOfNormalBlock::Outside));
+	AddGameItem(new NormalBlock(Point2f(2736.f, 320.f), KindOfNormalBlock::Outside));
+
+	AddGameItem(new NormalBlock(Point2f(768.f, 32.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(768.f, 48.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(768.f, 64.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(768.f, 80.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(768.f, 96.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(768.f, 112.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(768.f, 128.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(768.f, 144.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(768.f, 160.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(768.f, 176.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(768.f, 192.f), KindOfNormalBlock::Underground));
+
+	AddGameItem(new NormalBlock(Point2f(832.f, 32.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(832.f, 48.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(832.f, 64.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(832.f, 192.f), KindOfNormalBlock::Underground));
+
+	AddGameItem(new NormalBlock(Point2f(848.f, 32.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(848.f, 48.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(848.f, 64.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(848.f, 192.f), KindOfNormalBlock::Underground));
+
+	AddGameItem(new NormalBlock(Point2f(864.f, 32.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(864.f, 48.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(864.f, 64.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(864.f, 192.f), KindOfNormalBlock::Underground));
+
+	AddGameItem(new NormalBlock(Point2f(880.f, 32.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(880.f, 48.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(880.f, 64.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(880.f, 192.f), KindOfNormalBlock::Underground));
+
+	AddGameItem(new NormalBlock(Point2f(896.f, 32.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(896.f, 48.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(896.f, 64.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(896.f, 192.f), KindOfNormalBlock::Underground));
+
+	AddGameItem(new NormalBlock(Point2f(912.f, 32.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(912.f, 48.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(912.f, 64.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(912.f, 192.f), KindOfNormalBlock::Underground));
+
+	AddGameItem(new NormalBlock(Point2f(928.f, 32.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(928.f, 48.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(928.f, 64.f), KindOfNormalBlock::Underground));
+	AddGameItem(new NormalBlock(Point2f(928.f, 192.f), KindOfNormalBlock::Underground));
 
 	AddGameItem(new ConcreteBlock(Point2f(2144.f, 272)));
 	AddGameItem(new ConcreteBlock(Point2f(2160.f, 272)));
@@ -222,27 +269,16 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 	AddGameItem(new ConcreteBlock(Point2f(3024.f, 368)));
 	AddGameItem(new ConcreteBlock(Point2f(3024.f, 384)));
 
-
-	/*AddGameItem(new Pipe(Point2f(448.f, 272.f), 32.f, false, Point2f(448.f, 272.f)));
-	AddGameItem(new Pipe(Point2f(608.f, 272.f), 47.f, false, Point2f(448.f, 272.f)));
-	AddGameItem(new Pipe(Point2f(736.f, 272.f), 63.f, false, Point2f(448.f, 272.f)));
-	AddGameItem(new Pipe(Point2f(912.f, 272.f), 63.f, true, Point2f(448.f, 272.f)));
-	AddGameItem(new Pipe(Point2f(2608.f, 272.f), 32.f, false, Point2f(448.f, 272.f)));
-	AddGameItem(new Pipe(Point2f(2864.f, 272.f), 32.f, false, Point2f(448.f, 272.f)));*/
-
 	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(448.f, 272.f), 32.f));
 	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(608.f, 272.f), 47.f));
 	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(736.f, 272.f), 63.f));
-	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(912.f, 272.f), 63.f, new Point2f(908.f, 172.f)));
+	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(912.f, 272.f), 63.f, new Point2f(808.f, 202.f)));
 	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(2608.f, 272.f), 32.f));
 	AddGameItem(new VerticalPipe(VerticalDirection::FromTopToBottom, Point2f(2864.f, 272.f), 32.f));
 
 	AddGameItem(new HorizontalPipe(HorizonDirection::FromLeftToRight, Point2f(976.f, 32.f), 33.f, new Point2f(2620, 304.f)));
-	AddGameItem(new HorizontalPipe(HorizonDirection::FromLeftToRight, Point2f(110.f, 272.f), 33.f, new Point2f(908.f, 172.f)));
-	//AddGameItem(new HorizontalPipe(HorizonDirection::FromRightToLeft, Point2f(112.f, 272.f), 63.f, new Point2f(908.f, 172.f)));
-	//AddGameItem(new VerticalPipe(VerticalDirection::FromBottomToTop, Point2f(812.f, 272.f), 63.f, new Point2f(108.f, 172.f)));
 
-	AddGameItem(new FlagPole(Point2f(3174.f, 288.f)));
+	AddGameItem(new FlagPole(Point2f(3174.f, 284.f)));
 	AddGameItem(new ConcreteBlock(Point2f(3168.f, 272)));
 	AddLiveItem(new Goomba(Point2f(400.f, 272.f)));
 	AddLiveItem(new Goomba(Point2f(450.f, 272.f)));

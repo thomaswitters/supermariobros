@@ -10,18 +10,19 @@ AvatarState::AvatarState(Avatar *initialAvatar)
 	, m_CountStartJump{0.35f}
 	, m_JumpTime{}
 	, m_IsJumping{false}
-	, m_AmmoCounterAmound{2}
-	, m_RealoadingCounter{1.f}
+	, m_AmmoCounterAmound{1}
+	, m_RealoadingCounter{0.6f}
 	, m_CanBeHit{true}
 	, m_TimeToHitAgain{ 2.0f }
 	, m_TimerCanBeHit{ m_TimeToHitAgain }
 	, m_TimerGoingInPipe{2}
+	, m_SoundEffectMarioJump{ new SoundEffect("Sounds/MarioJump.mp3") }
 	
 {
 
 }
 AvatarState::~AvatarState() {
-
+	delete m_SoundEffectMarioJump;
 }
 Point2f AvatarState::GetPositionAvatar() const
 {
@@ -261,11 +262,10 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 		m_AmmoCounterAmound = 2;
 	}
 	
-	if (m_RealoadingCounter < 0.f)
+	if (m_RealoadingCounter <= 0.f)
 	{
-		m_RealoadingCounter = 1.0;
+		m_RealoadingCounter = 0.6;	
 		m_AmmoCounterAmound++;
-		
 	}
 	else
 	{
@@ -350,13 +350,14 @@ void AvatarState::HandleKeys(float elapsedSec, Level* level)
 	
 	if (pStates[SDL_SCANCODE_UP])
 	{
-
+		m_SoundEffectMarioJump->SetVolume(10);
 		if (m_IsOnGround)
 		{
+
+			m_SoundEffectMarioJump->Play(false);
 			m_IsJumping = true;
 			m_JumpTime = m_CountStartJump;
-			
-			
+
 			SetVelocityJumpAvatar(20.f);
 
 			SetActionState(AvatarState::ActionState::jumping);
@@ -399,19 +400,14 @@ void AvatarState::HandleKeys(float elapsedSec, Level* level)
 		{
 			if (m_ActionState != ActionState::ducking)
 			{
-				
 				if (m_AmmoCounterAmound >= 1)
 				{
 					level->AddLiveItem(new Projectile(Point2f(m_AvatarX, m_AvatarY + 10.f)));
 					m_AmmoCounterAmound--;
 				}
-				
-				
-			}
-			
+			}		
 		}
 	}
-		
 }
 bool AvatarState::CheckKeys()
 {
@@ -444,5 +440,7 @@ bool AvatarState::GetCanBeHit() const
 void AvatarState::TravelTo(Point2f* travelToPosition, PrepareForTravelAnimation prepareForTravelAnimation) {
 	m_AvatarX = travelToPosition->x;
 	m_AvatarY = travelToPosition->y;
+	SetVelocityYAvatar(-10);
+	SetVelocityXCollisionAvatar(0);
 //	m_pAvatarState->TravelTo(Positie, GoDown / GoUp / GoLeft / GoRight);
 }

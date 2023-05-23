@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "GameItem.h"
 
-GameItem::GameItem(const GameItemType gameItemType, const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive)
+GameItem::GameItem(const GameItemType gameItemType, const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, const std::string& soundPath)
 	: m_GameItemType{ gameItemType }
 	, m_pSpriteTexture{new Texture(imagePath)}
 	, m_SpriteClipHeight{ spriteClipHeight }
@@ -10,6 +10,7 @@ GameItem::GameItem(const GameItemType gameItemType, const std::string& imagePath
 	, m_GameItemWidth{ GameItemWidth }
 	, m_GameItemHeight{ GameItemHeight }
 	, m_Active{ IsActive }
+	, m_pSoundEffect{new SoundEffect(soundPath)}
 {
 
 }
@@ -18,6 +19,10 @@ GameItem::~GameItem()
 	if (m_pSpriteTexture) {
 		delete m_pSpriteTexture;
 		m_pSpriteTexture = NULL;
+	}
+	if (m_pSoundEffect) {
+		delete m_pSoundEffect;
+		m_pSoundEffect = NULL;
 	}
 }
 void GameItem::Draw(AvatarState* avatarState) const
@@ -43,10 +48,11 @@ bool GameItem::IsActive()
 }
 
 
-NormalBlock::NormalBlock(Point2f GameItemPos) : GameItem(GameItemType::NormalBlockType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 16.f, 16.f, true)
+NormalBlock::NormalBlock(Point2f GameItemPos, KindOfNormalBlock normalBlockType) : GameItem(GameItemType::NormalBlockType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 16.f, 16.f, true, "Sounds/smb_bump.wav")
 , m_Velocity{0.f, 0.f}
 , m_Acceleration{0.f, -981.f}
 , m_BeginPosY{ GetGameItemPos().y }
+, m_NormalBlockType{ normalBlockType }
 {
 	
 }
@@ -55,15 +61,26 @@ NormalBlock::~NormalBlock()
 }
 void NormalBlock::Draw(AvatarState* avatarState) const
 {
-	float sourceWidth{ GetSpriteTexture()->GetWidth() / 21.f};
-	float sourceHeight{ GetSpriteTexture()->GetHeight() / 28 };
+	if (m_NormalBlockType == KindOfNormalBlock::Outside)
+	{
+		float sourceWidth{ GetSpriteTexture()->GetWidth() / 21.f };
+		float sourceHeight{ GetSpriteTexture()->GetHeight() / 28 };
 
-	Rectf src{ GetSpriteClipWidth(), GetSpriteClipHeight() ,sourceWidth,sourceHeight};
-	Rectf dst{ GetGameItemPos().x, GetGameItemPos().y, sourceWidth, sourceHeight };
-	
-	GetSpriteTexture()->Draw(dst, src);
-	/*utils::SetColor(Color4f(0.f, 0.f, 0.f, 1.f));
-	utils::DrawRect(GetGameItemPos().x, GetGameItemPos().y, 16.f, 16.f);*/
+		Rectf src{ GetSpriteClipWidth(), GetSpriteClipHeight() ,sourceWidth,sourceHeight };
+		Rectf dst{ GetGameItemPos().x, GetGameItemPos().y, sourceWidth, sourceHeight };
+
+		GetSpriteTexture()->Draw(dst, src);
+	}
+	else if (m_NormalBlockType == KindOfNormalBlock::Underground)
+	{
+		float sourceWidth{ GetSpriteTexture()->GetWidth() / 21.f };
+		float sourceHeight{ GetSpriteTexture()->GetHeight() / 28 };
+
+		Rectf src{ GetSpriteClipWidth()*2, GetSpriteClipHeight()*3 ,sourceWidth,sourceHeight };
+		Rectf dst{ GetGameItemPos().x, GetGameItemPos().y, sourceWidth, sourceHeight };
+
+		GetSpriteTexture()->Draw(dst, src);
+	}
 }
 void NormalBlock::CollisionDetect(GameState* gameState) {
 	AvatarState* avatarState = gameState->GetAvatarState();
@@ -104,6 +121,8 @@ void NormalBlock::CollisionDetect(GameState* gameState) {
 		{
 			m_Velocity.y = float(sqrt(2.0f * 981.f * 6));
 
+			GetSoundEffect()->SetVolume(30);
+			GetSoundEffect()->Play(false);
 		}
 		if (avatarState->GetCurrentAvatar()->getAvatarType() == BiggerManType || avatarState->GetCurrentAvatar()->getAvatarType() == FlowerManType)
 		{
@@ -154,7 +173,7 @@ void NormalBlock::UpdateGameItem(float elapsedSec, GameState* gameState)
 }
 
 
-QuestionBlock::QuestionBlock(Point2f GameItemPos) : GameItem(GameItemType::QuestionBlockType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 16.f, 16.f, true)
+QuestionBlock::QuestionBlock(Point2f GameItemPos) : GameItem(GameItemType::QuestionBlockType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 16.f, 16.f, true, "")
 , m_Velocity{ 0.f, 0.f }
 , m_Acceleration{ 0.f, -981.f }
 , m_BeginPosY{ GetGameItemPos().y }
@@ -213,6 +232,7 @@ void QuestionBlock::CollisionDetect(GameState* gameState) {
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom:
 	{
+		
 		//avatarRect.bottom = itemRect.bottom - avatarRect.height;
 		if(avatarState->GetCurrentAvatar()->getAvatarType() == FlowerManType || avatarState->GetCurrentAvatar()->getAvatarType() == BiggerManType)
 		{
@@ -287,7 +307,7 @@ void QuestionBlock::UpdateGameItem(float elapsedSec, GameState* gameState)
 }
 
 
-ConcreteBlockQ::ConcreteBlockQ(Point2f GameItemPos) : GameItem(GameItemType::ConcreteBlockQType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 16.f, 16.f, true)
+ConcreteBlockQ::ConcreteBlockQ(Point2f GameItemPos) : GameItem(GameItemType::ConcreteBlockQType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 16.f, 16.f, true, "Sounds/smb_bump.wav")
 {
 
 }
@@ -332,6 +352,8 @@ void ConcreteBlockQ::CollisionDetect(GameState* gameState) {
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom:
 	{
+		GetSoundEffect()->SetVolume(30);
+		GetSoundEffect()->Play(false);
 		//avatarRect.bottom = itemRect.bottom - avatarRect.height;
 		avatarState->SetIsJumpingfalse();
 		avatarState->SetVelocityYCollisionBottomAvatar();
@@ -361,7 +383,7 @@ bool ConcreteBlockQ::CollisionDetectOnGround(AvatarState* avatarState) {
 	return false;
 }
 
-ConcreteBlock::ConcreteBlock(Point2f GameItemPos) : GameItem(GameItemType::ConcreteBlockType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 16.f, 16.f, true)
+ConcreteBlock::ConcreteBlock(Point2f GameItemPos) : GameItem(GameItemType::ConcreteBlockType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 16.f, 16.f, true, "Sounds/smb_bump.wav")
 {
 
 }
@@ -435,7 +457,7 @@ bool ConcreteBlock::CollisionDetectOnGround(AvatarState* avatarState) {
 	return false;
 }
 
-Pipe::Pipe(Point2f GameItemPos, float spriteClipHeight, float spriteClipWidth, float GameItemWidth, float GameItemHeight, Point2f* transportToPos) : GameItem(GameItemType::PipeType, "Images/tiles.png", spriteClipHeight, spriteClipWidth, GameItemPos, GameItemWidth, GameItemHeight, true)
+Pipe::Pipe(Point2f GameItemPos, float spriteClipHeight, float spriteClipWidth, float GameItemWidth, float GameItemHeight, Point2f* transportToPos) : GameItem(GameItemType::PipeType, "Images/tiles.png", spriteClipHeight, spriteClipWidth, GameItemPos, GameItemWidth, GameItemHeight, true, "")
 , m_pSpriteTextureBottom{ new Texture("Images/tiles.png") }
 , m_transportToPos(transportToPos)
 {
@@ -635,7 +657,7 @@ void HorizontalPipe::CollisionDetect(GameState* gameState)
 	Pipe::CollisionDetect(gameState);
 }
 
-PowerUp::PowerUp(Point2f GameItemPos) : GameItem(GameItemType::PowerUpType, "Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true)
+PowerUp::PowerUp(Point2f GameItemPos) : GameItem(GameItemType::PowerUpType, "Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true, "Sounds/smb_powerup.wav")
 , m_PosPowerUp{ GetGameItemPos().x, GetGameItemPos().y }
 , m_Teller{}
 , m_IsHitFlower{ false }
@@ -698,11 +720,15 @@ void PowerUp::CollisionDetect(GameState* gameState)
 	{
 		if (m_CanPickUpFlower)
 		{
+			GetSoundEffect()->SetVolume(30);
+			GetSoundEffect()->Play(false);
 			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
 		}
 		if (m_CanPickUpMushRoom)
 		{
+			GetSoundEffect()->SetVolume(30);
+			GetSoundEffect()->Play(false);
 			gameState->SetAvatar(gameState->GetBiggerMan());
 			SetActivefalse();
 		}
@@ -712,11 +738,15 @@ void PowerUp::CollisionDetect(GameState* gameState)
 	{
 		if (m_CanPickUpFlower)
 		{
+			GetSoundEffect()->SetVolume(30);
+			GetSoundEffect()->Play(false);
 			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
 		}
 		if (m_CanPickUpMushRoom)
 		{
+			GetSoundEffect()->SetVolume(30);
+			GetSoundEffect()->Play(false);
 			gameState->SetAvatar(gameState->GetBiggerMan());
 			SetActivefalse();
 		}
@@ -745,6 +775,7 @@ void PowerUp::CollisionDetect(GameState* gameState)
 		if (m_CanPickUpFlower)
 		{
 			gameState->SetAvatar(gameState->GetFlowerMan());
+			
 			SetActivefalse();
 
 		}
@@ -757,8 +788,11 @@ void PowerUp::CollisionDetect(GameState* gameState)
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop:
 	{
+		
 		if (m_CanPickUpFlower)
 		{
+			GetSoundEffect()->SetVolume(30);
+			GetSoundEffect()->Play(false);
 			//GameState.SetAvatar(GameState.GetFlowerMan());
 			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
@@ -766,6 +800,8 @@ void PowerUp::CollisionDetect(GameState* gameState)
 		}
 		if (m_CanPickUpMushRoom)
 		{
+			GetSoundEffect()->SetVolume(30);
+			GetSoundEffect()->Play(false);
 			gameState->SetAvatar(gameState->GetBiggerMan());
 			SetActivefalse();
 		}
@@ -822,7 +858,7 @@ void PowerUp::UpdateGameItem(float elapsedSec, GameState* gameState)
 }
 
 
-DecorBlock::DecorBlock(Point2f GameItemPos) : GameItem(GameItemType::DecorBlockType, "Images/tiles.png", 8.f, 8.f, GameItemPos, 16.f, 16.f, true)
+DecorBlock::DecorBlock(Point2f GameItemPos) : GameItem(GameItemType::DecorBlockType, "Images/tiles.png", 8.f, 8.f, GameItemPos, 16.f, 16.f, true, "")
 , m_IsHit{false}
 , m_BeginPosSquar1{ GetGameItemPos().x, GetGameItemPos().y}
 , m_BeginPosSquar2{ GetGameItemPos().x , GetGameItemPos().y + GetGameItemHeight()/2}
@@ -929,7 +965,7 @@ void DecorBlock::UpdateGameItem(float elapsedSec, GameState* gameState)
 }
 
 
-FlagPole::FlagPole(Point2f GameItemPos) : GameItem(GameItemType::FlagPoleType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 4, 145, true)
+FlagPole::FlagPole(Point2f GameItemPos) : GameItem(GameItemType::FlagPoleType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 4, 145, true, "")
 , m_pTexture{new Texture("Images/flag.png")}
 , m_IsHit{ false }
 , m_FlagPoleYPos{ GetGameItemPos().y + (16 * 7.8f) }
@@ -1027,7 +1063,7 @@ void FlagPole::UpdateGameItem(float elapsedSec, GameState* gameState)
 }
 
 
-Coin::Coin(Point2f GameItemPos) : GameItem(GameItemType::CoinType, "Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true)
+Coin::Coin(Point2f GameItemPos) : GameItem(GameItemType::CoinType, "Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true, "")
 , m_PosCoin{ GetGameItemPos().x, GetGameItemPos().y }
 , m_NrOfFrames{4}
 , m_NrFramesPerSec{0.2f}
@@ -1099,8 +1135,8 @@ void Coin::UpdateGameItem(float elapsedSec, GameState* gameState)
 
 LiveItem::LiveItem(const GameItemType gameItemType, const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
 	Vector2f velocity, Vector2f acceleration,
-	int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames) :
-	GameItem(gameItemType, imagePath, spriteClipHeight, spriteClipWidth, GameItemPos, GameItemWidth, GameItemHeight, IsActive)
+	int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames, const std::string& soundPath) :
+	GameItem(gameItemType, imagePath, spriteClipHeight, spriteClipWidth, GameItemPos, GameItemWidth, GameItemHeight, IsActive, soundPath)
 	, m_NrOfFrames{nrOfFrames}
 	, m_NrFramesPerSec{ nrFramesPerSec }
 	, m_AnimTime{ 0.0f}
@@ -1163,11 +1199,11 @@ void LiveItem::Draw(AvatarState* avatarState) const {
 
 Enemy::Enemy(const GameItemType gameItemType, const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
 	Vector2f velocity, Vector2f acceleration,
-	int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames) :
+	int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames, const std::string& soundPath) :
 	LiveItem(gameItemType, imagePath, spriteClipHeight, spriteClipWidth, GameItemPos, GameItemWidth, GameItemHeight,
 		IsActive, liveItemState,
 		velocity, acceleration,
-		animStartFrameX, animStartFrameY, nrOfFrames, nrFramesPerSec, animStartDyingFrameX, animStartDyingFrameY, imageAmountHoriFrames, imageAmountVertiFrames)
+		animStartFrameX, animStartFrameY, nrOfFrames, nrFramesPerSec, animStartDyingFrameX, animStartDyingFrameY, imageAmountHoriFrames, imageAmountVertiFrames, soundPath)
 {
 }
 
@@ -1384,7 +1420,7 @@ void Enemy::CollisionWithLiveItemDetect(LiveItem* liveItem)
 
 Goomba::Goomba(Point2f GameItemPos) : Enemy(GameItemType::GoombaType, "Images/smb_enemies_sheet.png", 30, 30, GameItemPos, 16, 16, true, LiveItemState::Alive,
 	Vector2f{-30.0f, 0.f}, Vector2f{0.0f, -581.0f},
-	0, 0, 2, 0.2f, 2, 0, 15, 7)
+	0, 0, 2, 0.2f, 2, 0, 15, 7, "")
 {
 }
 Goomba::~Goomba() {
@@ -1393,8 +1429,10 @@ Goomba::~Goomba() {
 
 Projectile::Projectile(Point2f GameItemPos) : LiveItem(GameItemType::ProjectileType, "Images/fireball.png", 12, 12, GameItemPos, 7, 7, true, LiveItemState::Dying,
 	Vector2f{ 240.0f, 0.f }, Vector2f{ 0.0f, -800.f},
-	0, 0, 2, 0.2f, 2, 0, 3, 1)
+	0, 0, 2, 0.2f, 2, 0, 3, 1, "Sounds/smb_fireball.wav")
 {
+	GetSoundEffect()->SetVolume(30);
+	GetSoundEffect()->Play(false);
 }
 Projectile::~Projectile() {
 }
@@ -1460,7 +1498,7 @@ void Projectile::CollisionWithGameItemDetect(GameItem* gameItem)
 	{
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom:
 	{
-
+		//if(gameItem.get)
 		m_LiveItemState = LiveItemState::Dying;
 		break;
 
@@ -1506,22 +1544,30 @@ void Projectile::CollisionWithLiveItemDetect(LiveItem* liveItem)
 			liveItem->GetVelocity()
 		);
 
-		switch (location)
+		if (liveItem->GetLiveItemState() != LiveItemState::Dying)
 		{
-		case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheRight:
-		case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheLeft:
-		case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop:
-		{
-			if (m_LiveItemState != LiveItemState::Dying)
+			switch (location)
 			{
-				liveItem->SetLiveItemState(LiveItemState::Dying);
+			case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheRight:
+			case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheLeft:
+			case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop:
+			{
+
+				if (m_LiveItemState != LiveItemState::Dying)
+				{
+					liveItem->SetLiveItemState(LiveItemState::Dying);
+				}
+
+
+				SetLiveItemState(LiveItemState::Dying);
+
+
+				break;
+
 			}
-
-			SetLiveItemState(LiveItemState::Dying);
-			break;
-
+			}
 		}
-		}
+		
 	}
 }
 void Projectile::BounceFloor()

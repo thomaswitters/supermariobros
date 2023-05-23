@@ -51,8 +51,9 @@ void Level::DrawBackground() const
 	m_pBackgroundTexture->Draw();
 }
 
-void Level::HandleCollision(float elapsedSec, GameState* gameState) const
+void Level::HandleCollision(float elapsedSec, GameState* gameState, Point2f& cameraPos) const
 {
+	
 	AvatarState* avatarState = gameState->GetAvatarState();
 	Point2f AvatarOrigin1{ avatarState->GetPositionAvatar().x + 5.f, avatarState->GetPositionAvatar().y };
 	Point2f AvatarOrigin2{ avatarState->GetPositionAvatar().x + 5.f, avatarState->GetPositionAvatar().y + 30.f };
@@ -118,7 +119,11 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState) const
 				LiveItem* OtherLiveItem = m_pLiveItems[i];
 				if (OtherLiveItem != ALiveItem && OtherLiveItem->IsActive() && ALiveItem->CanCollide(OtherLiveItem))
 				{
-					ALiveItem->CollisionWithLiveItemDetect(OtherLiveItem);
+					
+					if (cameraPos.x + Window().width / 2 >= ALiveItem->GetGameItemPos().x && cameraPos.y + Window().height >= ALiveItem->GetGameItemPos().y)
+					{
+						ALiveItem->CollisionWithLiveItemDetect(OtherLiveItem);
+					}
 				}
 			}
 
@@ -224,7 +229,7 @@ void Level::UpdateItems(float elapsedSec, GameState* gameState, Point2f cameraPo
 
 		if (ALiveItem->IsActive())
 		{
-			if (cameraPos.x + Window().width / 2 + 35.f >= ALiveItem->GetGameItemPos().x)
+			if (cameraPos.x + Window().width / 2 + 35.f >= ALiveItem->GetGameItemPos().x && cameraPos.y + Window().height >= ALiveItem->GetGameItemPos().y)
 			{
 				ALiveItem->UpdateGameItem(elapsedSec, gameState);
 			}

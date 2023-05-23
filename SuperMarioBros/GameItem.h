@@ -4,7 +4,7 @@
 #include "AvatarState.h"
 #include "GameState.h"
 #include "Avatar.h"
-
+#include <SoundEffect.h>
 
 class AvatarState;
 class GameState;
@@ -18,7 +18,7 @@ enum GameItemType {
 class GameItem
 {
 public:
-	GameItem(const GameItemType gameItemType, const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive);
+	GameItem(const GameItemType gameItemType, const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, const std::string& soundPath = "");
 	virtual ~GameItem();
 	virtual void Draw(AvatarState* avatarState) const;
 	virtual void CollisionDetect(GameState* gameState);
@@ -66,10 +66,13 @@ protected:
 		m_GameItemPos.x += velocity.x * elapsedSec;
 		m_GameItemPos.y += velocity.y * elapsedSec;
 	}
-	
 	void SetActivefalse()
 	{
 		m_Active = false;
+	}
+
+	SoundEffect* GetSoundEffect() const {
+		return m_pSoundEffect;
 	}
 
 private:
@@ -81,12 +84,15 @@ private:
 	Point2f m_GameItemPos;
 	float m_GameItemWidth;
 	float m_GameItemHeight;
+
+	SoundEffect* m_pSoundEffect;
 };
 
+enum KindOfNormalBlock { Outside, Underground };
 class NormalBlock : public GameItem
 {
 public:
-	NormalBlock(Point2f GameItemPos);
+	NormalBlock(Point2f GameItemPos, KindOfNormalBlock normalBlockType);
 	virtual ~NormalBlock();
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
@@ -96,6 +102,7 @@ private:
 	Vector2f m_Velocity;
 	Vector2f m_Acceleration;
 	float m_BeginPosY;
+	KindOfNormalBlock m_NormalBlockType;
 };
 
 class QuestionBlock : public GameItem
@@ -233,7 +240,6 @@ private:
 	Vector2f m_Acceleration;
 };
 
-
 class DecorBlock : public GameItem
 {
 public:
@@ -306,7 +312,7 @@ public:
 
 	LiveItem(const GameItemType gameItemType, const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
 		Vector2f velocity, Vector2f acceleration, 
-		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames);
+		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames, const std::string& soundPath = "");
 
 	virtual ~LiveItem();
 
@@ -398,7 +404,7 @@ class Enemy : public LiveItem
 public:
 	Enemy(const GameItemType gameItemType, const std::string& imagePath, float spriteClipHeight, float spriteClipWidth, Point2f GameItemPos, float GameItemWidth, float GameItemHeight, bool IsActive, LiveItemState liveItemState,
 		Vector2f velocity, Vector2f acceleration,
-		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames);
+		int animStartFrameX, int animStartFrameY, int nrOfFrames, float nrFramesPerSec, int animStartDyingFrameX, int animStartDyingFrameY, int imageAmountHoriFrames, int imageAmountVertiFrames, const std::string& soundPath = "");
 
 	virtual ~Enemy();
 

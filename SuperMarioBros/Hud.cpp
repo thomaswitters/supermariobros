@@ -21,7 +21,7 @@ Hud::Hud(const Point2f& topLeft, float totalTime, int level, int lives, int coin
 	, m_PosCoin{ m_BottomLeft.x - 266, m_BottomLeft.y - 50 }
 	, m_pTextX{}
 	, m_pCoins{}
-	//, m_pSettingsScreen{new SettingsScreen()}
+	, m_pSettingsScreen{new SettingsScreen()}
 	, m_HasOpenSettings{false}
 {
 	m_pTextFont = TTF_OpenFont("Fonts/Inconsolata-ExtraLight.ttf", 32);
@@ -50,7 +50,7 @@ Hud::~Hud()
 	delete m_pTextLives;
 	delete m_pTextMario;
 	TTF_CloseFont(m_pHudFont);
-	//delete m_pSettingsScreen;
+	delete m_pSettingsScreen;
 }
 
 void Hud::Draw()
@@ -82,12 +82,13 @@ void Hud::Draw()
 	}
 	else if (m_HasOpenSettings)
 	{
-		//m_pSettingsScreen->Draw();
+		m_pSettingsScreen->Draw();
 	}
 }
 
 void Hud::Update(float elapsedSec, GameState* gameState)
 {
+	m_pSettingsScreen->Update(elapsedSec, gameState);
 	m_TotalTime -= elapsedSec; 
 	m_Lives = gameState->GetAmountOfLives();
 	m_Coins = gameState->GetAmountCoins();
@@ -97,18 +98,42 @@ void Hud::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)
 {
 	if (m_HasOpenSettings)
 	{
-		//m_pSettingsScreen->ProcessMouseUpEvent(e);
+		m_pSettingsScreen->ProcessMouseUpEvent(e, m_HasOpenSettings);
 	}
 
-	switch (e.button)
+	if (!m_HasOpenSettings)
 	{
-	case SDL_BUTTON_LEFT:
-		if (e.x >= m_BottomLeft.x + 280.f && e.y >= m_BottomLeft.y - 55 && e.x <= m_BottomLeft.x + 300.f && e.y <= m_BottomLeft.y - 35)
+		switch (e.button)
 		{
-			m_HasOpenSettings = true;
+		case SDL_BUTTON_LEFT:
+		{
+			if (e.x >= m_BottomLeft.x + 280.f && e.y >= m_BottomLeft.y - 55 && e.x <= m_BottomLeft.x + 325.f && e.y <= m_BottomLeft.y - 10)
+			{
+				m_HasOpenSettings = true;
+			}
+			break;
 		}
-		break;
+		}
 	}
-
 }
 
+void Hud::ProcessMouseDownEvent(const SDL_MouseButtonEvent& e)
+{
+	if (m_HasOpenSettings)
+	{
+		m_pSettingsScreen->ProcessMouseDownEvent(e, m_HasOpenSettings);
+	}
+}
+
+void Hud::ProcessMouseMotionEvent(const SDL_MouseMotionEvent& e)
+{
+	if (m_HasOpenSettings)
+	{
+		m_pSettingsScreen->ProcessMouseMotionEvent(e);
+	}
+}
+
+void Hud::SetCloseSettings()
+{
+	m_HasOpenSettings = false;
+}

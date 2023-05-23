@@ -71,9 +71,9 @@ CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineC
 			(aTop >= iBottom - 5.f) &&
 			(aTop <= iTop) &&
 			(
-				((aLeft >= iLeft) && (aLeft <= iRight))
+				((aLeft >= iLeft +2.f) && (aLeft <= iRight -2.f))
 				||
-				((aRight >= iLeft) && (aRight <= iRight))
+				((aRight >= iLeft+2.f) && (aRight <= iRight -2.f))
 				)
 			)
 		{
@@ -91,9 +91,9 @@ CollisionDetectionHelper::CollisionLocation CollisionDetectionHelper::determineC
 			(aBottom <= iTop + 10.f) &&
 			(aBottom >= iBottom) &&
 			(
-				((aLeft >= iLeft) && (aLeft <= iRight))
+				((aLeft >= iLeft + 0.7f) && (aLeft <= iRight - 0.7f))
 				||
-				((aRight >= iLeft) && (aRight <= iRight))
+				((aRight >= iLeft +0.7f) && (aRight <= iRight -0.7f))
 				)
 			)
 		{

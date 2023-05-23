@@ -3,6 +3,7 @@
 #include "Avatar.h"
 #include <Vector2f.h>
 #include "Level.h"
+#include <SoundEffect.h>
 
 class Level;
 class Avatar;
@@ -86,4 +87,6 @@ private:
 
 	float m_TimerGoingInPipe;
 	
+	SoundEffect* m_SoundEffectMarioJump;
+
 };

@@ -36,8 +36,6 @@ private:
 	Hud* m_pHud;
 	Level* m_pLevel;
 	Camera* m_pCamera;
-	SoundStream* m_SoundStreamMario;
-	SoundEffect* m_SoundEffectMarioJump;
 	SoundEffect* m_SoundEffectMarioFinnish;
 	BeginVieuw* m_BeginScreen;
 	LoadingScreen* m_LoadingScreen;

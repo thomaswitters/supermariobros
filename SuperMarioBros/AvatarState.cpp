@@ -264,7 +264,7 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 	
 	if (m_RealoadingCounter <= 0.f)
 	{
-		m_RealoadingCounter = 0.6;	
+		m_RealoadingCounter = 0.f;	
 		m_AmmoCounterAmound++;
 	}
 	else

@@ -18,9 +18,6 @@
  //It is not as flexible / plugable but I did not see that required at the moment.
 
 class Avatar;
-class NormalMan;
-class BiggerMan;
-class FlowerMan;
 class AvatarState;
 class Level;
 class Level1;
@@ -34,9 +31,9 @@ public:
 	void LevelWon();
 
 	// TODO: move to AvatarState
-	NormalMan* GetNormalMan();
-	BiggerMan* GetBiggerMan();
-	FlowerMan* GetFlowerMan();
+	Avatar* GetNormalMan();
+	Avatar* GetBiggerMan();
+	Avatar* GetFlowerMan();
 	void ResetAvatar();
 	void SetAvatar(Avatar* newAvatar);
 	// TODO: end move to AvatarState
@@ -84,9 +81,9 @@ private:
 	AvatarState* m_pAvatarState;
 
 	// TODO: move to AvatarState
-	NormalMan* m_pNormalMan;
-	BiggerMan* m_pBiggerMan;
-	FlowerMan* m_pFlowerMan;
+	Avatar* m_pNormalMan;
+	Avatar* m_pBiggerMan;
+	Avatar* m_pFlowerMan;
 	// TODO: end move to AvatarState
 	Level* m_pLevel{};
 	int AmountOfLives;

@@ -1,5 +1,15 @@
 #include "pch.h"
 #include "Level1.h"
+#include "Coin.h"
+#include "QuestionBlock.h"
+#include "PowerUp.h"
+#include "DecorBlock.h"
+#include "NormalBlock.h"
+#include "ConcreteBlock.h"
+#include "VerticalPipe.h"
+#include "HorizontalPipe.h"
+#include "Goomba.h"
+#include "FlagPole.h"
 
 Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros.svg", "Images/SuperMarioBros2.svg", "Images/SuperMarioBros3.svg", "Images/SuperMarioBros4.svg", "Images/SuperMarioBros5.svg" })
 {

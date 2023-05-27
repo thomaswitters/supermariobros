@@ -51,13 +51,13 @@ void GameState::LevelWon() {
 	fake.type = SDL_QUIT;
 	SDL_PushEvent(&fake);
 }
-NormalMan* GameState::GetNormalMan() {
+Avatar* GameState::GetNormalMan() {
 	return m_pNormalMan;
 }
-FlowerMan* GameState::GetFlowerMan() {
+Avatar* GameState::GetFlowerMan() {
 	return m_pFlowerMan;
 }
-BiggerMan* GameState::GetBiggerMan() {
+Avatar* GameState::GetBiggerMan() {
 	return m_pBiggerMan;
 }
 void GameState::ResetAvatar() {

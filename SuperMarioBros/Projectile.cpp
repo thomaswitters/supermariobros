@@ -1,29 +1,29 @@
 #include "pch.h"
 #include "Projectile.h"
 
-Projectile::Projectile(Point2f GameItemPos) : LiveItem(GameItemType::ProjectileType, "Images/fireball.png", 12, 12, GameItemPos, 7, 7, true, LiveItemState::Dying,
+Projectile::Projectile(Point2f GameItemPos, ProjectileDirection projectileDirection) : LiveItem(GameItemType::ProjectileType, "Images/fireball.png", 12, 12, GameItemPos, 7, 7, true, LiveItemState::Dying,
 	Vector2f{ 240.0f, 0.f }, Vector2f{ 0.0f, -800.f},
 	0, 0, 2, 0.2f, 2, 0, 3, 1, "Sounds/smb_fireball.wav")
 {
 	GetSoundEffect()->SetVolume(30);
 	GetSoundEffect()->Play(false);
-}
-Projectile::~Projectile() {
-}
-void Projectile::UpdateGameItem(float elapsedSec, GameState* gameState)
-{
-	Level* level = gameState->GetLevel();
-
-	
-	
-	/*if (gameState->GetAvatarState()->GetVelocityAvatar().x < 0.f)
+	if (projectileDirection == ProjectileDirection::Left)
 	{
 		SetVelocityX(-240.f);
 	}
 	else
 	{
 		SetVelocityX(240.f);
-	}*/
+	}
+}
+
+Projectile::~Projectile() {
+}
+
+void Projectile::UpdateGameItem(float elapsedSec, GameState* gameState)
+{
+	Level* level = gameState->GetLevel();
+
 	
 	//SetGameItemPosY(GetGameItemPos().y + float(1.5f * GolfbewegingInPercent(m_AnimTime, 1.f)));
 	switch (m_LiveItemState) {

@@ -4,6 +4,7 @@
 #include "Avatar.h"
 #include "Level.h"
 #include <vector>
+#include <SoundEffect.h>
 
  //I had to choose between 
  //
@@ -26,32 +27,67 @@ class GameState
 {
 public:
 	GameState();
-	virtual ~GameState();
+
+	/*GameState(const GameState& other) {	 // II. Copy constructor
+		m_pAvatarState = other.m_pAvatarState;
+		
+		copyToMe(other);
+	}
+
+	GameState& operator=(const GameState& other) // III. copy assignment
+	{
+		if (this == &other)
+			return *this;
+
+		copyToMe(other);
+		return *this;
+	}
+
+	void copyToMe(const GameState& other)
+	{
+		m_pNormalMan = other.m_pNormalMan;
+	}
+	*/
+	virtual ~GameState();  // I. desctructor
+
+	/*
+	GameState(GameState&& other) noexcept // IV. move constructor
+	{
+		copyToMe
+	}
+	*/
 
 	void LevelWon();
 	bool GoToLevel2(bool reachedLevel1);
-	void ResetLevel();
+	void ResetLevel(Level* level);
 
 	// TODO: move to AvatarState
 	Avatar* GetNormalMan();
 	Avatar* GetBiggerMan();
 	Avatar* GetFlowerMan();
 	void ResetAvatar();
+
+	void PlayerDies();
+	void PlayerResurrects(Level* level);
+
 	void SetAvatar(Avatar* newAvatar);
 	// TODO: end move to AvatarState
 
 	void DrawAvatar() const;
 	AvatarState* GetAvatarState() const;
-	void UpdateAvatar(float elapsedSec, Level* level, Point2f cameraPos);
+	void UpdateAvatar(float elapsedSec, Level* level, Point2f cameraPos, GameState* gameState);
 	void UpdateDrawAvatar(float elapsedSec);
 
 	Level* GetLevel() const
 	{
-		return m_pLevel;
+		return m_pLevels;
 	}
+	void UpdateItemsLevel(float elapsedSec, Point2f cameraPos, GameState* gameState);
+
+	
 
 	void SetLevel(Level* level) {
-		m_pLevel = level;
+		m_pLevels = level;
 	}
 
 	int GetAmountOfLives()
@@ -87,8 +123,12 @@ private:
 	Avatar* m_pBiggerMan;
 	Avatar* m_pFlowerMan;
 	// TODO: end move to AvatarState
-	Level* m_pLevel{};
+	//std::vector<Level*> m_pLevels;
+	Level* m_pLevels;
 	int AmountOfLives;
 	int m_AmountCoins;
+
+	SoundEffect* m_SoundEffectMarioDies;
+
 };
 

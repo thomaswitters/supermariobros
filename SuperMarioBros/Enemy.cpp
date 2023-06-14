@@ -66,9 +66,7 @@ void Enemy::CollisionDetect(GameState* gameState) {
 			{
 				if (gameState->GetAvatarState()->GetActionState() != AvatarState::ActionState::dead && gameState->GetAvatarState()->GetCanBeHit() == true)
 				{
-					avatarState->SetActionState(AvatarState::ActionState::dead);
-					gameState->SetAmountOfLives();
-//					gameState->PlayerDies();
+					gameState->PlayerDies();
 					gameState->GetAvatarState()->SetVelocityXCollisionAvatar(0.f);
 					gameState->GetAvatarState()->SetVelocityYAvatar(float(sqrt(2.0f * 981.f * 100)));
 				}
@@ -90,8 +88,7 @@ void Enemy::CollisionDetect(GameState* gameState) {
 			{
 				if (gameState->GetAvatarState()->GetActionState() != AvatarState::ActionState::dead && gameState->GetAvatarState()->GetCanBeHit() == true)
 				{
-					avatarState->SetActionState(AvatarState::ActionState::dead);
-					gameState->SetAmountOfLives();
+					gameState->PlayerDies();
 					gameState->GetAvatarState()->SetVelocityXCollisionAvatar(0.f);
 					gameState->GetAvatarState()->SetVelocityYAvatar(float(sqrt(2.0f * 981.f * 100)));
 				}
@@ -113,8 +110,7 @@ void Enemy::CollisionDetect(GameState* gameState) {
 			{
 				if (gameState->GetAvatarState()->GetActionState() != AvatarState::ActionState::dead && gameState->GetAvatarState()->GetCanBeHit() == true)
 				{
-					avatarState->SetActionState(AvatarState::ActionState::dead);
-					gameState->SetAmountOfLives();
+					gameState->PlayerDies();
 					gameState->GetAvatarState()->SetVelocityXCollisionAvatar(0.f);
 					gameState->GetAvatarState()->SetVelocityYAvatar(float(sqrt(2.0f * 981.f * 100)));
 				}

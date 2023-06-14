@@ -71,10 +71,6 @@ void Camera::Clamp(Point2f& bottomLeftPos)
 }
 void Camera::Clamp2(Point2f& bottomLeftPos)
 {
-	if (bottomLeftPos.x <= m_LevelBoundaries2.left)
-	{
-		bottomLeftPos.x = m_LevelBoundaries2.left;
-	}
 	if (bottomLeftPos.x + m_Width >= m_LevelBoundaries2.left + m_LevelBoundaries2.width)
 	{
 		bottomLeftPos.x = m_LevelBoundaries2.left + m_LevelBoundaries2.width - m_Width;
@@ -87,4 +83,10 @@ void Camera::Clamp2(Point2f& bottomLeftPos)
 	{
 		bottomLeftPos.y = m_LevelBoundaries2.bottom + m_LevelBoundaries2.height - m_Height;
 	}
+	if (bottomLeftPos.x <= m_LevelBoundaries2.left)
+	{
+		bottomLeftPos.x = m_LevelBoundaries2.left;
+	}
+	
+	
 }

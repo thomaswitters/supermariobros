@@ -15,6 +15,8 @@ public:
 	/* Use a vecotr of verticesImagePath: I didn't know how to create 1 svg to represent all vertices, hence I chose to introduce a vector with multiple svg's */
 	Level(const std::string& imagePath, std::vector<std::string> verticesImagePath);
 	virtual ~Level();
+	virtual void ResetLevel() = 0;
+
 	void DrawBackground() const;
 	void DrawForeground(AvatarState* avatarState) const;
 	void HandleCollision(float elapsedSec, GameState* gameState, Point2f& cameraPos) const;
@@ -26,6 +28,9 @@ public:
 	void AddGameItem(GameItem* gameItem);
 
 	void AddLiveItem(LiveItem* liveItem);
+
+	void DestroyAllItems();
+
 protected:
 	std::vector<GameItem*> GetGameItems() const;
 	std::vector<LiveItem*> GetLiveItems() const;
@@ -36,7 +41,5 @@ private:
 
 	std::vector<GameItem*> m_pGameItems;
 	std::vector<LiveItem*> m_pLiveItems;
-
-	std::vector<Texture*> m_pLevelProp;
 };
 

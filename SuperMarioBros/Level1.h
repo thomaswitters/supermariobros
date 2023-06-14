@@ -10,6 +10,8 @@ class Level1: public Level
 public:
 	Level1();
 	virtual ~Level1();
+	void SetupLevel();
+	void ResetLevel();
 	void DrawForeground() const;
 	bool HasReachedEnd(const Rectf& actorShape);
 };

@@ -1,3 +1,8 @@
+no rule of 5
+- ik heb dit voor 1 classe gedaan om te tonen dat ik dit wel begrijp. dit al van het begin moeten doen dat is weer een lesje voor mij wat ik nu weet. waarom ik dit niet voor alles meer dee is doordat het te veel tijd inpalmde en vond de andere dingen iets belangrijker
+
+
+
 https://www.myinstants.com/en/search/?name=mario
 # TODO
 

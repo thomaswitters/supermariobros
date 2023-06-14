@@ -1,11 +1,12 @@
 #pragma once
 #include "GameItem.h"
 
-class CoinPickUp : public GameItem
+class CoinPickup : public GameItem
 {
 public:
-	CoinPickUp(Point2f GameItemPos);
-	virtual ~CoinPickUp();
+	CoinPickup();
+	CoinPickup(Point2f GameItemPos);
+	virtual ~CoinPickup();
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
 	void UpdateGameItem(float elapsedSec, GameState* gameState);

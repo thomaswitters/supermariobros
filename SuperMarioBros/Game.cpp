@@ -67,17 +67,18 @@ void Game::Update( float elapsedSec )
 		m_GameState.UpdateDrawAvatar(elapsedSec);
 		m_GameState.SetLevel(m_pLevel);
 
-		m_pLevel->UpdateItems(elapsedSec, &m_GameState, m_CameraFollow);
-		m_GameState.UpdateAvatar(elapsedSec, m_pLevel, m_CameraFollow);
+		m_GameState.UpdateItemsLevel(elapsedSec, m_CameraFollow, &m_GameState);
+		//m_pLevel->UpdateItems(elapsedSec, &m_GameState, m_CameraFollow);
+		m_GameState.UpdateAvatar(elapsedSec, m_pLevel, m_CameraFollow, &m_GameState);
 
 		m_pLevel->HandleCollision(elapsedSec, &m_GameState, m_CameraFollow);
 
 
 		m_pCamera->SetLevelBoundaries(Rectf{ 0.0f ,0.f,  3376.f, 480.f });
-		m_pCamera->SetLevelBoundaries2(Rectf{ 768.0f ,0.f,  3376.f, 240.f });
+		m_pCamera->SetLevelBoundaries2(Rectf{ 768.f ,0.f,  3376.f, 240.f });
 
 
-		if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x || m_GameState.GetAvatarState()->GetPositionAvatar().y <= 250.f)
+		if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x || m_GameState.GetAvatarState()->GetPositionAvatar().y <= 250.f || m_GameState.GetAvatarState()->GetActionState() == AvatarState::ActionState::respawning && m_GameState.GetAvatarState()->GetPositionAvatar().x <= 50.f)
 		{
 			if (m_GameState.GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
 			{
@@ -87,6 +88,11 @@ void Game::Update( float elapsedSec )
 				//}
 			}
 		}
+		/*else if (m_GameState.GetAvatarState()->GetActionState() == AvatarState::ActionState::dead)
+		{
+			m_CameraFollow = m_GameState.GetAvatarState()->GetPositionAvatar();
+
+		}*/
 
 		m_pHud->Update(elapsedSec, &m_GameState);
 	}

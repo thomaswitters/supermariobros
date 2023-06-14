@@ -5,6 +5,7 @@
 #include "QuestionBlock.h"
 #include "PowerUp.h"
 #include "DecorBlock.h"
+#include "BlackDecorBlock.h"
 #include "NormalBlock.h"
 #include "ConcreteBlock.h"
 #include "VerticalPipe.h"
@@ -15,7 +16,52 @@
 
 Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros.svg", "Images/SuperMarioBros2.svg", "Images/SuperMarioBros3.svg", "Images/SuperMarioBros4.svg", "Images/SuperMarioBros5.svg" })
 {
-	//AddGameItem(new CoinPickUp(Point2f(256.f, 320.f)));
+	SetupLevel();
+}
+
+void Level1::SetupLevel() {
+	
+	AddGameItem(new BlackDecorBlock(Point2f(832.f, 80.f)));
+	AddGameItem(new CoinPickup(Point2f(832.f, 80.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(848.f, 80.f)));
+	AddGameItem(new CoinPickup(Point2f(848.f, 80.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(864.f, 80.f)));
+	AddGameItem(new CoinPickup(Point2f(864.f, 80.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(880.f, 80.f)));
+	AddGameItem(new CoinPickup(Point2f(880.f, 80.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(896.f, 80.f)));
+	AddGameItem(new CoinPickup(Point2f(896.f, 80.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(912.f, 80.f)));
+	AddGameItem(new CoinPickup(Point2f(912.f, 80.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(928.f, 80.f)));
+	AddGameItem(new CoinPickup(Point2f(928.f, 80.f)));
+
+	AddGameItem(new BlackDecorBlock(Point2f(832.f, 112.f)));
+	AddGameItem(new CoinPickup(Point2f(832.f, 112.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(848.f, 112.f)));
+	AddGameItem(new CoinPickup(Point2f(848.f, 112.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(864.f, 112.f)));
+	AddGameItem(new CoinPickup(Point2f(864.f, 112.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(880.f, 112.f)));
+	AddGameItem(new CoinPickup(Point2f(880.f, 112.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(896.f, 112.f)));
+	AddGameItem(new CoinPickup(Point2f(896.f, 112.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(912.f, 112.f)));
+	AddGameItem(new CoinPickup(Point2f(912.f, 112.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(928.f, 112.f)));
+	AddGameItem(new CoinPickup(Point2f(928.f, 112.f)));
+
+	AddGameItem(new BlackDecorBlock(Point2f(848.f, 144.f)));
+	AddGameItem(new CoinPickup(Point2f(848.f, 144.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(864.f, 144.f)));
+	AddGameItem(new CoinPickup(Point2f(864.f, 144.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(880.f, 144.f)));
+	AddGameItem(new CoinPickup(Point2f(880.f, 144.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(896.f, 144.f)));
+	AddGameItem(new CoinPickup(Point2f(896.f, 144.f)));
+	AddGameItem(new BlackDecorBlock(Point2f(912.f, 144.f)));
+	AddGameItem(new CoinPickup(Point2f(912.f, 144.f)));
+
 
 	AddGameItem(new Coin(Point2f(256.f, 320.f)));
 	AddGameItem(new QuestionBlock(Point2f(256.f, 320.f)));
@@ -316,7 +362,11 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 
 	AddLiveItem(new Goomba(Point2f(2648.f, 272.f)));
 	AddLiveItem(new Goomba(Point2f(2670.f, 272.f)));
-	
+}
+
+void Level1::ResetLevel() {
+	DestroyAllItems();
+	SetupLevel();
 }
 
 Level1::~Level1()

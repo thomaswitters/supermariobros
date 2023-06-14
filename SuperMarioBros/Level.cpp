@@ -10,7 +10,6 @@ Level::Level(const std::string& imagePath, std::vector<std::string> verticesImag
 	, m_pBackgroundTexture{new Texture(imagePath)}
 	, m_pGameItems{}
 	, m_pLiveItems{}
-	, m_pLevelProp{}
 {
 	for (size_t i = 0; i < verticesImagePaths.size(); i++) {
 		std::vector<std::vector<Point2f>> m_VerticesTemp;
@@ -25,12 +24,19 @@ Level::~Level()
 		delete m_pBackgroundTexture;
 		m_pBackgroundTexture = NULL;
 	}
+	
+	DestroyAllItems();
 
+}
+
+void Level::DestroyAllItems() {
+	
 	for (size_t i = 0; i < m_pGameItems.size(); i++)
 	{
 		GameItem* GameItem = m_pGameItems[i];
 		delete GameItem;
 	}
+	m_pGameItems.clear();
 
 	for (size_t i = 0; i < m_pLiveItems.size(); i++)
 	{
@@ -38,12 +44,7 @@ Level::~Level()
 		delete ALiveItem;
 	}
 
-	for (size_t i = 0; i < m_pLevelProp.size(); i++)
-	{
-		Texture* ALevelProp = m_pLevelProp[i];
-		delete ALevelProp;
-	}
-
+	m_pLiveItems.clear();
 }
 
 void Level::DestroyGameItem(GameItem* gameItem) {

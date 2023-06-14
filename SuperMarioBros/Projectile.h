@@ -1,10 +1,12 @@
 #pragma once
 #include "LiveItem.h"
 
+enum ProjectileDirection { Left, Right };
+
 class Projectile : public LiveItem
 {
 public:
-	Projectile(Point2f GameItemPos);
+	Projectile(Point2f GameItemPos, ProjectileDirection projectileDirection);
 	virtual ~Projectile();
 
 	virtual void UpdateGameItem(float elapsedSec, GameState* gameState); 

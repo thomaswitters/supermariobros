@@ -12,13 +12,12 @@ AvatarState::AvatarState(Avatar *initialAvatar)
 	, m_JumpTime{}
 	, m_IsJumping{false}
 	, m_AmmoCounterAmound{1}
-	, m_RealoadingCounter{0.6f}
+	, m_RealoadingCounter{2.f}
 	, m_CanBeHit{true}
 	, m_TimeToHitAgain{ 2.0f }
 	, m_TimerCanBeHit{ m_TimeToHitAgain }
 	, m_TimerGoingInPipe{2}
 	, m_SoundEffectMarioJump{ new SoundEffect("Sounds/MarioJump.mp3") }
-	, m_SoundEffectMarioDies{new SoundEffect("Sounds/MarioDies.mp3")}
 	, m_FlagPoleHeight{290.f}
 	, m_FlagPolePos{ 3162.f }
 	, m_EndLevel{ 3276.f }
@@ -28,7 +27,6 @@ AvatarState::AvatarState(Avatar *initialAvatar)
 }
 AvatarState::~AvatarState() {
 	delete m_SoundEffectMarioJump;
-	delete m_SoundEffectMarioDies;
 }
 Point2f AvatarState::GetPositionAvatar() const
 {
@@ -42,6 +40,10 @@ void AvatarState::SetPositionVelosityAvatar(Vector2f m_Velocity, float elapsedSe
 void AvatarState::SetPositionYAvatar(float y)
 {
 	m_AvatarY = y;
+}
+void AvatarState::SetPositionXAvatar(float x)
+{
+	m_AvatarX = x;
 }
 void AvatarState::SetPositionXCollisionLeftAvatar(float x, float width)
 {
@@ -147,9 +149,9 @@ void AvatarState::SetActionState(ActionState actionState)
 }
 
 
-void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* level, Point2f cameraPos)
+void AvatarState::Update(float elapsedSec, GameState* gameState, Level* level, Point2f cameraPos)
 {
-
+	AvatarState* avatarState = gameState->GetAvatarState();
 	if (m_ActionState != AvatarState::ActionState::dead && m_ActionState != AvatarState::ActionState::isGoingTroughPipe && m_ActionState != AvatarState::ActionState::grabing && m_ActionState != AvatarState::ActionState::endLevel)
 	{
 		HandleKeys(elapsedSec, level);
@@ -157,7 +159,12 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 	
 	if (m_AvatarY <= 0.f)
 	{
-		m_ActionState = AvatarState::ActionState::dead;
+		if (m_ActionState != AvatarState::ActionState::dead)
+		{
+			gameState->SetAvatar(gameState->GetNormalMan());
+			gameState->PlayerDies();
+		}
+		
 	}
 
 	SetVelocityAvatar(m_Acceleration, elapsedSec);
@@ -243,16 +250,20 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 	}
 	if (m_ActionState == AvatarState::ActionState::dead)
 	{
-		m_SoundEffectMarioDies->SetVolume(30);
-		m_SoundEffectMarioDies->Play(false);
+		
 		if (m_AvatarY <= 0.f)
 		{
-			m_ActionState = AvatarState::ActionState::moving;
-			m_AvatarX = 10.f;
-			m_AvatarY = 272.f;
+			gameState->PlayerResurrects(level);
+			m_ActionState = AvatarState::ActionState::respawning;
+			
+			
 		}
 		
 
+	}
+	if (m_ActionState == AvatarState::ActionState::respawning)
+	{
+		
 	}
 	if (m_ActionState == AvatarState::ActionState::isGoingTroughPipe)
 	{
@@ -279,7 +290,7 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 		
 	
 		
-		SetVelocityYAvatar(-40.f);
+		SetVelocityYAvatar(-30.f);
 	}
 	if (m_ActionState == AvatarState::ActionState::endLevel)
 	{
@@ -301,7 +312,7 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 	
 	if (m_RealoadingCounter <= 0.f)
 	{
-		m_RealoadingCounter = 0.6f;	
+		m_RealoadingCounter = 0.7f;	
 		m_AmmoCounterAmound++;
 	}
 	else
@@ -334,7 +345,7 @@ void AvatarState::UpdatePosition(float elapsedSec, Point2f cameraPos)
 
 	if (m_Velocity.x <= 0.f)
 	{
-		if (m_ActionState != AvatarState::ActionState::dead)
+		if (m_ActionState != AvatarState::ActionState::respawning)
 		{
 			if (m_AvatarX <= cameraPos.x - Window().width / 2 + 20.f)
 			{
@@ -439,7 +450,17 @@ void AvatarState::HandleKeys(float elapsedSec, Level* level)
 			{
 				if (m_AmmoCounterAmound >= 1)
 				{
-					level->AddLiveItem(new Projectile(Point2f(m_AvatarX, m_AvatarY + 10.f)));
+					//ProjectTileDiretion dir;
+					if (GetVelocityAvatar().x < 0.f)
+					{
+						level->AddLiveItem(new Projectile(Point2f(m_AvatarX, m_AvatarY + 10.f), Left));
+					}
+					else
+					{
+						level->AddLiveItem(new Projectile(Point2f(m_AvatarX, m_AvatarY + 10.f), Right));
+					}
+
+					
 					m_AmmoCounterAmound--;
 				}
 			}		

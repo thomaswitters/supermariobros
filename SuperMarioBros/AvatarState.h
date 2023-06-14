@@ -23,6 +23,7 @@ public:
 	Point2f GetPositionAvatar() const;
 	void SetPositionVelosityAvatar(Vector2f m_Velocity, float elapsedSec);
 	void SetPositionYAvatar(float y);
+	void SetPositionXAvatar(float x);
 	void SetPositionXCollisionLeftAvatar(float x, float width);
 	void SetPositionXCollisionRightAvatar(float x, float width);
 	void SetPositionYCollisionBottomAvatar(float y, float height);
@@ -47,13 +48,14 @@ public:
 		dead,
 		isGoingTroughPipe,
 		grabing,
+		respawning,
 		endLevel
 	};
 
 	ActionState GetActionState() const;
 	void SetActionState(ActionState actionState);
 
-	void Update(float elapsedSec, AvatarState* avatarState, Level* level, Point2f cameraPos);
+	void Update(float elapsedSec, GameState* gameState, Level* level, Point2f cameraPos);
 	void UpdatePosition(float elapsedSec, Point2f cameraPos);
 	void HandleKeys(float elapsedSec, Level* level);
 	bool CheckKeys();
@@ -90,7 +92,6 @@ private:
 	float m_TimerGoingInPipe;
 	
 	SoundEffect* m_SoundEffectMarioJump;
-	SoundEffect* m_SoundEffectMarioDies;
 
 	float m_FlagPoleHeight;
 	float m_EndLevel;

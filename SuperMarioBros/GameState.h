@@ -29,6 +29,8 @@ public:
 	virtual ~GameState();
 
 	void LevelWon();
+	bool GoToLevel2(bool reachedLevel1);
+	void ResetLevel();
 
 	// TODO: move to AvatarState
 	Avatar* GetNormalMan();

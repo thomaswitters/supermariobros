@@ -28,22 +28,26 @@ void FlowerMan::Draw(const AvatarState* avatarState) const
 	else if (avatarState->GetActionState() == AvatarState::ActionState::moving)
 	{
 		src = Rectf{ GetSpriteClipWidth() * (9 + GetAnimFrame()),GetSpriteClipHeight() * 5.3f,sourceWidth,sourceHeight };
-
 	}
 	else if (avatarState->GetActionState() == AvatarState::ActionState::waiting || avatarState->GetActionState() == AvatarState::ActionState::isGoingTroughPipe)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 8,GetSpriteClipHeight() * 5.3f,sourceWidth,sourceHeight };
-
 	}
 	else if (avatarState->GetActionState() == AvatarState::ActionState::stopping)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 13.f,GetSpriteClipHeight() * 5.3f,sourceWidth,sourceHeight };
-
 	}
 	else if (avatarState->GetActionState() == AvatarState::ActionState::ducking)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 15.f,GetSpriteClipHeight() * 5.15f,sourceWidth,sourceHeight };
-
+	}
+	else if (avatarState->GetActionState() == AvatarState::ActionState::grabing)
+	{
+		src = Rectf{ GetSpriteClipWidth() * 14.f,GetSpriteClipHeight() * 6.4f,sourceWidth,sourceHeight };
+	}
+	else if (avatarState->GetActionState() == AvatarState::ActionState::endLevel)
+	{
+		src = Rectf{ GetSpriteClipWidth() * (9 + GetAnimFrame()),GetSpriteClipHeight() * 5.3f,sourceWidth,sourceHeight };
 	}
 	if (avatarState->GetVelocityAvatar().x < 0.f /*&& avatarState->GetActionState() != AvatarState::ActionState::stopping*/) {
 		glPushMatrix();

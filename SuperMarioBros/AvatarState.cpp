@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AvatarState.h"
+#include "Projectile.h"
 
 AvatarState::AvatarState(Avatar *initialAvatar)
 	: m_AvatarX{ 120.f }
@@ -17,12 +18,17 @@ AvatarState::AvatarState(Avatar *initialAvatar)
 	, m_TimerCanBeHit{ m_TimeToHitAgain }
 	, m_TimerGoingInPipe{2}
 	, m_SoundEffectMarioJump{ new SoundEffect("Sounds/MarioJump.mp3") }
+	, m_SoundEffectMarioDies{new SoundEffect("Sounds/MarioDies.mp3")}
+	, m_FlagPoleHeight{290.f}
+	, m_FlagPolePos{ 3162.f }
+	, m_EndLevel{ 3276.f }
 	
 {
 
 }
 AvatarState::~AvatarState() {
 	delete m_SoundEffectMarioJump;
+	delete m_SoundEffectMarioDies;
 }
 Point2f AvatarState::GetPositionAvatar() const
 {
@@ -144,7 +150,7 @@ void AvatarState::SetActionState(ActionState actionState)
 void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* level, Point2f cameraPos)
 {
 
-	if (m_ActionState != AvatarState::ActionState::dead && m_ActionState != AvatarState::ActionState::isGoingTroughPipe)
+	if (m_ActionState != AvatarState::ActionState::dead && m_ActionState != AvatarState::ActionState::isGoingTroughPipe && m_ActionState != AvatarState::ActionState::grabing && m_ActionState != AvatarState::ActionState::endLevel)
 	{
 		HandleKeys(elapsedSec, level);
 	}
@@ -237,6 +243,8 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 	}
 	if (m_ActionState == AvatarState::ActionState::dead)
 	{
+		m_SoundEffectMarioDies->SetVolume(30);
+		m_SoundEffectMarioDies->Play(false);
 		if (m_AvatarY <= 0.f)
 		{
 			m_ActionState = AvatarState::ActionState::moving;
@@ -256,6 +264,35 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 		}
 		std::cout << m_TimerGoingInPipe << std::endl;*/
 	}
+	if (m_ActionState == AvatarState::ActionState::grabing)
+	{
+		if (m_AvatarY >= m_FlagPoleHeight)
+		{
+			m_AvatarX = m_FlagPolePos;
+		}
+		
+		
+		
+		if (m_AvatarY < m_FlagPoleHeight) {
+			m_ActionState = AvatarState::ActionState::endLevel;	
+		}
+		
+	
+		
+		SetVelocityYAvatar(-40.f);
+	}
+	if (m_ActionState == AvatarState::ActionState::endLevel)
+	{
+		
+		if (m_AvatarX >= m_EndLevel)
+		{
+			SetVelocityXCollisionAvatar(0);
+		}
+		else
+		{
+			SetVelocityXCollisionAvatar(50);
+		}
+	}
 	UpdatePosition(elapsedSec, cameraPos);
 	if (m_AmmoCounterAmound >= 2)
 	{
@@ -264,7 +301,7 @@ void AvatarState::Update(float elapsedSec, AvatarState* avatarState, Level* leve
 	
 	if (m_RealoadingCounter <= 0.f)
 	{
-		m_RealoadingCounter = 0.f;	
+		m_RealoadingCounter = 0.6f;	
 		m_AmmoCounterAmound++;
 	}
 	else
@@ -350,7 +387,7 @@ void AvatarState::HandleKeys(float elapsedSec, Level* level)
 	
 	if (pStates[SDL_SCANCODE_UP])
 	{
-		m_SoundEffectMarioJump->SetVolume(10);
+		m_SoundEffectMarioJump->SetVolume(5);
 		if (m_IsOnGround)
 		{
 
@@ -430,13 +467,10 @@ bool AvatarState::CheckKeyDown()
 		return true;
 	return false;
 }
-
 bool AvatarState::GetCanBeHit() const
 {
 	return m_CanBeHit;
 }
-
-
 void AvatarState::TravelTo(Point2f* travelToPosition, PrepareForTravelAnimation prepareForTravelAnimation) {
 	m_AvatarX = travelToPosition->x;
 	m_AvatarY = travelToPosition->y;

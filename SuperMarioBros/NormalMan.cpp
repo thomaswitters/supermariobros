@@ -14,6 +14,7 @@ NormalMan::NormalMan() : Avatar(NormalManType ,200.f, 600.f, "Images/mario.png",
 }
 NormalMan::~NormalMan()
 {
+
 }
 
 void NormalMan::Draw(const AvatarState* avatarState) const
@@ -21,7 +22,7 @@ void NormalMan::Draw(const AvatarState* avatarState) const
 	float sourceWidth{ GetSpriteTexture()->GetWidth() / 14 };
 	float sourceHeight{ GetSpriteTexture()->GetHeight() / 10 };
 
-	Rectf src{ };
+	Rectf src{};
 	Rectf dst{ avatarState->GetPositionAvatar().x - GetAvatarWidth() / 4, avatarState->GetPositionAvatar().y,sourceWidth / 8, sourceHeight / 8 };
 	
 	if (avatarState->GetActionState() == AvatarState::ActionState::jumping)
@@ -39,21 +40,26 @@ void NormalMan::Draw(const AvatarState* avatarState) const
 	else if (avatarState->GetActionState() == AvatarState::ActionState::stopping)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 4,GetSpriteClipHeight(),sourceWidth,sourceHeight };
-
 	}
 	else if (avatarState->GetActionState() == AvatarState::ActionState::dead)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 6,GetSpriteClipHeight(),sourceWidth,sourceHeight };
-
 	}
-	
+	else if (avatarState->GetActionState() == AvatarState::ActionState::grabing)
+	{
+		src = Rectf{ GetSpriteClipWidth() * (7 + (GetAnimFrame()%2)),GetSpriteClipHeight(),sourceWidth,sourceHeight };
+	}
+	else if (avatarState->GetActionState() == AvatarState::ActionState::endLevel)
+	{
+		
+		src = Rectf{ GetSpriteClipWidth() * GetAnimFrame(),GetSpriteClipHeight(),sourceWidth,sourceHeight };
+	}
 	if (avatarState->GetVelocityAvatar().x < 0.f && avatarState->GetActionState() != AvatarState::ActionState::stopping) {
 		glPushMatrix();
 		glTranslatef(avatarState->GetPositionAvatar().x + GetAvatarWidth()/2, avatarState->GetPositionAvatar().y + GetAvatarHeight()/2, 0);
 		glScalef(-1, 1, 1);
 		glTranslatef(-avatarState->GetPositionAvatar().x - GetAvatarWidth()/2, -avatarState->GetPositionAvatar().y - GetAvatarHeight()/2, 0);
 
-		
 		if (avatarState->GetCanBeHit() == false)
 		{
 			if (m_TimerIsHit <= m_TimeInterval)

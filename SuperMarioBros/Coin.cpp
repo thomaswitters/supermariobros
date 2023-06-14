@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Coin.h"
 
-Coin::Coin(Point2f GameItemPos) : GameItem(GameItemType::CoinType, "Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true, "")
+Coin::Coin(Point2f GameItemPos) : GameItem(GameItemType::CoinType, "Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true, "Sounds/super-mario-coin-sound.mp3")
 , m_PosCoin{ GetGameItemPos().x, GetGameItemPos().y }
 , m_NrOfFrames{4}
 , m_NrFramesPerSec{0.2f}
@@ -36,10 +36,15 @@ void Coin::CollisionDetect(GameState* gameState)
 
 	if (location == CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom)
 	{
+		if (m_Teller == 0.f)
+		{
+			gameState->SetAmountCoinsPlus(1);
+			GetSoundEffect()->SetVolume(70);
+			GetSoundEffect()->Play(false);
+		}
 		
 		m_IsHit = true;
-
-		gameState->SetAmountCoinsPlus(1);
+		
 	}
 }
 void Coin::UpdateGameItem(float elapsedSec, GameState* gameState)

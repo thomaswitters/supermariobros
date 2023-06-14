@@ -17,5 +17,3 @@ private:
 	float m_BeginPosY;
 	KindOfNormalBlock m_NormalBlockType;
 };
-
-\

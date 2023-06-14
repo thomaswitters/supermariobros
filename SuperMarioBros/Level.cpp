@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Level.h"
+#include "LiveItem.h"
 
 #include "pch.h"
 #include "Level.h"
@@ -9,6 +10,7 @@ Level::Level(const std::string& imagePath, std::vector<std::string> verticesImag
 	, m_pBackgroundTexture{new Texture(imagePath)}
 	, m_pGameItems{}
 	, m_pLiveItems{}
+	, m_pLevelProp{}
 {
 	for (size_t i = 0; i < verticesImagePaths.size(); i++) {
 		std::vector<std::vector<Point2f>> m_VerticesTemp;
@@ -35,6 +37,13 @@ Level::~Level()
 		LiveItem* ALiveItem = m_pLiveItems[i];
 		delete ALiveItem;
 	}
+
+	for (size_t i = 0; i < m_pLevelProp.size(); i++)
+	{
+		Texture* ALevelProp = m_pLevelProp[i];
+		delete ALevelProp;
+	}
+
 }
 
 void Level::DestroyGameItem(GameItem* gameItem) {
@@ -206,7 +215,7 @@ void Level::DrawForeground(AvatarState* avatarState) const
 			ALiveItem->Draw(avatarState);
 		}
 
-	}
+	}	
 }
 
 void Level::UpdateItems(float elapsedSec, GameState* gameState, Point2f cameraPos)

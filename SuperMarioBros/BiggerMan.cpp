@@ -27,22 +27,26 @@ void BiggerMan::Draw(const AvatarState* avatarState) const
 	else if (avatarState->GetActionState() == AvatarState::ActionState::moving)
 	{
 		src = Rectf{ GetSpriteClipWidth() * (8 + GetAnimFrame()),GetSpriteClipHeight() * 3.f,sourceWidth,sourceHeight };
-
 	}
 	else if (avatarState->GetActionState() == AvatarState::ActionState::waiting || avatarState->GetActionState() == AvatarState::ActionState::isGoingTroughPipe)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 7,GetSpriteClipHeight() * 3.f,sourceWidth,sourceHeight };
-
 	}
 	else if (avatarState->GetActionState() == AvatarState::ActionState::stopping)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 11,GetSpriteClipHeight() * 3.f,sourceWidth,sourceHeight };
-
 	}
 	else if (avatarState->GetActionState() == AvatarState::ActionState::ducking)
 	{
 		src = Rectf{ GetSpriteClipWidth() * 13.1f,GetSpriteClipHeight() * 2.8f,sourceWidth,sourceHeight };
-
+	}
+	else if (avatarState->GetActionState() == AvatarState::ActionState::grabing)
+	{
+		src = Rectf{ GetSpriteClipWidth() * 12.1f,GetSpriteClipHeight() * 4.2f,sourceWidth,sourceHeight };
+	}
+	else if (avatarState->GetActionState() == AvatarState::ActionState::endLevel)
+	{
+		src = Rectf{ GetSpriteClipWidth() * (8 + GetAnimFrame()),GetSpriteClipHeight() * 3.f,sourceWidth,sourceHeight };
 	}
 	if (avatarState->GetVelocityAvatar().x < 0.f) {
 		glPushMatrix();

@@ -68,6 +68,7 @@ void Enemy::CollisionDetect(GameState* gameState) {
 				{
 					avatarState->SetActionState(AvatarState::ActionState::dead);
 					gameState->SetAmountOfLives();
+//					gameState->PlayerDies();
 					gameState->GetAvatarState()->SetVelocityXCollisionAvatar(0.f);
 					gameState->GetAvatarState()->SetVelocityYAvatar(float(sqrt(2.0f * 981.f * 100)));
 				}

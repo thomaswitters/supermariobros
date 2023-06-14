@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Level1.h"
+#include "CoinPickUp.h"
 #include "Coin.h"
 #include "QuestionBlock.h"
 #include "PowerUp.h"
@@ -11,9 +12,11 @@
 #include "Goomba.h"
 #include "FlagPole.h"
 
+
 Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros.svg", "Images/SuperMarioBros2.svg", "Images/SuperMarioBros3.svg", "Images/SuperMarioBros4.svg", "Images/SuperMarioBros5.svg" })
 {
-	
+	//AddGameItem(new CoinPickUp(Point2f(256.f, 320.f)));
+
 	AddGameItem(new Coin(Point2f(256.f, 320.f)));
 	AddGameItem(new QuestionBlock(Point2f(256.f, 320.f)));
 	AddGameItem(new PowerUp(Point2f(336.f, 320.f)));
@@ -313,13 +316,15 @@ Level1::Level1() : Level("Images/Super Mario bros.png", { "Images/SuperMarioBros
 
 	AddLiveItem(new Goomba(Point2f(2648.f, 272.f)));
 	AddLiveItem(new Goomba(Point2f(2670.f, 272.f)));
-
 	
 }
 
 Level1::~Level1()
 {
-
+}
+void Level1::DrawForeground() const
+{
+	
 }
 
 bool Level1::HasReachedEnd(const Rectf& actorShape)

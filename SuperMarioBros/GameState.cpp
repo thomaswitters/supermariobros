@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "GameState.h"
+#include "NormalMan.h"
+#include "BiggerMan.h"
+#include "FlowerMan.h"
 
 GameState::GameState():
 	m_pNormalMan{ new NormalMan() }
@@ -51,6 +54,21 @@ void GameState::LevelWon() {
 	fake.type = SDL_QUIT;
 	SDL_PushEvent(&fake);
 }
+bool GameState::GoToLevel2(bool reachedLevel1){
+	return reachedLevel1;
+}
+void GameState::ResetLevel() {
+	
+}
+
+//void GameState::PlayerDies() {
+//	vermidner de levens
+//	rest
+//		avatarState->SetActionState(AvatarState::ActionState::dead);
+//	SetAmountOfLives();
+//	ResetLevel();
+//}
+
 Avatar* GameState::GetNormalMan() {
 	return m_pNormalMan;
 }

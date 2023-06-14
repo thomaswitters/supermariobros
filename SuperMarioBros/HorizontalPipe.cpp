@@ -2,7 +2,7 @@
 #include "HorizontalPipe.h"
 
 HorizontalPipe::HorizontalPipe(HorizonDirection horizonDirection, Point2f GameItemPos, float width, Point2f* transportToPos) :
-	Pipe(GameItemPos, 32.f, 16.f, width, 32.f, transportToPos)
+	Pipe(GameItemPos, 32.f, 16.f, width, 32.f, transportToPos, "Sounds/Pipes.mp3")
 	, m_HorizonDirection{ horizonDirection }
 {
 	
@@ -60,6 +60,8 @@ void HorizontalPipe::CollisionDetect(GameState* gameState)
 		if ((pStates[SDL_SCANCODE_RIGHT]) && (GetTransportToPos() != NULL)) {
 			avatarState->SetActionState(AvatarState::ActionState::isGoingTroughPipe);
 			avatarState->TravelTo(GetTransportToPos(), PrepareForTravelAnimation::FallDown);
+			GetSoundEffect()->SetVolume(70);
+			GetSoundEffect()->Play(false);
 			return;
 		}
 		break;

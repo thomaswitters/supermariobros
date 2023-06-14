@@ -16,13 +16,17 @@ Hud::Hud(const Point2f& topLeft, float totalTime, int level, int lives, int coin
 	, m_pTextLevel{}
 	, m_pTextLives{}
 	, m_pTextMario{}
-	, m_pCoinTexture{ new Texture("Images/coin.png") }
+	, m_pCoinTexture{ new Texture("Images/items-objects.png") }
 	, m_pSettingsTexture{new Texture("Images/settings2.png")}
-	, m_PosCoin{ m_BottomLeft.x - 266, m_BottomLeft.y - 50 }
+	, m_PosCoin{ m_BottomLeft.x - 266, m_BottomLeft.y - 50 }// " m_BottomLeft.x - 266" ,  m_BottomLeft.y - 50
 	, m_pTextX{}
 	, m_pCoins{}
 	, m_pSettingsScreen{new SettingsScreen()}
 	, m_HasOpenSettings{false}
+	, m_NrOfFrames{ 4 }
+	, m_NrFramesPerSec{ 0.2f }
+	, m_AnimTime{}
+	, m_AnimFrame{}
 {
 	m_pTextFont = TTF_OpenFont("Fonts/Inconsolata-ExtraLight.ttf", 32);
 	m_pHudFont = TTF_OpenFont("Fonts/Inconsolata-ExtraBold.ttf", 28);
@@ -57,10 +61,18 @@ void Hud::Draw()
 {
 	if (!m_HasOpenSettings)
 	{
-		float sourceWidthCoin{ m_pCoinTexture->GetWidth() };
+		/*float sourceWidthCoin{ m_pCoinTexture->GetWidth() };
 		float sourceHeightCoin{ m_pCoinTexture->GetHeight() };
 		Rectf dstCoin{ m_PosCoin.x, m_PosCoin.y,sourceWidthCoin, sourceHeightCoin };
-		m_pCoinTexture->Draw(dstCoin);
+		m_pCoinTexture->Draw(dstCoin);*/
+
+		float sourceWidth{ m_pCoinTexture->GetWidth() / 36 };
+		float sourceHeight{ m_pCoinTexture->GetHeight() / 14 };
+
+		Rectf src{ 16.f * (0 + m_AnimFrame), 16.f * 7,sourceWidth,sourceHeight };
+		Rectf dst{ m_PosCoin.x , m_PosCoin.y,sourceWidth, sourceHeight };
+
+		m_pCoinTexture->Draw(dst, src);
 
 
 		float sourceWidthSettings{ m_pSettingsTexture->GetWidth() / 10 };
@@ -92,6 +104,10 @@ void Hud::Update(float elapsedSec, GameState* gameState)
 	m_TotalTime -= elapsedSec; 
 	m_Lives = gameState->GetAmountOfLives();
 	m_Coins = gameState->GetAmountCoins();
+
+	m_AnimTime += elapsedSec;
+	int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) };
+	m_AnimFrame = totalFramesElapsed % m_NrOfFrames;
 }
 
 void Hud::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)

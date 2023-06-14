@@ -36,6 +36,11 @@ private:
 	Texture* m_pSettingsTexture;
 	SettingsScreen* m_pSettingsScreen;
 	bool m_HasOpenSettings;
+
+	int m_NrOfFrames;
+	float m_NrFramesPerSec;
+	float m_AnimTime;
+	int m_AnimFrame;
 };
 
 class TextureHelper {

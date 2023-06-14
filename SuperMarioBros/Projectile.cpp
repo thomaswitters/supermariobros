@@ -16,14 +16,14 @@ void Projectile::UpdateGameItem(float elapsedSec, GameState* gameState)
 
 	
 	
-	if (gameState->GetAvatarState()->GetVelocityAvatar().x < 0.f)
+	/*if (gameState->GetAvatarState()->GetVelocityAvatar().x < 0.f)
 	{
 		SetVelocityX(-240.f);
 	}
 	else
 	{
 		SetVelocityX(240.f);
-	}
+	}*/
 	
 	//SetGameItemPosY(GetGameItemPos().y + float(1.5f * GolfbewegingInPercent(m_AnimTime, 1.f)));
 	switch (m_LiveItemState) {

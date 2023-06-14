@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Pipe.h"
 
-Pipe::Pipe(Point2f GameItemPos, float spriteClipHeight, float spriteClipWidth, float GameItemWidth, float GameItemHeight, Point2f* transportToPos) : GameItem(GameItemType::PipeType, "Images/tiles.png", spriteClipHeight, spriteClipWidth, GameItemPos, GameItemWidth, GameItemHeight, true, "")
+Pipe::Pipe(Point2f GameItemPos, float spriteClipHeight, float spriteClipWidth, float GameItemWidth, float GameItemHeight, Point2f* transportToPos, const std::string& soundPath) : GameItem(GameItemType::PipeType, "Images/tiles.png", spriteClipHeight, spriteClipWidth, GameItemPos, GameItemWidth, GameItemHeight, true, soundPath)
 , m_pSpriteTextureBottom{ new Texture("Images/tiles.png") }
 , m_transportToPos(transportToPos)
 {

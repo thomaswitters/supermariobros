@@ -7,6 +7,7 @@ Game::Game( const Window& window )
 	, m_SoundEffectMarioFinnish{ new SoundEffect("Sounds/MarioFinnish.mp3")}
 	, m_AmountOfLives{ m_GameState.GetAmountOfLives() }
 	, m_AmountCoins{ m_GameState.GetAmountCoins()}
+	, ZoomCamera{1.f, 1.f}
 {
 	Initialize();
 }
@@ -49,9 +50,20 @@ void Game::Cleanup( )
 void Game::Update( float elapsedSec )
 {
 	
+
 	m_LoadingScreen->Update(elapsedSec, &m_GameState);
 	if (m_LoadingScreen->HasLoadGame())
 	{
+		if (ZoomCamera.x <= 2.f)
+		{
+			ZoomCamera.x += 0.01f;
+		}
+		if (ZoomCamera.y <= 2.f)
+		{
+			ZoomCamera.y += 0.01f;
+		}
+		
+
 		m_GameState.UpdateDrawAvatar(elapsedSec);
 		m_GameState.SetLevel(m_pLevel);
 
@@ -65,12 +77,12 @@ void Game::Update( float elapsedSec )
 		m_pCamera->SetLevelBoundaries2(Rectf{ 768.0f ,0.f,  3376.f, 240.f });
 
 
-		if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x || m_GameState.GetAvatarState()->GetPositionAvatar().x >= 0.f)
+		if (m_GameState.GetAvatarState()->GetVelocityAvatar().x >= 0.f && m_GameState.GetAvatarState()->GetPositionAvatar().x >= m_CameraFollow.x || m_GameState.GetAvatarState()->GetPositionAvatar().y <= 250.f)
 		{
 			if (m_GameState.GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
 			{
-				///if (m_GameState.GetAvatarState()->GetPositionAvatar().y >= 272.f)
-				//{
+				/*if (m_GameState.GetAvatarState()->GetPositionAvatar().y >= 272.f)
+				{*/
 					m_CameraFollow = m_GameState.GetAvatarState()->GetPositionAvatar();
 				//}
 			}
@@ -102,7 +114,7 @@ void Game::Draw( ) const
 		glPushMatrix();
 		{
 			// T R S
-			glScalef(2.f, 2.f, 1.f);
+			glScalef(ZoomCamera.x, ZoomCamera.y, 1.f);
 			m_pCamera->Transform(Point2f{ m_CameraFollow });
 
 			m_pLevel->DrawBackground();

@@ -74,7 +74,7 @@ void NormalBlock::CollisionDetect(GameState* gameState) {
 		{
 			m_Velocity.y = float(sqrt(2.0f * 981.f * 6));
 
-			GetSoundEffect()->SetVolume(30);
+			GetSoundEffect()->SetVolume(50);
 			GetSoundEffect()->Play(false);
 		}
 		if (avatarState->GetCurrentAvatar()->getAvatarType() == BiggerManType || avatarState->GetCurrentAvatar()->getAvatarType() == FlowerManType)

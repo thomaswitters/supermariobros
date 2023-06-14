@@ -44,8 +44,10 @@ public:
 		jumping,
 		ducking,
 		stopping,
+		dead,
 		isGoingTroughPipe,
-		dead
+		grabing,
+		endLevel
 	};
 
 	ActionState GetActionState() const;
@@ -88,5 +90,9 @@ private:
 	float m_TimerGoingInPipe;
 	
 	SoundEffect* m_SoundEffectMarioJump;
+	SoundEffect* m_SoundEffectMarioDies;
 
+	float m_FlagPoleHeight;
+	float m_EndLevel;
+	float m_FlagPolePos;
 };

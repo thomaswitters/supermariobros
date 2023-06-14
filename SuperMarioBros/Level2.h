@@ -4,12 +4,12 @@
 #include "AvatarState.h"
 #include "Level.h"
 
-class GameItem;
-class Level1: public Level
+class Level2: public Level
 {
+
 public:
-	Level1();
-	virtual ~Level1();
+	Level2();
+	virtual ~Level2();
 	void DrawForeground() const;
 	bool HasReachedEnd(const Rectf& actorShape);
 };

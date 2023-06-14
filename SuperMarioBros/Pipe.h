@@ -7,7 +7,7 @@ public:
 	/*
 	 * transportToPos will be deleted by Pipe
 	 */
-	Pipe(Point2f GameItemPos, float spriteClipHeight, float spriteClipWidth, float GameItemWidth, float GameItemHeight, Point2f* transportToPos);
+	Pipe(Point2f GameItemPos, float spriteClipHeight, float spriteClipWidth, float GameItemWidth, float GameItemHeight, Point2f* transportToPos, const std::string& soundPath);
 	virtual ~Pipe();
 
 	void CollisionDetect(GameState* gameState);

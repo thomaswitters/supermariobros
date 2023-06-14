@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "FlagPole.h"
 
-FlagPole::FlagPole(Point2f GameItemPos) : GameItem(GameItemType::FlagPoleType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 4, 145, true, "")
+FlagPole::FlagPole(Point2f GameItemPos) : GameItem(GameItemType::FlagPoleType, "Images/tiles.png", 16.f, 16.f, GameItemPos, 4, 145, true, "Sounds/MarioFinnish.mp3")
 , m_pTexture{new Texture("Images/flag.png")}
 , m_IsHit{ false }
 , m_FlagPoleYPos{ GetGameItemPos().y + (16 * 7.8f) }
@@ -68,18 +68,22 @@ void FlagPole::CollisionDetect(GameState* gameState)
 		{
 			
 		}*/
+		avatarState->SetActionState(AvatarState::ActionState::grabing);
 		m_IsHit = true;
 	}
 	else if (location == CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheRight)
 	{
+		avatarState->SetActionState(AvatarState::ActionState::grabing);
 		m_IsHit = true;
 	}
 	else if(location == CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom)
 	{
+		avatarState->SetActionState(AvatarState::ActionState::grabing);
 		m_IsHit = true;
 	}
 	else if(location == CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop)
 	{
+		avatarState->SetActionState(AvatarState::ActionState::grabing);
 		m_IsHit = true;
 	}
 }
@@ -88,10 +92,13 @@ void FlagPole::UpdateGameItem(float elapsedSec, GameState* gameState)
 	Level* level = gameState->GetLevel();
 	if (m_IsHit)
 	{
-		m_FlagPoleYPos = m_FlagPoleYPos -1.5f;
+		
+		m_FlagPoleYPos = m_FlagPoleYPos -0;
 		if (m_FlagPoleYPos <= GetGameItemPos().y)
 		{
 			m_FlagPoleYPos = GetGameItemPos().y;
+			GetSoundEffect()->SetVolume(30);
+			GetSoundEffect()->Play(false);
 			gameState->LevelWon();
 		}
 	}

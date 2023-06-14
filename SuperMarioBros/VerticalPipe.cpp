@@ -2,7 +2,7 @@
 #include "VerticalPipe.h"
 
 VerticalPipe::VerticalPipe(VerticalDirection verticalDirection, Point2f GameItemPos, float height, Point2f* transportToPos) :
-	Pipe(GameItemPos, 32.f, 32.f, 32.f, height, transportToPos)
+	Pipe(GameItemPos, 32.f, 32.f, 32.f, height, transportToPos, "Sounds/Pipes.mp3")
 	, m_VerticalDirection{ verticalDirection }
 {
 }
@@ -57,6 +57,8 @@ void VerticalPipe::CollisionDetect(GameState* gameState) {
 		if ((pStates[SDL_SCANCODE_DOWN]) && (GetTransportToPos() != NULL)) {
 			avatarState->SetActionState(AvatarState::ActionState::isGoingTroughPipe);
 			avatarState->TravelTo(GetTransportToPos(), PrepareForTravelAnimation::FallDown);
+			GetSoundEffect()->SetVolume(70);
+			GetSoundEffect()->Play(false);
 			return;
 		}
 		break;

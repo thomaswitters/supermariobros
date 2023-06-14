@@ -1,10 +1,12 @@
+https://www.myinstants.com/en/search/?name=mario
 # TODO
+
+- reset game als je dood gaat
 
 ## Bugs
 
-Coins pakken -> krijgt meerdere coins *****
 
-Schieten op een goomba, van boven : ok, horizontaal soms er dwars door
+
 
 ## Feedback
 
@@ -14,7 +16,7 @@ Schieten op een goomba, van boven : ok, horizontaal soms er dwars door
 
 ### Camera +
 
-- Camera makes a transition move to different rooms/areas. -> Pipe *****
+
 
 - Parallax background effect -> 2 background, 1 met wolken, 1 met boompjes **
 
@@ -30,7 +32,7 @@ Schieten op een goomba, van boven : ok, horizontaal soms er dwars door
 
 ### Game implementation (how much is there) ++++
 
-- In Pipe gaan *****
+
 
 - Mushroom powerup beweegt ***
 
@@ -44,13 +46,13 @@ Schieten op een goomba, van boven : ok, horizontaal soms er dwars door
 
 ### HUD and UI (heads up and user interface) ++
 
-- Animatie in de HUD (coin draait) ***
+
 
 - Game settings, zoals sounds on/off, verhogen, ... *****
 
 ### Sound +
 
-- Ambient or environment sound is present *****
+
 
 - Some actions have a sounds representation *****
 
@@ -106,6 +108,10 @@ Schieten op een goomba, van boven : ok, horizontaal soms er dwars door
 
 	AddGameItem(new QuestionBlock(Point2f(336.f, 320.f)));
 	AddGameItem(new Coin(Point2f(368.f, 320.f)));
+
+TODOs
+
+- checkpoint en als sterft terug naar checkpoint
 
 # NOTITIES
 

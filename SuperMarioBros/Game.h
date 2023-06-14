@@ -49,5 +49,7 @@ private:
 	void Initialize();
 	void Cleanup( );
 	void ClearBackground( ) const;
+
+	Point2f ZoomCamera;
 	
 };

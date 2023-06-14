@@ -26,9 +26,7 @@ public:
 	void AddGameItem(GameItem* gameItem);
 
 	void AddLiveItem(LiveItem* liveItem);
-
 protected:
-	
 	std::vector<GameItem*> GetGameItems() const;
 	std::vector<LiveItem*> GetLiveItems() const;
 
@@ -38,5 +36,7 @@ private:
 
 	std::vector<GameItem*> m_pGameItems;
 	std::vector<LiveItem*> m_pLiveItems;
+
+	std::vector<Texture*> m_pLevelProp;
 };
 

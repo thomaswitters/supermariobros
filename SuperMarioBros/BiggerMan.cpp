@@ -48,6 +48,10 @@ void BiggerMan::Draw(const AvatarState* avatarState) const
 	{
 		src = Rectf{ GetSpriteClipWidth() * (8 + GetAnimFrame()),GetSpriteClipHeight() * 3.f,sourceWidth,sourceHeight };
 	}
+	else if (avatarState->GetActionState() == AvatarState::ActionState::respawning)
+	{
+		src = Rectf{ GetSpriteClipWidth() * 7.f,GetSpriteClipHeight() * 3.f,sourceWidth,sourceHeight };
+	}
 	if (avatarState->GetVelocityAvatar().x < 0.f) {
 		glPushMatrix();
 		glTranslatef(avatarState->GetPositionAvatar().x + GetAvatarWidth()/2, avatarState->GetPositionAvatar().y + GetAvatarHeight() / 2, 0);

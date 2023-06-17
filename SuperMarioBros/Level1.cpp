@@ -377,7 +377,4 @@ void Level1::DrawForeground() const
 	
 }
 
-bool Level1::HasReachedEnd(const Rectf& actorShape)
-{
-	return false;
-}
+

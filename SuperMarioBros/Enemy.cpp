@@ -15,32 +15,6 @@ Enemy::~Enemy()
 {
 
 }
-void Enemy::UpdateGameItem(float elapsedSec, GameState* gameState) {
-	Level* level = gameState->GetLevel();
-	switch (m_LiveItemState) {
-	case LiveItemState::Alive:
-	{ 
-		m_AnimTime += elapsedSec;
-		int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) }; 
-		m_AnimFrame = totalFramesElapsed % m_NrOfFrames;
-
-		SetVelocityEnemy(m_Acceleration, elapsedSec);
-		/*m_Velocity += m_Acceleration * elapsedSec;  */
-		SetPositionVelocity(m_Velocity, elapsedSec);
-		break;
-	}
-	case LiveItemState::Dying:
-	{
-		m_DyingCounter = m_DyingCounter + elapsedSec;
-		if (m_DyingCounter > 1.f)
-		{
-			m_LiveItemState = LiveItemState::Dead;
-			SetActivefalse();
-		}
-		break;
-	}
-	}
-}
 void Enemy::CollisionDetect(GameState* gameState) {
 	AvatarState* avatarState = gameState->GetAvatarState();
 	CollisionDetectionHelper::CollisionLocation location = CollisionDetectionHelper::determineCollisionDir(
@@ -125,6 +99,9 @@ void Enemy::CollisionDetect(GameState* gameState) {
 			if (gameState->GetAvatarState()->GetActionState() != AvatarState::ActionState::dead)
 			{
 				gameState->GetAvatarState()->SetVelocityYAvatar(float(sqrt(2.0f * 981.f * 10)));
+				gameState->SetAmountPointsPlus(100);
+				GetSoundEffect()->SetVolume(70);
+				GetSoundEffect()->Play(false);
 			}
 		}
 		if (m_LiveItemState == LiveItemState::Alive)

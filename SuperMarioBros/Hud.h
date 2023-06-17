@@ -9,10 +9,11 @@ public:
 	~Hud();
 	void Draw();
 	void Update(float elapsedSec, GameState* gameState);
-	void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e);
+	void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e, GameState* gameState);
 	void ProcessMouseDownEvent(const SDL_MouseButtonEvent& e);
 	void ProcessMouseMotionEvent(const SDL_MouseMotionEvent& e);
 	void SetCloseSettings();
+	bool GetHasOpenedSettings();
 
 private:
 	Point2f m_BottomLeft;

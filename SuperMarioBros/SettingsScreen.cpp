@@ -128,7 +128,7 @@ void SettingsScreen::Update(float elapsedSec, GameState* gameState)
 
 }
 
-void SettingsScreen::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e, bool& hasOpenedSettings)
+void SettingsScreen::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e, bool& hasOpenedSettings, GameState* gameState)
 {
 	float sourceWidth{ m_PosToggleButton.width };
 	float sourceHeight{ m_PosToggleButton.height / 2 };
@@ -157,15 +157,17 @@ void SettingsScreen::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e, bool& ha
 			else if (e.x >= dst.left && e.y >= dst.bottom && e.x <= dst.left + dst.width && e.y <= dst.bottom + dst.height)
 			{
 				m_PlayingSong = !m_PlayingSong;
+				
 				if (m_PlayingSong)
 				{
+					
 					m_SoundStreamMario->Play(true);
+					
 				}
 				else
 				{
 					m_SoundStreamMario->Stop();
 				}
-
 			}
 		break;
 		

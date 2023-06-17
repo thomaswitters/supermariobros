@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CoinPickup.h"
 
-CoinPickup::CoinPickup(Point2f GameItemPos) : GameItem(GameItemType::CoinPickupType,"Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true, "Sounds/smb_powerup.wav")
+CoinPickup::CoinPickup(Point2f GameItemPos) : GameItem(GameItemType::CoinPickupType,"Images/items-objects.png", 16, 16, GameItemPos, 16, 16, true, "Sounds/super-mario-coin-sound.mp3")
 	, m_PosCoin{ GetGameItemPos().x , GetGameItemPos().y }
 	, m_NrOfFrames{ 4 }
 	, m_NrFramesPerSec{ 0.2f }
@@ -39,24 +39,36 @@ void CoinPickup::CollisionDetect(GameState* gameState)
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheLeft:
 	{
 		gameState->SetAmountCoinsPlus(1);
+		gameState->SetAmountPointsPlus(200);
+		GetSoundEffect()->SetVolume(70);
+		GetSoundEffect()->Play(false);
 		SetActivefalse();
 		break;
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsOnTheRight:
 	{
 		gameState->SetAmountCoinsPlus(1);
+		gameState->SetAmountPointsPlus(200);
+		GetSoundEffect()->SetVolume(70);
+		GetSoundEffect()->Play(false);
 		SetActivefalse();
 		break;
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheBottom:
 	{
 		gameState->SetAmountCoinsPlus(1);
+		gameState->SetAmountPointsPlus(200);
+		GetSoundEffect()->SetVolume(70);
+		GetSoundEffect()->Play(false);
 		SetActivefalse();
 		break;
 	}
 	case CollisionDetectionHelper::CollisionLocation::avatorBumpsFromTheTop:
 	{
 		gameState->SetAmountCoinsPlus(1);
+		gameState->SetAmountPointsPlus(200);
+		GetSoundEffect()->SetVolume(70);
+		GetSoundEffect()->Play(false);
 		SetActivefalse();
 		break;
 	}

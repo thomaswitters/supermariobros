@@ -66,6 +66,7 @@ void PowerUp::CollisionDetect(GameState* gameState)
 		{
 			GetSoundEffect()->SetVolume(30);
 			GetSoundEffect()->Play(false);
+			gameState->SetAmountPointsPlus(1000);
 			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
 		}
@@ -73,6 +74,7 @@ void PowerUp::CollisionDetect(GameState* gameState)
 		{
 			GetSoundEffect()->SetVolume(30);
 			GetSoundEffect()->Play(false);
+			gameState->SetAmountPointsPlus(1000);
 			gameState->SetAvatar(gameState->GetBiggerMan());
 			SetActivefalse();
 		}
@@ -84,6 +86,8 @@ void PowerUp::CollisionDetect(GameState* gameState)
 		{
 			GetSoundEffect()->SetVolume(30);
 			GetSoundEffect()->Play(false);
+			gameState->SetAmountPointsPlus(1000);
+
 			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
 		}
@@ -91,6 +95,7 @@ void PowerUp::CollisionDetect(GameState* gameState)
 		{
 			GetSoundEffect()->SetVolume(30);
 			GetSoundEffect()->Play(false);
+			gameState->SetAmountPointsPlus(1000);
 			gameState->SetAvatar(gameState->GetBiggerMan());
 			SetActivefalse();
 		}
@@ -137,6 +142,7 @@ void PowerUp::CollisionDetect(GameState* gameState)
 		{
 			GetSoundEffect()->SetVolume(30);
 			GetSoundEffect()->Play(false);
+			gameState->SetAmountPointsPlus(1000);
 			//GameState.SetAvatar(GameState.GetFlowerMan());
 			gameState->SetAvatar(gameState->GetFlowerMan());
 			SetActivefalse();
@@ -146,6 +152,7 @@ void PowerUp::CollisionDetect(GameState* gameState)
 		{
 			GetSoundEffect()->SetVolume(30);
 			GetSoundEffect()->Play(false);
+			gameState->SetAmountPointsPlus(1000);
 			gameState->SetAvatar(gameState->GetBiggerMan());
 			SetActivefalse();
 		}

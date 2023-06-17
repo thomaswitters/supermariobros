@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "DecorBlock.h"
 
-DecorBlock::DecorBlock(Point2f GameItemPos) : GameItem(GameItemType::DecorBlockType, "Images/tiles.png", 8.f, 8.f, GameItemPos, 16.f, 16.f, true, "")
+DecorBlock::DecorBlock(Point2f GameItemPos) : GameItem(GameItemType::DecorBlockType, "Images/tiles.png", 8.f, 8.f, GameItemPos, 16.f, 16.f, true, "Sounds/mario-block-break_xmri4Cz.mp3")
 , m_IsHit{false}
 , m_BeginPosSquar1{ GetGameItemPos().x, GetGameItemPos().y}
 , m_BeginPosSquar2{ GetGameItemPos().x , GetGameItemPos().y + GetGameItemHeight()/2}
@@ -68,8 +68,11 @@ void DecorBlock::CollisionDetect(GameState* gameState)
 		{
 			m_IsHit = true; 
 			m_CountHit++;
+			
 			if (m_CountHit == 1)
 			{
+				GetSoundEffect()->SetVolume(50);
+				GetSoundEffect()->Play(false);
 				m_Velocity1.y = float(sqrt(2.0f * 781.f * 10));
 				m_Velocity2.y = float(sqrt(2.0f * 781.f * 15));
 				m_Velocity3.y = float(sqrt(2.0f * 781.f * 15));

@@ -10,3 +10,30 @@ Goomba::Goomba(Point2f GameItemPos) : Enemy(GameItemType::GoombaType, "Images/sm
 Goomba::~Goomba() {
 }
 
+void Goomba::UpdateGameItem(float elapsedSec, GameState* gameState)
+{
+	Level* level = gameState->GetLevel();
+	switch (m_LiveItemState) {
+	case LiveItemState::Alive:
+	{
+		m_AnimTime += elapsedSec;
+		int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) };
+		m_AnimFrame = totalFramesElapsed % m_NrOfFrames;
+
+		SetVelocityEnemy(m_Acceleration, elapsedSec);
+		/*m_Velocity += m_Acceleration * elapsedSec;  */
+		SetPositionVelocity(m_Velocity, elapsedSec);
+		break;
+	}
+	case LiveItemState::Dying:
+	{
+		m_DyingCounter = m_DyingCounter + elapsedSec;
+		if (m_DyingCounter > 1.f)
+		{
+			m_LiveItemState = LiveItemState::Dead;
+			SetActivefalse();
+		}
+		break;
+	}
+	}
+}

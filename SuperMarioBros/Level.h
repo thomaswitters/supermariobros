@@ -17,7 +17,7 @@ public:
 	virtual ~Level();
 	virtual void ResetLevel() = 0;
 
-	void DrawBackground() const;
+	virtual void DrawBackground() const;
 	void DrawForeground(AvatarState* avatarState) const;
 	void HandleCollision(float elapsedSec, GameState* gameState, Point2f& cameraPos) const;
 	bool IsOnGround(AvatarState* avatarState) const;

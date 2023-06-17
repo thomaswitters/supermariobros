@@ -58,8 +58,6 @@ public:
 	*/
 
 	void LevelWon();
-	bool GoToLevel2(bool reachedLevel1);
-	void ResetLevel(Level* level);
 
 	// TODO: move to AvatarState
 	Avatar* GetNormalMan();
@@ -68,7 +66,7 @@ public:
 	void ResetAvatar();
 
 	void PlayerDies();
-	void PlayerResurrects(Level* level);
+	void PlayerResurrects();
 
 	void SetAvatar(Avatar* newAvatar);
 	// TODO: end move to AvatarState
@@ -78,43 +76,70 @@ public:
 	void UpdateAvatar(float elapsedSec, Level* level, Point2f cameraPos, GameState* gameState);
 	void UpdateDrawAvatar(float elapsedSec);
 
-	Level* GetLevel() const
-	{
-		return m_pLevels;
-	}
+	void UpdateHud(float elapsedSec);
+
+	void QuitGame();
+
 	void UpdateItemsLevel(float elapsedSec, Point2f cameraPos, GameState* gameState);
 
-	
+	Level* GetLevel() const
+	{
+		return m_pLevels.at(m_CurrentLevel);
+	}
 
-	void SetLevel(Level* level) {
-		m_pLevels = level;
+	int GetPointsGame()
+	{
+		return m_AmountOfPoints;
+	}
+	void SetAmountPointsPlus(int amount)
+	{
+		m_AmountOfPoints = GetPointsGame() + amount;
 	}
 
 	int GetAmountOfLives()
 	{
-		return AmountOfLives;
+		return m_AmountOfLives;
 	}
-
-	void SetAmountOfLives()
+	void DecreaseAmountOfLives()
 	{
-		AmountOfLives = GetAmountOfLives() - 1;
+		if (m_AmountOfLives > 0)
+		{
+			m_AmountOfLives = GetAmountOfLives() - 1;
+		}
 	}
-
-
+	void IncreaseAmountOfLives()
+	{
+		m_AmountOfLives = GetAmountOfLives() + 1;
+	}
+	float GetTimerGame()
+	{
+		return m_TimerGame;
+	}
+	void SetTimer(float elapsedSec)
+	{
+		m_TimerGame -= elapsedSec;
+	}
+	void ResetTimer()
+	{
+		m_TimerGame = m_MaxTimer;
+	}
 	int GetAmountCoins()
 	{
 		return m_AmountCoins;
 	}
-
+	int GetCurrentLevel()
+	{
+		return m_CurrentLevel;
+	}
 	void SetAmountCoinsPlus(int amount)
 	{
 		m_AmountCoins = GetAmountCoins() + amount;
 	}
-
 	void SetAmountCoins(int amount)
 	{
 		m_AmountCoins = amount;
 	}
+
 private:
 	AvatarState* m_pAvatarState;
 
@@ -123,12 +148,16 @@ private:
 	Avatar* m_pBiggerMan;
 	Avatar* m_pFlowerMan;
 	// TODO: end move to AvatarState
-	//std::vector<Level*> m_pLevels;
-	Level* m_pLevels;
-	int AmountOfLives;
+	std::vector<Level*> m_pLevels;
+	int m_CurrentLevel;
+
+	int m_AmountOfLives;
 	int m_AmountCoins;
+	float m_TimerGame;
+	float m_MaxTimer;
+	int m_AmountOfPoints;
 
 	SoundEffect* m_SoundEffectMarioDies;
-
+	int m_MaxCoins;
 };
 

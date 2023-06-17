@@ -10,7 +10,7 @@ public:
 	virtual ~SettingsScreen();
 	void Draw();
 	void Update(float elapsedSec, GameState* gameState);
-	void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e, bool& hasOpenedSettings);
+	void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e, bool& hasOpenedSettings, GameState* gameState);
 	void ProcessMouseDownEvent(const SDL_MouseButtonEvent& e, bool& hasOpenedSettings);
 	void ProcessMouseMotionEvent(const SDL_MouseMotionEvent& e);
 private:

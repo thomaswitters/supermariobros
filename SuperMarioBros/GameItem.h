@@ -12,7 +12,7 @@ class Avatar;
 class Level;
 
 enum GameItemType {
-	NormalBlockType, QuestionBlockType, PipeType, ConcreteBlockQType, ConcreteBlockType, PowerUpType, DecorBlockType, FlagPoleType, CoinType, GoombaType, ProjectileType, CoinPickupType
+	NormalBlockType, QuestionBlockType, PipeType, ConcreteBlockQType, ConcreteBlockType, PowerUpType, DecorBlockType, FlagPoleType, CoinType, GoombaType, ProjectileType, CoinPickupType, FishType
 };
 
 class GameItem

@@ -10,7 +10,7 @@ public:
 
 	virtual ~Enemy();
 
-	virtual void UpdateGameItem(float elapsedSec, GameState* gameState);
+	virtual void UpdateGameItem(float elapsedSec, GameState* gameState) = 0;
 	virtual void CollisionDetect(GameState* gameState);
 	virtual void CollisionWithGameItemDetect(GameItem* gameItem);
 	virtual void CollisionWithLiveItemDetect(LiveItem* liveItem);

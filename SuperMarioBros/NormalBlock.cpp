@@ -79,6 +79,7 @@ void NormalBlock::CollisionDetect(GameState* gameState) {
 		}
 		if (avatarState->GetCurrentAvatar()->getAvatarType() == BiggerManType || avatarState->GetCurrentAvatar()->getAvatarType() == FlowerManType)
 		{
+			gameState->SetAmountPointsPlus(50);
 			SetActivefalse();
 		}
 		avatarState->SetIsJumpingfalse();

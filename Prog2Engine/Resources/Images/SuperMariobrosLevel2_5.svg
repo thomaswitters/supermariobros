@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg132"
+   width="3792"
+   height="240"
+   viewBox="0 0 3792 240"
+   sodipodi:docname="SuperMariobrosLevel2.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs136" />
+  <sodipodi:namedview
+     id="namedview134"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="2.5527426"
+     inkscape:cx="1661.7422"
+     inkscape:cy="143.57107"
+     inkscape:window-width="2560"
+     inkscape:window-height="1334"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g138" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Image"
+     id="g138">
+    <image
+       width="3792"
+       height="240"
+       preserveAspectRatio="none"
+       xlink:href="SuperMariobrosLevel2.png"
+       id="image140" />
+    <path
+       style="fill:#000000"
+       d="m 1343.2612,160.21983 0.3917,30.16364 192.7339,1.56694 -0.3918,-32.12231 z"
+       id="path304" />
+  </g>
+</svg>

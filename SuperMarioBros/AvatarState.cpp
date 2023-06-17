@@ -18,15 +18,23 @@ AvatarState::AvatarState(Avatar *initialAvatar)
 	, m_TimerCanBeHit{ m_TimeToHitAgain }
 	, m_TimerGoingInPipe{2}
 	, m_SoundEffectMarioJump{ new SoundEffect("Sounds/MarioJump.mp3") }
+	, m_SoundEffectMarioFinnish{ new SoundEffect("Sounds/MarioFinnish.mp3") }
 	, m_FlagPoleHeight{290.f}
+	, m_FlagPoleHeightLevel1{ 290.f }
+	, m_FlagPoleHeightLevel2{50.f}
 	, m_FlagPolePos{ 3162.f }
+	, m_FlagPolePosLevel1{ 3162.f }
+	, m_FlagPolePosLevel2{ 3596.f }
 	, m_EndLevel{ 3276.f }
-	
+	, m_EndLevel1{ 3276.f }
+	, m_EndLevel2{ 3702.f }
 {
-
+	
+	
 }
 AvatarState::~AvatarState() {
 	delete m_SoundEffectMarioJump;
+	delete m_SoundEffectMarioFinnish;
 }
 Point2f AvatarState::GetPositionAvatar() const
 {
@@ -151,6 +159,20 @@ void AvatarState::SetActionState(ActionState actionState)
 
 void AvatarState::Update(float elapsedSec, GameState* gameState, Level* level, Point2f cameraPos)
 {
+	if (gameState->GetCurrentLevel() < 1)
+	{
+		m_EndLevel = m_EndLevel1;
+		m_FlagPoleHeight = m_FlagPoleHeightLevel1;
+		m_FlagPolePos = m_FlagPolePosLevel1;
+	}
+	else
+	{
+		m_EndLevel = m_EndLevel2;
+		m_FlagPoleHeight = m_FlagPoleHeightLevel2;
+		m_FlagPolePos = m_FlagPolePosLevel2;
+
+	}
+
 	AvatarState* avatarState = gameState->GetAvatarState();
 	if (m_ActionState != AvatarState::ActionState::dead && m_ActionState != AvatarState::ActionState::isGoingTroughPipe && m_ActionState != AvatarState::ActionState::grabing && m_ActionState != AvatarState::ActionState::endLevel)
 	{
@@ -253,10 +275,7 @@ void AvatarState::Update(float elapsedSec, GameState* gameState, Level* level, P
 		
 		if (m_AvatarY <= 0.f)
 		{
-			gameState->PlayerResurrects(level);
-			m_ActionState = AvatarState::ActionState::respawning;
-			
-			
+			gameState->PlayerResurrects();
 		}
 		
 
@@ -279,13 +298,18 @@ void AvatarState::Update(float elapsedSec, GameState* gameState, Level* level, P
 	{
 		if (m_AvatarY >= m_FlagPoleHeight)
 		{
+			
 			m_AvatarX = m_FlagPolePos;
 		}
 		
 		
 		
 		if (m_AvatarY < m_FlagPoleHeight) {
+			
+			m_SoundEffectMarioFinnish->SetVolume(20);
+			m_SoundEffectMarioFinnish->Play(false);
 			m_ActionState = AvatarState::ActionState::endLevel;	
+			
 		}
 		
 	
@@ -298,6 +322,8 @@ void AvatarState::Update(float elapsedSec, GameState* gameState, Level* level, P
 		if (m_AvatarX >= m_EndLevel)
 		{
 			SetVelocityXCollisionAvatar(0);
+			//gameState->PlayerResurrects();
+			gameState->LevelWon();
 		}
 		else
 		{

@@ -13,6 +13,5 @@ public:
 	void SetupLevel();
 	void ResetLevel();
 	void DrawForeground() const;
-	bool HasReachedEnd(const Rectf& actorShape);
 };
 

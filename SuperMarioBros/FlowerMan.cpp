@@ -49,6 +49,10 @@ void FlowerMan::Draw(const AvatarState* avatarState) const
 	{
 		src = Rectf{ GetSpriteClipWidth() * (9 + GetAnimFrame()),GetSpriteClipHeight() * 5.3f,sourceWidth,sourceHeight };
 	}
+	else if (avatarState->GetActionState() == AvatarState::ActionState::respawning)
+	{
+		src = Rectf{ GetSpriteClipWidth() * 8,GetSpriteClipHeight() * 5.3f,sourceWidth,sourceHeight };
+	}
 	if (avatarState->GetVelocityAvatar().x < 0.f /*&& avatarState->GetActionState() != AvatarState::ActionState::stopping*/) {
 		glPushMatrix();
 		glTranslatef(avatarState->GetPositionAvatar().x + GetAvatarWidth()/2, avatarState->GetPositionAvatar().y + GetAvatarHeight() / 2, 0);

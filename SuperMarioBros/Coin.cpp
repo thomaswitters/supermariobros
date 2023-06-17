@@ -39,6 +39,7 @@ void Coin::CollisionDetect(GameState* gameState)
 		if (m_Teller == 0.f)
 		{
 			gameState->SetAmountCoinsPlus(1);
+			gameState->SetAmountPointsPlus(200);
 			GetSoundEffect()->SetVolume(70);
 			GetSoundEffect()->Play(false);
 		}

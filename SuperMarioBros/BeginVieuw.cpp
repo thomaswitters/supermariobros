@@ -81,7 +81,6 @@ void BeginVieuw::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)
 			if (e.x >= 320.f && e.y >= 175.f && e.x <= 580.f && e.y <= 200.f)
 			{
 				HasStarted = true;
-				std::cout << " started player1" << std::endl;
 			}
 			break;
 		}

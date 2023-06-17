@@ -92,8 +92,16 @@ private:
 	float m_TimerGoingInPipe;
 	
 	SoundEffect* m_SoundEffectMarioJump;
+	SoundEffect* m_SoundEffectMarioFinnish;
 
 	float m_FlagPoleHeight;
+	float m_FlagPoleHeightLevel1;
+	float m_FlagPoleHeightLevel2;
 	float m_EndLevel;
+	float m_EndLevel1;
+	float m_EndLevel2;
+
 	float m_FlagPolePos;
+	float m_FlagPolePosLevel1;
+	float m_FlagPolePosLevel2;
 };

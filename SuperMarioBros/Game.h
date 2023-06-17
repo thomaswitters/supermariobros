@@ -34,7 +34,9 @@ private:
 
 	GameState m_GameState;
 	Hud* m_pHud;
-	Level* m_pLevel;
+	//Level* m_pLevel;
+
+
 	Camera* m_pCamera;
 	SoundEffect* m_SoundEffectMarioFinnish;
 	BeginVieuw* m_BeginScreen;
@@ -42,8 +44,11 @@ private:
 	
 
 	Point2f m_CameraFollow;
+	float m_TimerGame;
 	int m_AmountOfLives;
 	int m_AmountCoins;
+	int m_Level;
+	int m_PointsGame;
 
 	// FUNCTIONS
 	void Initialize();

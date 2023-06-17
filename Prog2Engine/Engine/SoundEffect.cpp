@@ -7,8 +7,8 @@ SoundEffect::SoundEffect( const std::string& path )
 {
 	if ( m_pMixChunk == nullptr )
 	{
-		const std::string errorMsg = "SoundEffect: Failed to load " + path + ",\nSDL_mixer Error: " + Mix_GetError( );
-		std::cerr << errorMsg;
+		//const std::string errorMsg = "SoundEffect: Failed to load " + path + ",\nSDL_mixer Error: " + Mix_GetError( );
+		//std::cerr << errorMsg;
 	}
 }
 SoundEffect::~SoundEffect( )

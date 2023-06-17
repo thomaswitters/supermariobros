@@ -101,20 +101,23 @@ void Hud::Draw()
 void Hud::Update(float elapsedSec, GameState* gameState)
 {
 	m_pSettingsScreen->Update(elapsedSec, gameState);
-	m_TotalTime -= elapsedSec; 
+	//m_TotalTime -= elapsedSec;
 	m_Lives = gameState->GetAmountOfLives();
 	m_Coins = gameState->GetAmountCoins();
+	m_TotalTime = gameState->GetTimerGame();
+	m_Level = gameState->GetCurrentLevel();
+	m_Score = gameState->GetPointsGame();
 
 	m_AnimTime += elapsedSec;
 	int totalFramesElapsed{ int(m_AnimTime / m_NrFramesPerSec) };
 	m_AnimFrame = totalFramesElapsed % m_NrOfFrames;
 }
 
-void Hud::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)
+void Hud::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e, GameState* gameState)
 {
 	if (m_HasOpenSettings)
 	{
-		m_pSettingsScreen->ProcessMouseUpEvent(e, m_HasOpenSettings);
+		m_pSettingsScreen->ProcessMouseUpEvent(e, m_HasOpenSettings, gameState);
 	}
 
 	if (!m_HasOpenSettings)
@@ -152,4 +155,9 @@ void Hud::ProcessMouseMotionEvent(const SDL_MouseMotionEvent& e)
 void Hud::SetCloseSettings()
 {
 	m_HasOpenSettings = false;
+}
+
+bool Hud::GetHasOpenedSettings()
+{
+	return m_HasOpenSettings;
 }

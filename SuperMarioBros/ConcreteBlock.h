@@ -9,4 +9,8 @@ public:
 	void Draw(AvatarState* avatarState) const;
 	void CollisionDetect(GameState* gameState);
 	bool CollisionDetectOnGround(AvatarState* avatarState);
+	virtual bool CanCollide(GameItem* gameItem) {
+		if (gameItem->GetGameItemType() == GameItemType::FishType) return false;
+		return true;
+	}
 };

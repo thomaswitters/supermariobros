@@ -143,8 +143,12 @@ void Level::HandleCollision(float elapsedSec, GameState* gameState, Point2f& cam
 
 				if (utils::Raycast(m_Vertices.at(i).front(), liveItemOrigin1, liveItemOrigin2, hitInfo))
 				{
-					ALiveItem->SetVelocityY(0.f);
-					ALiveItem->SetGameItemPosY(hitInfo.intersectPoint.y);
+					if (ALiveItem->GetGameItemType() != GameItemType::FishType)
+					{
+						ALiveItem->SetVelocityY(0.f);
+						ALiveItem->SetGameItemPosY(hitInfo.intersectPoint.y);
+					}
+					
 					ALiveItem->BounceFloor();	
 				}
 			}

@@ -97,9 +97,6 @@ void FlagPole::UpdateGameItem(float elapsedSec, GameState* gameState)
 		if (m_FlagPoleYPos <= GetGameItemPos().y)
 		{
 			m_FlagPoleYPos = GetGameItemPos().y;
-			GetSoundEffect()->SetVolume(20);
-			GetSoundEffect()->Play(false);
-			//gameState->LevelWon();
 		}
 	}
 
